@@ -23,14 +23,14 @@ function PlaceholderPage({ title, subtitle }) {
 }
 
 import HomePage from "../pages/HomePage";
-
+import Courses from "../pages/Courses";
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        
+        <Route path="courses" element={<Courses />} />
         {/* Company Dropdown Routes */}
         <Route
           path="about-us"
