@@ -24,6 +24,7 @@ function PlaceholderPage({ title, subtitle }) {
 
 import HomePage from "../pages/HomePage";
 import Courses from "../pages/Courses";
+import TwoDThreeDAnimation from "../pages/TwoDThreeDAnimation";
 
 export default function AppRoutes() {
   return (
@@ -31,6 +32,10 @@ export default function AppRoutes() {
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="courses" element={<Courses />} />
+        <Route
+          path="courses/2d-3d-animation"
+          element={<TwoDThreeDAnimation />}
+        />
         {/* Company Dropdown Routes */}
         <Route
           path="about-us"
