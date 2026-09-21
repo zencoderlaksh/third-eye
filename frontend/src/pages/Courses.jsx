@@ -7,7 +7,7 @@ const courses = [
     category: "Animation & 3D",
     description:
       "Bring your creative ideas to life through animation, visual storytelling, and 3D design. Build skills for the world of digital media and animation.",
-    link: "https://thirdeyeclasses.com/2d-3d-animation-course-in-jaipur/",
+     link: "/courses/2d-3d-animation",
   },
   {
     title: "3D CAD Matrix",
