@@ -10,10 +10,7 @@ const DEFAULT_ITEMS = [
   "Jewelry CAD Matrix",
 ];
 
-const PAD = 28;
-const CHAR = 7.5;
 const GAP = 20;
-const ROW = 74;
 const DRAG_MIN = 4;
 const ZONE_PAD = 14;
 
@@ -22,36 +19,61 @@ const jitter = (i) => {
   return x - Math.floor(x);
 };
 
-const layout = (list, spread, lift, tilt, sizes) => {
+const layout = (list, spread, lift, tilt, sizes, isMobile = false) => {
+  // Alternating Zigzag Layout: One Right corner, then one Left corner below, cascading down to the folder
+  if (list.length === 4) {
+    if (isMobile) {
+      return [
+        { x: -52, y: -lift - 6,   r: -2.0 }, // [0] Digital Marketing: Lower Left corner
+        { x:  52, y: -lift - 50,  r:  2.0 }, // [1] UI/UX Designing: Lower Right corner
+        { x: -52, y: -lift - 94,  r: -2.0 }, // [2] Software Development: Upper Left corner
+        { x:  52, y: -lift - 138, r:  2.0 }, // [3] Video Editing: Top Right corner
+      ];
+    }
+    // Laptop / Desktop: spacious alternating right/left corner cascade
+    return [
+      { x: -88, y: -lift - 8,   r: -2.5 }, // [0] Digital Marketing: Lower Left corner
+      { x:  88, y: -lift - 60,  r:  2.5 }, // [1] UI/UX Designing: Lower Right corner
+      { x: -88, y: -lift - 114, r: -2.5 }, // [2] Software Development: Upper Left corner
+      { x:  88, y: -lift - 168, r:  2.5 }, // [3] Video Editing: Top Right corner
+    ];
+  }
+
   const rows = [];
   let row = [];
   let width = 0;
-  list.forEach((item, i) => {
-    const hasImage = !!item.image;
-    const defaultPw = sizes[i]?.w ?? (hasImage ? 210 : PAD + item.label.length * CHAR);
-    const pw = sizes[i]?.w ?? defaultPw;
+  const maxPerRow = isMobile ? 2 : 3;
+  const gap = isMobile ? 10 : GAP;
 
-    if (row.length && width + GAP + pw > spread * 2) {
+  list.forEach((item, i) => {
+    const defaultPw = isMobile ? 135 : 180;
+    const measuredW = sizes[i]?.w;
+    const pw = measuredW ? Math.min(measuredW, isMobile ? 150 : 200) : defaultPw;
+
+    if (row.length >= maxPerRow) {
       rows.push({ items: row, width });
       row = [];
       width = 0;
     }
     row.push({ i, pw });
-    width += (row.length > 1 ? GAP : 0) + pw;
+    width += (row.length > 1 ? gap : 0) + pw;
   });
   if (row.length) rows.push({ items: row, width });
+
   const pos = [];
+  const rowHeight = isMobile ? 54 : 70;
+
   rows.forEach((r, ri) => {
     let x = -r.width / 2;
-    const shift = (ri % 2 ? 1 : -1) * Math.min(16, spread * 0.06);
+    const shift = (ri % 2 ? 1 : -1) * (isMobile ? 6 : 10);
     r.items.forEach(({ i, pw }) => {
       const j = jitter(i);
       pos[i] = {
-        x: x + pw / 2 + shift + (j - 0.5) * 4,
-        y: -lift - ri * ROW - (j - 0.5) * 4,
-        r: tilt * (j * 2 - 1),
+        x: x + pw / 2 + shift + (j - 0.5) * 3,
+        y: -lift - ri * rowHeight - (j - 0.5) * 3,
+        r: (isMobile ? tilt * 0.65 : tilt) * (j * 2 - 1),
       };
-      x += pw + GAP;
+      x += pw + gap;
     });
   });
   return pos;
@@ -88,12 +110,24 @@ export default function FolderFloat({
   stagger = 40,
   bounce = 0.3,
   className = "",
+  isMobile: propIsMobile,
 }) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const open = isOpen !== undefined ? isOpen : internalOpen;
   const [popped, setPopped] = useState(-1);
   const [live, setLive] = useState(false);
   const [sizes, setSizes] = useState([]);
+  const [internalIsMobile, setInternalIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setInternalIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const isMobile = propIsMobile !== undefined ? propIsMobile : internalIsMobile;
+
   const anchorRef = useRef(null);
   const pillRefs = useRef([]);
   const world = useRef({
@@ -117,8 +151,8 @@ export default function FolderFloat({
     typeof item === "string" ? { label: item, value: item } : item
   );
   const n = list.length;
-  const sub = sublabel || `${n} ${n === 1 ? "course" : "courses"}`;
-  const pos = layout(list, spread, lift, tilt, sizes);
+  const sub = sublabel !== undefined ? sublabel : `${n} ${n === 1 ? "course" : "courses"}`;
+  const pos = layout(list, spread, lift, tilt, sizes, isMobile);
 
   const labelsKey = list.map((item) => `${item.label}-${item.image || ""}`).join("|");
 
@@ -330,20 +364,39 @@ export default function FolderFloat({
       dy: b.position.y - p.y,
       sx: e.clientX,
       sy: e.clientY,
+      pointerType: e.pointerType,
       moved: false,
     };
-    try {
-      e.currentTarget.setPointerCapture(e.pointerId);
-    } catch {}
+    // Only capture immediately for mouse or pen, not touch, so native vertical scroll is never trapped
+    if (e.pointerType !== "touch") {
+      try {
+        e.currentTarget.setPointerCapture(e.pointerId);
+      } catch {}
+    }
   };
 
   const move = (e, i) => {
     const w = world.current;
     const d = w.drag;
     if (!d || d.i !== i || d.id !== e.pointerId) return;
-    if (!d.moved && Math.hypot(e.clientX - d.sx, e.clientY - d.sy) >= DRAG_MIN) {
-      d.moved = true;
-      e.currentTarget.setAttribute("data-drag", "");
+    if (!d.moved) {
+      const dist = Math.hypot(e.clientX - d.sx, e.clientY - d.sy);
+      if (dist >= DRAG_MIN) {
+        if (d.pointerType === "touch") {
+          const dx = Math.abs(e.clientX - d.sx);
+          const dy = Math.abs(e.clientY - d.sy);
+          // If gesture is mostly vertical, it's a page scroll — abort drag
+          if (dy > dx * 1.15) {
+            w.drag = null;
+            return;
+          }
+          try {
+            e.currentTarget.setPointerCapture(e.pointerId);
+          } catch {}
+        }
+        d.moved = true;
+        e.currentTarget.setAttribute("data-drag", "");
+      }
     }
     if (!d.moved) return;
     const b = w.bodies[i];
@@ -425,12 +478,14 @@ export default function FolderFloat({
           font-size: 13px;
           font-weight: 500;
           line-height: 1;
+          touch-action: pan-y;
         }
 
         .folder-float__folder {
           position: relative;
           width: var(--ff-w);
           height: var(--ff-h);
+          touch-action: pan-y;
         }
 
         .folder-float__back {
@@ -555,6 +610,7 @@ export default function FolderFloat({
           z-index: 10;
           width: 0;
           height: 0;
+          touch-action: pan-y;
         }
 
         .folder-float[data-open] .folder-float__items::before {
@@ -571,15 +627,15 @@ export default function FolderFloat({
           top: 0;
           left: 50%;
           margin: 0;
-          padding: 8px 16px;
-          min-height: 52px;
+          padding: 10px 18px;
+          min-height: 58px;
           border: 1px solid color-mix(in srgb, var(--card-accent, #f6d96b) 45%, transparent);
-          border-radius: 16px;
+          border-radius: 18px;
           background: rgba(18, 14, 9, 0.96);
           color: var(--ff-item-ink);
           font: inherit;
           white-space: nowrap;
-          box-shadow: 0 12px 32px rgba(0, 0, 0, 0.9), 0 0 22px color-mix(in srgb, var(--card-accent, #f6d96b) 22%, transparent);
+          box-shadow: 0 14px 36px rgba(0, 0, 0, 0.9), 0 0 24px color-mix(in srgb, var(--card-accent, #f6d96b) 25%, transparent);
           cursor: pointer;
           outline: none;
           opacity: 0;
@@ -587,12 +643,48 @@ export default function FolderFloat({
           transform-origin: 50% 50%;
           pointer-events: none;
           -webkit-tap-highlight-color: transparent;
+          touch-action: pan-y;
           transition:
             transform var(--ff-close) cubic-bezier(0.23, 1, 0.32, 1) calc((var(--ff-n) - 1 - var(--i)) * var(--ff-stagger) * 0.5),
             opacity 160ms ease calc((var(--ff-n) - 1 - var(--i)) * var(--ff-stagger) * 0.5 + var(--ff-close) * 0.45),
             scale 160ms cubic-bezier(0.23, 1, 0.32, 1),
             background-color 200ms ease,
             border-color 200ms ease;
+        }
+
+        @media (max-width: 640px) {
+          .folder-float__front {
+            padding: 12px 16px;
+            height: 80%;
+          }
+          .folder-float__label {
+            font-size: 13px;
+            line-height: 1.2;
+          }
+          .folder-float__sub {
+            font-size: 9.5px;
+          }
+          .folder-float__item {
+            padding: 7px 12px;
+            min-height: 44px;
+            border-radius: 14px;
+          }
+          .folder-float__thumb {
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 8px !important;
+          }
+          .folder-float__drift {
+            gap: 10px !important;
+          }
+          .folder-float__item-title {
+            font-size: 12px !important;
+            line-height: 1.2 !important;
+          }
+          .folder-float__item-subtitle {
+            font-size: 9.5px !important;
+            margin-top: 1px !important;
+          }
         }
 
         .folder-float[data-open] .folder-float__item {
@@ -650,13 +742,22 @@ export default function FolderFloat({
         }
 
         .folder-float__thumb {
-          width: 38px;
-          height: 38px;
-          border-radius: 10px;
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
           object-fit: cover;
           flex-shrink: 0;
-          border: 1px solid color-mix(in srgb, var(--card-accent, #f6d96b) 50%, transparent);
-          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.7);
+          border: 1.5px solid color-mix(in srgb, var(--card-accent, #f6d96b) 60%, transparent);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
+        }
+
+        .folder-float__drift {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          animation: folder-float-drift 3.2s ease-in-out infinite;
+          animation-delay: calc(var(--i) * -0.7s);
+          animation-play-state: paused;
         }
 
         .folder-float__item-text {
@@ -668,14 +769,14 @@ export default function FolderFloat({
         }
 
         .folder-float__item-title {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 700;
           color: #ffffff;
           letter-spacing: -0.01em;
         }
 
         .folder-float__item-subtitle {
-          font-size: 10.5px;
+          font-size: 11px;
           font-family: monospace;
           color: var(--card-accent, #f6d96b);
           opacity: 0.95;
@@ -779,7 +880,7 @@ export default function FolderFloat({
         <span className="folder-float__paper" aria-hidden="true" />
         <span className="folder-float__front" aria-hidden="true">
           <span className="folder-float__label">{label}</span>
-          <span className="folder-float__sub">{sub}</span>
+          {sub && <span className="folder-float__sub">{sub}</span>}
         </span>
         <button
           type="button"

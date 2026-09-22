@@ -250,13 +250,13 @@ export default function StudioCardsScrollSection() {
   });
 
   return (
-    <section className="relative w-full bg-[#050505] select-none">
+    <section className="relative hidden md:block w-full bg-[#050505] select-none">
       {/* ================================================================= */}
       {/* DESKTOP & TABLET: THE EXACT PINNED STICKY 3D SCROLL SCRUB (250vh) */}
       {/* ================================================================= */}
       <div
         ref={containerRef}
-        className="relative hidden md:block w-full bg-[#050505]"
+        className="relative w-full bg-[#050505]"
         style={{ height: "250vh" }}
       >
         <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
@@ -273,62 +273,6 @@ export default function StudioCardsScrollSection() {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* ================================================================= */}
-      {/* MOBILE (<768px): HIGH-IMPACT STACKED CARDS                       */}
-      {/* ================================================================= */}
-      <div className="flex md:hidden flex-col gap-[14px] w-full px-[20px] py-[40px]">
-        {cardsData.map((card, index) => (
-          <div
-            key={card.id}
-            className="rounded-[18px] overflow-hidden relative min-h-[220px] flex flex-col shadow-2xl"
-            style={{ background: cardGradients[index] }}
-          >
-            <div className="h-[180px] overflow-hidden bg-[#111]">
-              <img
-                src={card.img}
-                alt={card.id}
-                className="w-full h-full object-cover block select-none"
-              />
-            </div>
-            <div className="p-[18px] flex flex-col gap-[10px]">
-              <IsometricCubeIcon isDark={index === 0} className="w-[26px] h-[26px]" />
-              <div className="flex flex-col gap-0.5">
-                <span
-                  className={`font-clash text-[44px] font-black leading-none tracking-tight ${
-                    index === 0 ? "text-black" : "text-white"
-                  }`}
-                >
-                  {card.stat}
-                </span>
-                <span
-                  className={`font-clash text-[18px] font-bold tracking-wide ${
-                    index === 0 ? "text-black/85" : "text-white/90"
-                  }`}
-                >
-                  {card.unit}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <h3
-                  className={`font-clash text-[16px] font-semibold leading-snug ${
-                    index === 0 ? "text-black" : "text-white"
-                  }`}
-                >
-                  {card.heading}
-                </h3>
-                <p
-                  className={`font-clash text-[12px] ${
-                    index === 0 ? "text-black/80" : "text-white/[0.6]"
-                  }`}
-                >
-                  {card.desc}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
     </section>
   );
