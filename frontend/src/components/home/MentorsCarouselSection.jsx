@@ -49,7 +49,7 @@ const MENTORS = [
 ];
 
 // ─────────────────────────────────────────────────────────────────
-// Coverflow transform values per offset slot
+// Coverflow transform values per offset slot (Desktop / Tablet)
 // ─────────────────────────────────────────────────────────────────
 function getTransform(offset) {
   switch (offset) {
@@ -64,7 +64,36 @@ function getTransform(offset) {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// Single Mentor Card
+// Mobile 3-Card Peek Transform (matches reference screenshot)
+// ─────────────────────────────────────────────────────────────────
+function getMobileTransform(offset, screenWidth = 375) {
+  const isTiny = screenWidth < 360;
+  const isLarge = screenWidth >= 400;
+  const stepX = isTiny ? 142 : isLarge ? 172 : 158;
+  const scaleSide = isTiny ? 0.84 : 0.86;
+
+  switch (offset) {
+    case 0:
+      return { scale: 1.0, x: 0, y: 0, rotateY: 0, z: 30, opacity: 1.0, brightness: 1.0 };
+    case 1:
+      return { scale: scaleSide, x: stepX, y: 14, rotateY: -8, z: 15, opacity: 0.85, brightness: 0.75 };
+    case -1:
+      return { scale: scaleSide, x: -stepX, y: 14, rotateY: 8, z: 15, opacity: 0.85, brightness: 0.75 };
+    default:
+      return {
+        scale: 0.55,
+        x: Math.sign(offset) * (stepX * 1.8),
+        y: 28,
+        rotateY: Math.sign(offset) * -12,
+        z: 0,
+        opacity: 0,
+        brightness: 0.5,
+      };
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Single Desktop Mentor Card
 // ─────────────────────────────────────────────────────────────────
 function MentorCard({ mentor, offset, onClick }) {
   const t = getTransform(offset);
@@ -96,7 +125,6 @@ function MentorCard({ mentor, offset, onClick }) {
         className="relative w-full h-full overflow-hidden"
         style={{
           borderRadius: "clamp(18px, 2.2vw, 28px)",
-          /* Yellow-to-dark gradient matching the yellow circle photos */
           background: isCenter
             ? "linear-gradient(170deg, #c9a200 0%, #7a5e00 35%, #1c1500 70%, #090700 100%)"
             : "linear-gradient(170deg, #a88500 0%, #5e4700 35%, #141000 70%, #060500 100%)",
@@ -146,7 +174,6 @@ function MentorCard({ mentor, offset, onClick }) {
             background: "linear-gradient(to top, rgba(5,4,0,0.98) 55%, transparent 100%)",
           }}
         >
-          {/* Name */}
           <h3
             className="font-extrabold text-white uppercase leading-tight"
             style={{
@@ -158,7 +185,6 @@ function MentorCard({ mentor, offset, onClick }) {
             {mentor.name}
           </h3>
 
-          {/* Position — shown below name */}
           <p
             className="mt-[3px] font-semibold uppercase tracking-[0.20em]"
             style={{
@@ -175,36 +201,191 @@ function MentorCard({ mentor, offset, onClick }) {
 }
 
 // ─────────────────────────────────────────────────────────────────
+// Mobile Mentor Card (3-Card Peek Layout matching Sheryians reference)
+// ─────────────────────────────────────────────────────────────────
+function MobileMentorCard({ mentor, offset, screenWidth, onClick }) {
+  const t = getMobileTransform(offset, screenWidth);
+  const isCenter = offset === 0;
+
+  const cardWidth = screenWidth < 360 ? 212 : screenWidth >= 400 ? 245 : 228;
+  const cardHeight = screenWidth < 360 ? 335 : screenWidth >= 400 ? 370 : 352;
+  const photoSize = screenWidth < 360 ? 140 : screenWidth >= 400 ? 165 : 152;
+
+  return (
+    <motion.div
+      onClick={onClick}
+      animate={{
+        x: t.x,
+        y: t.y,
+        scale: t.scale,
+        rotateY: t.rotateY,
+        opacity: t.opacity,
+        filter: `brightness(${t.brightness})`,
+        zIndex: t.z,
+      }}
+      transition={{ type: "spring", stiffness: 320, damping: 28, mass: 0.85 }}
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none"
+      style={{
+        width: `${cardWidth}px`,
+        height: `${cardHeight}px`,
+        zIndex: t.z,
+        willChange: "transform, opacity, filter",
+        transformStyle: "preserve-3d",
+      }}
+    >
+      {/* Card shell */}
+      <div
+        className="relative w-full h-full overflow-hidden rounded-[24px]"
+        style={{
+          background: isCenter
+            ? "linear-gradient(170deg, #c9a200 0%, #7a5e00 35%, #1c1500 70%, #090700 100%)"
+            : "linear-gradient(170deg, #a88500 0%, #5e4700 35%, #141000 70%, #060500 100%)",
+          boxShadow: isCenter
+            ? "0 22px 50px rgba(198,160,0,0.28), 0 4px 20px rgba(0,0,0,0.85)"
+            : "0 8px 24px rgba(0,0,0,0.7)",
+          border: isCenter
+            ? "1.5px solid rgba(246,217,107,0.4)"
+            : "1px solid rgba(246,217,107,0.15)",
+        }}
+      >
+        {/* Ambient top radial glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: isCenter
+              ? "radial-gradient(ellipse at 50% 0%, rgba(246,217,107,0.20) 0%, transparent 60%)"
+              : "radial-gradient(ellipse at 50% 0%, rgba(246,217,107,0.08) 0%, transparent 60%)",
+          }}
+        />
+
+        {/* Circular Profile Photo */}
+        <div
+          className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center"
+          style={{
+            top: "6%",
+            width: `${photoSize}px`,
+            height: `${photoSize}px`,
+          }}
+        >
+          <img
+            src={mentor.image}
+            alt={mentor.name}
+            draggable={false}
+            className="w-full h-full object-contain"
+            style={{
+              borderRadius: "50%",
+              filter: isCenter
+                ? "drop-shadow(0 8px 24px rgba(0,0,0,0.6))"
+                : "drop-shadow(0 4px 12px rgba(0,0,0,0.5))",
+            }}
+          />
+        </div>
+
+        {/* Bottom name + position block */}
+        <div
+          className="absolute bottom-0 left-0 right-0 px-3.5 pb-4 pt-12 text-center"
+          style={{
+            background: "linear-gradient(to top, rgba(5,4,0,0.98) 55%, transparent 100%)",
+          }}
+        >
+          <h3
+            className="font-extrabold text-white uppercase leading-tight tracking-wide"
+            style={{
+              fontSize: isCenter ? "18px" : "15px",
+              textShadow: "0 2px 8px rgba(0,0,0,0.95)",
+            }}
+          >
+            {mentor.name}
+          </h3>
+
+          <p
+            className="mt-[3px] font-semibold uppercase tracking-[0.20em]"
+            style={{
+              fontSize: "10px",
+              color: isCenter ? "#f6d96b" : "rgba(246,217,107,0.6)",
+            }}
+          >
+            {mentor.position}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
 // Main Section Export
 // ─────────────────────────────────────────────────────────────────
 export default function MentorsCarouselSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [dragStartX, setDragStartX] = useState(null);
+
+  // Screen width tracking for responsive mobile 3D peek calculations
+  const [screenWidth, setScreenWidth] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth : 375
+  );
+
+  useEffect(() => {
+    const onResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // Mobile swipe tracking states
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchStartY, setTouchStartY] = useState(null);
+
   const total = MENTORS.length;
 
-  const prev = useCallback(() => setActiveIndex((i) => (i - 1 + total) % total), [total]);
-  const next = useCallback(() => setActiveIndex((i) => (i + 1) % total), [total]);
+  const handlePrev = useCallback(() => {
+    setActiveIndex((i) => (i - 1 + total) % total);
+  }, [total]);
+
+  const handleNext = useCallback(() => {
+    setActiveIndex((i) => (i + 1) % total);
+  }, [total]);
 
   // Keyboard navigation
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === "ArrowLeft") prev();
-      if (e.key === "ArrowRight") next();
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "ArrowRight") handleNext();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [prev, next]);
+  }, [handlePrev, handleNext]);
 
-  // Touch / pointer swipe
+  // Desktop drag / swipe
   const onPointerDown = (e) => setDragStartX(e.clientX ?? e.touches?.[0]?.clientX ?? null);
   const onPointerUp = (e) => {
     if (dragStartX === null) return;
     const endX = e.clientX ?? e.changedTouches?.[0]?.clientX ?? dragStartX;
     const delta = dragStartX - endX;
     if (Math.abs(delta) > 40) {
-      if (delta > 0) { next(); } else { prev(); }
+      if (delta > 0) { handleNext(); } else { handlePrev(); }
     }
     setDragStartX(null);
+  };
+
+  // Mobile dedicated touch gestures (does not trap vertical scrolling)
+  const onMobileTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+    setTouchStartY(e.touches[0].clientY);
+  };
+
+  const onMobileTouchEnd = (e) => {
+    if (touchStartX === null || touchStartY === null) return;
+    const deltaX = touchStartX - e.changedTouches[0].clientX;
+    const deltaY = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+      if (deltaX > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    }
+    setTouchStartX(null);
+    setTouchStartY(null);
   };
 
   // Shortest-path circular offset
@@ -216,7 +397,7 @@ export default function MentorsCarouselSection() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#050505] py-20 md:py-28">
+    <section className="relative w-full overflow-hidden bg-[#050505] py-16 md:py-28 select-none">
       {/* Ambient background glows */}
       <div className="pointer-events-none absolute inset-0">
         <div
@@ -246,11 +427,11 @@ export default function MentorsCarouselSection() {
       </div>
 
       {/* ── Section Header ── */}
-      <div className="relative z-10 text-center mb-14 px-4">
+      <div className="relative z-10 text-center mb-8 md:mb-14 px-4">
         <h2
           className="font-bold text-white mx-auto leading-tight"
           style={{
-            fontSize: "clamp(22px, 3.6vw, 52px)",
+            fontSize: "clamp(24px, 3.6vw, 52px)",
             maxWidth: "780px",
             letterSpacing: "-0.01em",
           }}
@@ -259,53 +440,128 @@ export default function MentorsCarouselSection() {
         </h2>
       </div>
 
-      {/* ── Carousel Stage — wider container ── */}
-      <div
-        className="relative w-full max-w-[1400px] mx-auto"
-        style={{ height: "clamp(320px, 44vw, 510px)", perspective: "1200px" }}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        onTouchStart={onPointerDown}
-        onTouchEnd={onPointerUp}
-      >
-        {MENTORS.map((mentor, i) => {
-          const off = getOffset(i);
-          if (Math.abs(off) > 2) return null;
-          return (
-            <MentorCard
-              key={mentor.id}
-              mentor={mentor}
-              offset={off}
-              onClick={() => { if (off !== 0) setActiveIndex(i); }}
-            />
-          );
-        })}
+      {/* ============================================================= */}
+      {/* 1. DESKTOP & TABLET VIEW (>= 768px): UNTOUCHED 3D COVERFLOW   */}
+      {/* ============================================================= */}
+      <div className="hidden md:block">
+        <div
+          className="relative w-full max-w-[1400px] mx-auto"
+          style={{ height: "clamp(320px, 44vw, 510px)", perspective: "1200px" }}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onTouchStart={onPointerDown}
+          onTouchEnd={onPointerUp}
+        >
+          {MENTORS.map((mentor, i) => {
+            const off = getOffset(i);
+            if (Math.abs(off) > 2) return null;
+            return (
+              <MentorCard
+                key={mentor.id}
+                mentor={mentor}
+                offset={off}
+                onClick={() => { if (off !== 0) setActiveIndex(i); }}
+              />
+            );
+          })}
+        </div>
+
+        {/* Desktop Navigation Controls */}
+        <div className="relative z-10 flex items-center justify-center gap-4 mt-8">
+          <button
+            onClick={handlePrev}
+            aria-label="Previous"
+            className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 hover:border-[#f6d96b]/60 hover:bg-[#f6d96b]/10 transition-all duration-200 cursor-pointer"
+          >
+            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          <button
+            onClick={handleNext}
+            aria-label="Next"
+            className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 hover:border-[#f6d96b]/60 hover:bg-[#f6d96b]/10 transition-all duration-200 cursor-pointer"
+          >
+            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
 
-      {/* ── Navigation Controls ── */}
-      <div className="relative z-10 flex items-center justify-center gap-4 mt-8">
-        <button
-          onClick={prev}
-          aria-label="Previous"
-          className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 hover:border-[#f6d96b]/60 hover:bg-[#f6d96b]/10 transition-all duration-200 cursor-pointer"
+      {/* ============================================================= */}
+      {/* 2. MOBILE VIEW (< 768px): 3-CARD PEEK COVERFLOW               */}
+      {/*    (Left peek, Center dominant, Right peek - Sheryians style)  */}
+      {/* ============================================================= */}
+      <div className="block md:hidden px-2">
+        {/* Mobile 3D Stage with 3 Peek Cards */}
+        <div
+          className="relative w-full max-w-[440px] mx-auto overflow-hidden touch-pan-y flex items-center justify-center"
+          style={{ height: "385px", perspective: "950px" }}
+          onTouchStart={onMobileTouchStart}
+          onTouchEnd={onMobileTouchEnd}
         >
-          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+          {MENTORS.map((mentor, i) => {
+            const off = getOffset(i);
+            if (Math.abs(off) > 1) return null;
+            return (
+              <MobileMentorCard
+                key={mentor.id}
+                mentor={mentor}
+                offset={off}
+                screenWidth={screenWidth}
+                onClick={() => {
+                  if (off !== 0) {
+                    if (off > 0) handleNext();
+                    else handlePrev();
+                  }
+                }}
+              />
+            );
+          })}
+        </div>
 
-        <button
-          onClick={next}
-          aria-label="Next"
-          className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 bg-white/5 hover:border-[#f6d96b]/60 hover:bg-[#f6d96b]/10 transition-all duration-200 cursor-pointer"
-        >
-          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+        {/* Mobile Navigation Controls & Indicator Dots */}
+        <div className="relative z-10 flex items-center justify-center gap-5 mt-4">
+          <button
+            onClick={handlePrev}
+            aria-label="Previous Mentor"
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/5 active:bg-[#f6d96b]/20 active:border-[#f6d96b] transition-all duration-150 cursor-pointer"
+          >
+            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Dots indicator with active expanding pill */}
+          <div className="flex items-center gap-2">
+            {MENTORS.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveIndex(idx)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  idx === activeIndex
+                    ? "w-6 bg-[#f6d96b] shadow-[0_0_8px_rgba(246,217,107,0.8)]"
+                    : "w-2 bg-white/25 hover:bg-white/50"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={handleNext}
+            aria-label="Next Mentor"
+            className="flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/5 active:bg-[#f6d96b]/20 active:border-[#f6d96b] transition-all duration-150 cursor-pointer"
+          >
+            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.4" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
-
-
     </section>
   );
 }
+

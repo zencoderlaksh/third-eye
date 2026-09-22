@@ -6,6 +6,7 @@ import CoursesFolderVaultSection from "../components/home/CoursesFolderVaultSect
 import StudioCardsScrollSection from "../components/home/StudioCardsScrollSection";
 import MentorsCarouselSection from "../components/home/MentorsCarouselSection";
 import FAQSection from "../components/home/FAQSection";
+import ThirdEyeBrandTorchSection from "../components/home/ThirdEyeBrandTorchSection";
 import ScrollReveal from "../components/common/ScrollReveal";
 
 export default function HomePage() {
@@ -66,6 +67,11 @@ export default function HomePage() {
 
       {/* 7. Frequently Asked Questions */}
       <FAQSection />
+
+      {/* 8. Giant Typographic Brand Torch Finale (Sheryians style) */}
+      <ScrollReveal direction="up" duration={700} delay={40}>
+        <ThirdEyeBrandTorchSection />
+      </ScrollReveal>
     </div>
   );
 }

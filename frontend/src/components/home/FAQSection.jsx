@@ -32,7 +32,7 @@ const FAQS = [
   },
   {
     id: 6,
-    q: "What courses do you offer at Third Eye Computer Classes?",
+    q: "What courses do you offer?",
     a: "We offer a wide range of courses — including Computer Basics, MS Office, Tally & Accounts, Web Design, Graphic Design, 3D Animation, Video Editing, Full-Stack Development, Cybersecurity, and more.",
   },
   {
@@ -59,6 +59,11 @@ const FAQS = [
     id: 11,
     q: "Do you offer online classes as well?",
     a: "Yes, select courses are available in an online format with live instructor sessions, recorded lectures, and digital study materials. Get in touch to find out which courses are currently available online.",
+  },
+  {
+    id: 12,
+    q: "Can I attend a free demo class?",
+    a: "Yes, absolutely! We offer complimentary demo sessions so you can experience our high-tech labs, interact with faculty, and explore the curriculum before making your decision.",
   },
 ];
 
@@ -94,12 +99,12 @@ function FAQItem({ faq, index, isOpen, onToggle }) {
           }}
         />
 
-        {/* Question row */}
-        <div className="flex items-center justify-between gap-4 px-6 py-5 pl-8">
-          <div className="flex items-start gap-3 min-w-0">
+        {/* Question row with uniform height */}
+        <div className="flex items-center justify-between gap-4 px-6 py-4 sm:py-5 pl-8 min-h-[76px]">
+          <div className="flex items-center gap-3 min-w-0">
             {/* Number badge */}
             <span
-              className="shrink-0 mt-[2px] font-bold tabular-nums transition-colors duration-300"
+              className="shrink-0 font-bold tabular-nums transition-colors duration-300"
               style={{
                 fontSize: "clamp(11px, 1vw, 13px)",
                 color: isOpen ? "#f6d96b" : "rgba(246,217,107,0.35)",
@@ -182,7 +187,7 @@ export default function FAQSection() {
   const col2 = FAQS.slice(6);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#050505] py-20 md:py-28">
+    <section className="relative w-full overflow-hidden bg-[#050505] pt-16 md:pt-24 pb-8 md:pb-12">
       {/* Ambient glows */}
       <div className="pointer-events-none absolute inset-0">
         <div
@@ -198,7 +203,7 @@ export default function FAQSection() {
           style={{
             width: "60vw",
             height: "30vw",
-            background: "radial-gradient(ellipse, rgba(50,0,90,0.10) 0%, transparent 65%)",
+            background: "radial-gradient(ellipse, rgba(180,83,9,0.08) 0%, transparent 65%)",
           }}
         />
       </div>
@@ -290,13 +295,13 @@ export default function FAQSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-14 text-center"
+          className="mt-8 sm:mt-10 text-center"
         >
           <p className="text-white/40 mb-4" style={{ fontSize: "clamp(13px, 1.1vw, 15px)" }}>
             Still have questions? We&apos;re happy to help.
           </p>
           <a
-            href="tel:+91XXXXXXXXXX"
+            href="tel:+919876543210"
             className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold transition-all duration-200 hover:scale-105 active:scale-95"
             style={{
               background: "linear-gradient(135deg, #f6d96b, #c9a200)",

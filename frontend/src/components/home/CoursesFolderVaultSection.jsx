@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Sparkles,
   TrendingUp,
@@ -255,8 +255,17 @@ function Discipline3DCard({ item }) {
 }
 
 export default function CoursesFolderVaultSection() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -282,7 +291,7 @@ export default function CoursesFolderVaultSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 py-16 sm:py-24 bg-[#050505] overflow-hidden w-full select-none"
+      className="relative z-10 py-12 sm:py-20 lg:py-24 bg-[#050505] overflow-hidden w-full select-none"
     >
       {/* Background Ambience: Warm Golden Amber Spotlights */}
       <div className="absolute top-[20%] left-1/3 -translate-x-1/2 w-[650px] h-[650px] rounded-full bg-[radial-gradient(circle,rgba(246,217,107,0.16)_0%,rgba(217,119,6,0.08)_45%,transparent_75%)] blur-[100px] pointer-events-none -z-10" />
@@ -299,62 +308,74 @@ export default function CoursesFolderVaultSection() {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* 2-Column Responsive Layout: Big Folder on Left, Relevant 3D Cards on Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        {/* Mobile Header (displayed on mobile, hidden on lg) */}
+        <div className="block lg:hidden text-center mb-7 px-1">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold bg-[#f6d96b]/10 text-[#f6d96b] border border-[#f6d96b]/25 shadow-[0_0_15px_rgba(246,217,107,0.1)] mb-3">
+            <Layers className="w-3.5 h-3.5 text-[#f6d96b] animate-pulse" />
+            <span className="font-mono tracking-wider uppercase text-[10px] sm:text-[11px]">
+              Jaipur&apos;s Largest Creative &amp; Tech Academy
+            </span>
+          </div>
+          <h2 className="text-2xl sm:text-4xl font-bold text-white tracking-tight leading-[1.15]">
+            300+ Digital Courses.{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-[#f6d96b]">
+              One Unstoppable Career.
+            </span>
+          </h2>
+        </div>
+
+        {/* 2-Column Responsive Layout: Folder on Left, Relevant 3D Cards on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           {/* ============================================================ */}
-          {/* LEFT COLUMN: BIG FOLDER WITH 4 ENLARGED 3D FLOATING CARDS    */}
+          {/* LEFT COLUMN: FOLDER WITH 4 2x2 BALANCED FLOATING CARDS       */}
           {/* ============================================================ */}
-          <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center">
+          <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center w-full">
             {/* Arena Container for Folder: strictly overflow-hidden so cards NEVER escape */}
-            <div className="relative w-full max-w-[460px] min-h-[580px] sm:min-h-[620px] rounded-3xl bg-gradient-to-b from-[#140f09]/85 via-[#0b0805]/95 to-[#0e0a06] border border-[#f6d96b]/20 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(246,217,107,0.08)] p-6 flex flex-col items-center justify-between overflow-hidden group">
+            <div className="relative w-full max-w-[480px] lg:max-w-[500px] min-h-[540px] sm:min-h-[620px] lg:min-h-[690px] rounded-3xl bg-gradient-to-b from-[#140f09]/85 via-[#0b0805]/95 to-[#0e0a06] border border-[#f6d96b]/20 shadow-[0_25px_60px_rgba(0,0,0,0.9),0_0_35px_rgba(246,217,107,0.08)] p-3 sm:p-5 lg:p-6 flex flex-col items-center justify-between overflow-hidden group">
               {/* Radial Golden Halo inside the container */}
-              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[340px] h-[340px] rounded-full bg-[radial-gradient(circle,rgba(246,217,107,0.22)_0%,rgba(217,119,6,0.1)_45%,transparent_75%)] blur-[60px] pointer-events-none" />
+              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[320px] sm:w-[380px] h-[320px] sm:h-[380px] rounded-full bg-[radial-gradient(circle,rgba(246,217,107,0.22)_0%,rgba(217,119,6,0.1)_45%,transparent_75%)] blur-[60px] pointer-events-none" />
 
               {/* Top Arena Indicator Pill */}
               <div className="w-full flex items-center justify-between pointer-events-none z-10 pt-1">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#18120a] border border-[#f6d96b]/25 text-[11px] font-mono text-[#f6d96b] shadow-[0_0_12px_rgba(246,217,107,0.12)]">
+                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full bg-[#18120a] border border-[#f6d96b]/25 text-[10px] sm:text-[11px] font-mono text-[#f6d96b] shadow-[0_0_12px_rgba(246,217,107,0.12)]">
                   <Sparkles className="w-3 h-3 text-[#f6d96b] animate-pulse" />
-                  <span>Production Vault</span>
+                  <span>Curated Tracks</span>
                 </div>
                 <span className="text-[10px] font-mono text-zinc-400">300+ Courses</span>
               </div>
 
               {/* Folder and Floating Items: positioned with generous vertical headroom & wide spread */}
-              <div className="relative flex justify-center items-end w-full mt-auto mb-2 pt-28 pb-4 z-10">
+              <div className="relative flex justify-center items-end w-full mt-auto mb-4 pt-20 sm:pt-28 lg:pt-32 pb-4 z-10">
                 <FolderFloat
                   items={vaultCourseItems}
                   label="300+ Digital Programs"
-                  sublabel="Projects Vault in Zero Gravity"
+                  sublabel=""
                   trigger="hover"
                   isOpen={isOpen}
                   closeOnLeave={false}
                   closeOnSelect={false}
-                  physics={true}
-                  drift={0.5}
-                  width={290}
-                  height={195}
-                  radius={18}
-                  spread={180}
-                  lift={24}
-                  tilt={4}
+                  physics={false}
+                  drift={0.4}
+                  width={isMobile ? 260 : 320}
+                  height={isMobile ? 205 : 255}
+                  radius={isMobile ? 16 : 20}
+                  spread={isMobile ? 140 : 190}
+                  lift={isMobile ? 20 : 26}
+                  tilt={isMobile ? 3 : 4}
                   flapAngle={34}
                   restAngle={14}
+                  isMobile={isMobile}
                   folderColor="#17120a"
                   frontColor="#251c12"
                   paperColor="#fcf8f0"
                   itemColor="#130e08"
                   itemTextColor="#ffffff"
                   labelColor="#ffffff"
+                  onSelect={(val, i, item) => {
+                    if (item?.link) navigate(item.link);
+                  }}
                   onOpenChange={(next) => setIsOpen(next)}
                 />
-              </div>
-
-              {/* Bottom Interactive Touch/Hover Hint */}
-              <div className="text-center w-full pb-1 pointer-events-none z-10">
-                <span className="text-[11px] font-mono text-zinc-400 group-hover:text-[#f6d96b] transition-colors flex items-center justify-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
-                  Zero-Gravity Production Vault • Drag or toss cards in mid-air
-                </span>
               </div>
             </div>
           </div>
@@ -362,25 +383,26 @@ export default function CoursesFolderVaultSection() {
           {/* ============================================================ */}
           {/* RIGHT COLUMN: RELEVANT HEADLINE & 4 INTERACTIVE 3D CARDS    */}
           {/* ============================================================ */}
-          <div className="lg:col-span-7 xl:col-span-7 flex flex-col justify-center space-y-7">
-            {/* Top Pill Badge */}
-            <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#f6d96b]/10 text-[#f6d96b] border border-[#f6d96b]/25 shadow-[0_0_20px_rgba(246,217,107,0.12)]">
-                <Layers className="w-3.5 h-3.5 text-[#f6d96b] animate-pulse" />
-                <span className="font-mono tracking-widest uppercase text-[11px]">
-                  Jaipur's Largest Creative & Tech Academy
-                </span>
+          <div className="lg:col-span-7 xl:col-span-7 flex flex-col justify-center space-y-6 sm:space-y-7">
+            {/* Desktop Headline & Badge (hidden on mobile since shown above) */}
+            <div className="hidden lg:block space-y-4">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#f6d96b]/10 text-[#f6d96b] border border-[#f6d96b]/25 shadow-[0_0_20px_rgba(246,217,107,0.12)]">
+                  <Layers className="w-3.5 h-3.5 text-[#f6d96b] animate-pulse" />
+                  <span className="font-mono tracking-widest uppercase text-[11px]">
+                    Jaipur&apos;s Largest Creative &amp; Tech Academy
+                  </span>
+                </div>
               </div>
-            </div>
 
-            {/* Main Headline */}
-            <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.12]">
-              300+ Digital Courses.
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-[#f6d96b]">
-                One Unstoppable Career.
-              </span>
-            </h2>
+              <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight leading-[1.12]">
+                300+ Digital Courses.
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-[#f6d96b]">
+                  One Unstoppable Career.
+                </span>
+              </h2>
+            </div>
 
             {/* 4 Interactive 3D Discipline Cards with Radiant Accent Colors */}
             <div className="relative">
