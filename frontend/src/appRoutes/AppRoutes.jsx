@@ -25,6 +25,7 @@ function PlaceholderPage({ title, subtitle }) {
 import HomePage from "../pages/HomePage";
 import Courses from "../pages/Courses";
 import TwoDThreeDAnimation from "../pages/TwoDThreeDAnimation";
+import ThreeDCADMatrix from "../pages/ThreeDCADMatrix";
 
 export default function AppRoutes() {
   return (
@@ -35,6 +36,10 @@ export default function AppRoutes() {
         <Route
           path="courses/2d-3d-animation"
           element={<TwoDThreeDAnimation />}
+        />
+        <Route
+          path="courses/3d-cad-matrix"
+          element={<ThreeDCADMatrix />}
         />
         {/* Company Dropdown Routes */}
         <Route

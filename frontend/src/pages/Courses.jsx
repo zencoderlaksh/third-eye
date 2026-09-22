@@ -14,7 +14,7 @@ const courses = [
     category: "CAD & 3D",
     description:
       "Learn professional 3D CAD concepts and create accurate digital models. Develop practical skills used across design and engineering industries.",
-    link: "https://thirdeyeclasses.com/3d-cad-matrix-course-in-jaipur/",
+    link: "/courses/3d-cad-matrix",
   },
   {
     title: "3D Animation Using Maya",
