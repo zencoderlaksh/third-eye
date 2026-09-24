@@ -188,26 +188,6 @@ export default function FAQSection() {
 
   return (
     <section className="relative w-full overflow-hidden bg-[#050505] pt-16 md:pt-24 pb-8 md:pb-12">
-      {/* Ambient glows */}
-      <div className="pointer-events-none absolute inset-0">
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2"
-          style={{
-            width: "70vw",
-            height: "35vw",
-            background: "radial-gradient(ellipse, rgba(160,120,0,0.08) 0%, transparent 65%)",
-          }}
-        />
-        <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2"
-          style={{
-            width: "60vw",
-            height: "30vw",
-            background: "radial-gradient(ellipse, rgba(180,83,9,0.08) 0%, transparent 65%)",
-          }}
-        />
-      </div>
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         {/* ── Header ── */}
         <motion.div

@@ -1,14 +1,13 @@
-@import url("https://api.fontshare.com/v2/css?f[]=clash-grotesk@200,300,400,500,600,700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Clash Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-clash: "Clash Grotesk", sans-serif;
   --font-mono: "Space Grotesk", monospace;
 }
 
 body, button, input, select, textarea {
-  font-family: "Clash Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;

@@ -24,10 +24,10 @@ const layout = (list, spread, lift, tilt, sizes, isMobile = false) => {
   if (list.length === 4) {
     if (isMobile) {
       return [
-        { x: -52, y: -lift - 6,   r: -2.0 }, // [0] Digital Marketing: Lower Left corner
-        { x:  52, y: -lift - 50,  r:  2.0 }, // [1] UI/UX Designing: Lower Right corner
-        { x: -52, y: -lift - 94,  r: -2.0 }, // [2] Software Development: Upper Left corner
-        { x:  52, y: -lift - 138, r:  2.0 }, // [3] Video Editing: Top Right corner
+        { x: -10, y: -lift - 16,  r: -1.2 }, // [0] Digital Marketing: Lowest card
+        { x:  12, y: -lift - 68,  r:  1.2 }, // [1] UI/UX Designing: Second card
+        { x:  -8, y: -lift - 120, r: -0.8 }, // [2] Software Development: Third card
+        { x:  10, y: -lift - 172, r:  0.8 }, // [3] Video Editing: Top card
       ];
     }
     // Laptop / Desktop: spacious alternating right/left corner cascade
@@ -117,7 +117,9 @@ export default function FolderFloat({
   const [popped, setPopped] = useState(-1);
   const [live, setLive] = useState(false);
   const [sizes, setSizes] = useState([]);
-  const [internalIsMobile, setInternalIsMobile] = useState(false);
+  const [internalIsMobile, setInternalIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 640 : false
+  );
 
   useEffect(() => {
     const check = () => setInternalIsMobile(window.innerWidth < 640);
@@ -653,36 +655,46 @@ export default function FolderFloat({
         }
 
         @media (max-width: 640px) {
+          .folder-float {
+            width: 240px;
+          }
+          .folder-float__folder {
+            width: 240px;
+          }
           .folder-float__front {
-            padding: 12px 16px;
-            height: 80%;
+            padding: 10px 14px;
+            height: 78%;
           }
           .folder-float__label {
-            font-size: 13px;
+            font-size: 12px;
             line-height: 1.2;
           }
           .folder-float__sub {
-            font-size: 9.5px;
+            font-size: 9px;
+          }
+          .folder-float__items::before {
+            display: none !important;
           }
           .folder-float__item {
-            padding: 7px 12px;
-            min-height: 44px;
-            border-radius: 14px;
+            padding: 6px 12px;
+            min-height: 42px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85);
           }
           .folder-float__thumb {
-            width: 36px !important;
-            height: 36px !important;
-            border-radius: 8px !important;
+            width: 32px !important;
+            height: 32px !important;
+            border-radius: 7px !important;
           }
           .folder-float__drift {
-            gap: 10px !important;
+            gap: 9px !important;
           }
           .folder-float__item-title {
-            font-size: 12px !important;
+            font-size: 11.5px !important;
             line-height: 1.2 !important;
           }
           .folder-float__item-subtitle {
-            font-size: 9.5px !important;
+            font-size: 9px !important;
             margin-top: 1px !important;
           }
         }
