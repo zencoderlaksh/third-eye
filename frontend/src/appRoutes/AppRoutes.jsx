@@ -51,12 +51,6 @@ export default function AppRoutes() {
           element={<PlaceholderPage title="Contact Us" subtitle="Get in touch with our admissions desk, counselors, and campus directors." />}
         />
 
-        {/* Courses Route */}
-        <Route
-          path="courses"
-          element={<PlaceholderPage title="Our Courses" subtitle="Comprehensive vocational, IT, software, and accounting computer programs." />}
-        />
-
         {/* Certification Dropdown Routes */}
         <Route
           path="our-certification"
