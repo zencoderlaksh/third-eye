@@ -4,7 +4,6 @@ import {
   ChevronDown,
   Menu,
   X,
-  CreditCard,
   Building2,
   PhoneCall,
   Award,
@@ -17,22 +16,23 @@ import {
   Sparkles,
   BookOpen,
   Building,
-  ArrowRight,
+  ArrowUpRight,
   Code2,
-  ShieldCheck,
-  GraduationCap,
 } from "lucide-react";
 import logo from "../assets/logo.webp";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [dropdownTimeout, setDropdownTimeout] = useState(null);
   const [mobileExpanded, setMobileExpanded] = useState({
-    company: false,
     certification: false,
     riseAndShine: false,
+    company: false,
   });
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
   const location = useLocation();
   const navRef = useRef(null);
@@ -49,12 +49,16 @@ export default function Navbar() {
   }, []);
 
   // Close mobile menu on route change
+  const prevPathRef = useRef(location.pathname);
   useEffect(() => {
-    setMobileMenuOpen(false);
-    setActiveDropdown(null);
+    if (prevPathRef.current !== location.pathname) {
+      prevPathRef.current = location.pathname;
+      setMobileMenuOpen(false);
+      setActiveDropdown(null);
+    }
   }, [location.pathname]);
 
-  // Lock body scroll when mobile drawer is open for app-like UX
+  // Lock body scroll when mobile drawer is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -66,14 +70,54 @@ export default function Navbar() {
     };
   }, [mobileMenuOpen]);
 
-  // Handle subtle border & background on scroll
+  // Smart scroll tracker: hide when scrolling down, reveal when scrolling up
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+
+      // Frosted glass background trigger
+      setIsScrolled(currentScrollY > 20);
+
+      // Always show navbar at or near the very top of the page
+      if (currentScrollY <= 50) {
+        setIsVisible(true);
+      } else {
+        const delta = currentScrollY - lastScrollY.current;
+        // Require at least a 6px movement threshold to prevent micro-jitter
+        if (delta > 6) {
+          // Scrolling DOWN -> Hide navbar (unless mobile menu is actively open)
+          if (!mobileMenuOpen) {
+            setIsVisible(false);
+            setActiveDropdown(null);
+          }
+        } else if (delta < -6) {
+          // Scrolling UP -> Reveal navbar immediately
+          setIsVisible(true);
+        }
+      }
+
+      lastScrollY.current = currentScrollY;
     };
-    window.addEventListener("scroll", handleScroll);
+
+    // Run on mount
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [mobileMenuOpen]);
+
+  // Smooth hover open/close for desktop dropdowns
+  const handleMouseEnter = (name) => {
+    if (dropdownTimeout) clearTimeout(dropdownTimeout);
+    setActiveDropdown(name);
+  };
+
+  const handleMouseLeave = () => {
+    const timeout = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 150);
+    setDropdownTimeout(timeout);
+  };
 
   // Toggle mobile accordion section
   const toggleMobileSection = (section) => {
@@ -86,699 +130,720 @@ export default function Navbar() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header
-      role="banner"
-      ref={navRef}
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled
-          ? "bg-[#090A0F]/95 backdrop-blur-md border-b border-[#272A38] shadow-2xl shadow-black/60"
-          : "bg-[#090A0F] border-b border-[#1E212D]"
-      }`}
-    >
-      {/* Main Navigation Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between min-h-[84px] lg:min-h-[96px] py-2">
-          
-          {/* ============================================================ */}
-          {/* LEFT: BRAND DISPLAY (Different for Desktop vs Mobile)        */}
-          {/* ============================================================ */}
-
-          {/* 1. DESKTOP / LAPTOP ONLY: Big prominent Logo image */}
-          <div className="hidden lg:flex flex-shrink-0 items-center">
-            <Link
-              to="/"
-              className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-xl p-1"
-              aria-label="Third Eye Computer Classes - Enlightening Success Home"
-            >
-              <img
-                src={logo}
-                alt="Third Eye Computer Classes - Enlightening Success"
-                className="h-16 sm:h-20 lg:h-22 xl:h-24 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                loading="eager"
-                fetchPriority="high"
-              />
-            </Link>
-          </div>
-
-          {/* 2. MOBILE ONLY: Modern Tech Brand Mark & Institute Wordmark */}
-          <div className="flex lg:hidden items-center">
-            <Link
-              to="/"
-              className="flex items-center gap-2.5 group focus-visible:outline-none"
-              aria-label="Third Eye Computer Classes Home"
-            >
-              {/* High-Tech Coding & Computing Emblem */}
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-yellow-400 via-amber-400 to-yellow-500 flex items-center justify-center text-black shadow-lg shadow-yellow-400/25 group-active:scale-95 transition-transform">
-                <Code2 className="w-5 h-5 text-black stroke-[2.5]" />
-              </div>
-
-              {/* Institute Name in crisp typography */}
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1">
-                  <span className="text-base font-black tracking-wide text-white leading-none font-sans">
-                    THIRD <span className="text-yellow-400">EYE</span>
-                  </span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
-                </div>
-                <span className="text-[9px] font-bold tracking-widest text-zinc-400 uppercase mt-0.5">
-                  Computer Classes
-                </span>
-              </div>
-            </Link>
-          </div>
-
-          {/* ============================================================ */}
-          {/* MIDDLE: 5 Navigation Items (Desktop / Laptop View)           */}
-          {/* ============================================================ */}
-          <nav
-            role="navigation"
-            aria-label="Main Navigation"
-            className="hidden lg:flex items-center space-x-1 xl:space-x-2"
-          >
-            <ul className="flex items-center space-x-1 xl:space-x-2 list-none m-0 p-0">
-              {/* 1. COMPANY (Dropdown) */}
-              <li
-                className="relative"
-                onMouseEnter={() => setActiveDropdown("company")}
-                onMouseLeave={() => setActiveDropdown(null)}
+    <>
+      {/* ============================================================ */}
+      {/* 1. TOP NAVBAR (Sheryians Floating Capsule - Stays Fixed)     */}
+      {/* ============================================================ */}
+      <header
+        role="banner"
+        ref={navRef}
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+          isVisible ? "translate-y-0" : "-translate-y-full pointer-events-none"
+        } ${
+          isScrolled
+            ? "py-3 md:py-3.5 bg-[#0a0805]/90 backdrop-blur-xl border-b border-[#261f15]/80 shadow-[0_10px_35px_rgba(0,0,0,0.75),0_1px_0_rgba(246,217,107,0.06)]"
+            : "py-5 md:py-6 bg-transparent border-b border-transparent shadow-none"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            {/* ============================================================ */}
+            {/* LEFT: Logo ONLY (Brand Badge Removed per User Request)       */}
+            {/* ============================================================ */}
+            <div className="flex items-center flex-shrink-0">
+              <Link
+                to="/"
+                className="flex items-center group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3cf65] rounded-xl p-1"
+                aria-label="Third Eye Home"
               >
-                <button
-                  type="button"
-                  aria-expanded={activeDropdown === "company"}
-                  aria-haspopup="true"
-                  aria-controls="company-menu"
-                  onClick={() =>
-                    setActiveDropdown(
-                      activeDropdown === "company" ? null : "company"
-                    )
-                  }
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
-                    activeDropdown === "company" ||
-                    isActive("/about-us") ||
-                    isActive("/contact-us")
-                      ? "text-yellow-400 bg-yellow-400/10"
-                      : "text-zinc-200 hover:text-yellow-400 hover:bg-[#141620]"
-                  }`}
-                >
-                  <span>Company</span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      activeDropdown === "company"
-                        ? "rotate-180 text-yellow-400"
-                        : "text-zinc-400"
+                <img
+                  src={logo}
+                  alt="Third Eye Logo"
+                  className="h-12 sm:h-14 md:h-16 lg:h-18 w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_2px_10px_rgba(243,207,101,0.2)]"
+                  loading="eager"
+                  fetchPriority="high"
+                />
+              </Link>
+            </div>
+
+            {/* ============================================================ */}
+            {/* CENTER: Floating Capsule Pill Nav (Sheryians Signature)       */}
+            {/* ============================================================ */}
+            <nav
+              role="navigation"
+              aria-label="Main Navigation"
+              className="hidden lg:flex items-center bg-[#130f0a]/80 border border-[#2b2216] px-6 py-2 rounded-full backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-[#f6d96b]/40 hover:bg-[#1a140e]/90"
+            >
+              <ul className="flex items-center gap-1 xl:gap-2 list-none m-0 p-0">
+                {/* 1. HOME */}
+                <li>
+                  <Link
+                    to="/"
+                    className={`px-3.5 py-1.5 rounded-full text-[13px] xl:text-[14px] font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3cf65] ${
+                      isActive("/")
+                        ? "text-[#f3cf65] bg-[#f3cf65]/15 font-semibold shadow-[0_0_12px_rgba(243,207,101,0.15)]"
+                        : "text-zinc-300 hover:text-white hover:bg-white/[0.05]"
                     }`}
-                  />
-                </button>
-
-                {/* Company Dropdown Menu */}
-                {activeDropdown === "company" && (
-                  <div
-                    id="company-menu"
-                    role="menu"
-                    className="absolute left-0 top-full pt-2 w-64 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
                   >
-                    <div className="bg-[#141620] border border-[#272A38] rounded-xl shadow-2xl shadow-black/80 p-2 backdrop-blur-xl">
-                      <Link
-                        to="/about-us"
-                        role="menuitem"
-                        className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-400/10 group transition-all"
-                      >
-                        <div className="p-2 rounded-lg bg-[#1C1F2D] text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black transition-colors mt-0.5">
-                          <Building2 className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-zinc-100 group-hover:text-yellow-400 transition-colors">
-                            About Us
-                          </div>
-                          <p className="text-xs text-zinc-400 group-hover:text-zinc-300 line-clamp-1">
-                            Our vision, heritage & pedagogy
-                          </p>
-                        </div>
-                      </Link>
+                    Home
+                  </Link>
+                </li>
 
-                      <Link
-                        to="/contact-us"
-                        role="menuitem"
-                        className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-400/10 group transition-all mt-1"
-                      >
-                        <div className="p-2 rounded-lg bg-[#1C1F2D] text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black transition-colors mt-0.5">
-                          <PhoneCall className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-zinc-100 group-hover:text-yellow-400 transition-colors">
-                            Contact Us
-                          </div>
-                          <p className="text-xs text-zinc-400 group-hover:text-zinc-300 line-clamp-1">
-                            Visit campus, reach out or inquire
-                          </p>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </li>
+                {/* 2. COURSES (Direct Link - NO Dropdown per User Request) */}
+                <li>
+                  <Link
+                    to="/courses"
+                    className={`px-3.5 py-1.5 rounded-full text-[13px] xl:text-[14px] font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3cf65] ${
+                      isActive("/courses") || isActive("/courses/2d-3d-animation")
+                        ? "text-[#f3cf65] bg-[#f3cf65]/15 font-semibold shadow-[0_0_12px_rgba(243,207,101,0.15)]"
+                        : "text-zinc-300 hover:text-white hover:bg-white/[0.05]"
+                    }`}
+                  >
+                    Courses
+                  </Link>
+                </li>
 
-              {/* 2. COURSES (Direct Link) */}
-              <li>
-                <Link
-                  to="/courses"
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
-                    isActive("/courses")
-                      ? "text-yellow-400 bg-yellow-400/10"
-                      : "text-zinc-200 hover:text-yellow-400 hover:bg-[#141620]"
-                  }`}
+                {/* 3. CERTIFICATION (Dropdown) */}
+                <li
+                  className="relative"
+                  onMouseEnter={() => handleMouseEnter("certification")}
+                  onMouseLeave={handleMouseLeave}
                 >
-                  <BookOpen className="w-4 h-4 text-yellow-400/80" />
-                  <span>Courses</span>
-                </Link>
-              </li>
-
-              {/* 3. CERTIFICATION (Dropdown) */}
-              <li
-                className="relative"
-                onMouseEnter={() => setActiveDropdown("certification")}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <button
-                  type="button"
-                  aria-expanded={activeDropdown === "certification"}
-                  aria-haspopup="true"
-                  aria-controls="certification-menu"
-                  onClick={() =>
-                    setActiveDropdown(
-                      activeDropdown === "certification" ? null : "certification"
-                    )
-                  }
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
-                    activeDropdown === "certification" ||
-                    isActive("/our-certification") ||
-                    isActive("/apply-certificate") ||
-                    isActive("/certificate-verification")
-                      ? "text-yellow-400 bg-yellow-400/10"
-                      : "text-zinc-200 hover:text-yellow-400 hover:bg-[#141620]"
-                  }`}
-                >
-                  <span>Certification</span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
+                  <button
+                    type="button"
+                    aria-expanded={activeDropdown === "certification"}
+                    aria-haspopup="true"
+                    onClick={() =>
+                      setActiveDropdown(
+                        activeDropdown === "certification" ? null : "certification"
+                      )
+                    }
+                    className={`flex items-center gap-1 px-3.5 py-1.5 rounded-full text-[13px] xl:text-[14px] font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3cf65] ${
+                      isActive("/our-certification") ||
+                      isActive("/apply-certificate") ||
+                      isActive("/certificate-verification") ||
                       activeDropdown === "certification"
-                        ? "rotate-180 text-yellow-400"
-                        : "text-zinc-400"
+                        ? "text-[#f3cf65] bg-[#f3cf65]/15 font-semibold"
+                        : "text-zinc-300 hover:text-white hover:bg-white/[0.05]"
                     }`}
-                  />
-                </button>
-
-                {/* Certification Dropdown Menu */}
-                {activeDropdown === "certification" && (
-                  <div
-                    id="certification-menu"
-                    role="menu"
-                    className="absolute left-0 top-full pt-2 w-72 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
                   >
-                    <div className="bg-[#141620] border border-[#272A38] rounded-xl shadow-2xl shadow-black/80 p-2 backdrop-blur-xl">
-                      <Link
-                        to="/our-certification"
-                        role="menuitem"
-                        className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-400/10 group transition-all"
-                      >
-                        <div className="p-2 rounded-lg bg-[#1C1F2D] text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black transition-colors mt-0.5">
-                          <Award className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-zinc-100 group-hover:text-yellow-400 transition-colors">
-                            Our Certification
-                          </div>
-                          <p className="text-xs text-zinc-400 group-hover:text-zinc-300 line-clamp-1">
-                            Govt. recognized & industry validated
-                          </p>
-                        </div>
-                      </Link>
+                    <span>Certification</span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                        activeDropdown === "certification"
+                          ? "rotate-180 text-[#f3cf65]"
+                          : "text-zinc-400"
+                      }`}
+                    />
+                  </button>
 
-                      <Link
-                        to="/apply-certificate"
-                        role="menuitem"
-                        className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-400/10 group transition-all mt-1"
-                      >
-                        <div className="p-2 rounded-lg bg-[#1C1F2D] text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black transition-colors mt-0.5">
-                          <FileCheck className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-zinc-100 group-hover:text-yellow-400 transition-colors">
-                            Apply for Certificate
+                  {/* Certification Dropdown Menu */}
+                  {activeDropdown === "certification" && (
+                    <div
+                      role="menu"
+                      className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-80 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                    >
+                      <div className="bg-[#0e0c08]/98 border border-[#2a2217] rounded-2xl p-3 shadow-[0_20px_50px_rgba(0,0,0,0.92),0_0_30px_rgba(246,217,107,0.08)] backdrop-blur-2xl">
+                        {/* 1. Our Certification */}
+                        <Link
+                          to="/our-certification"
+                          role="menuitem"
+                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f6d96b]/10 group transition-all"
+                        >
+                          <div className="p-2 rounded-xl bg-[#16120b] border border-[#2a2217] text-[#f6d96b] group-hover:bg-[#f6d96b] group-hover:text-black transition-colors mt-0.5">
+                            <Award className="w-4 h-4" />
                           </div>
-                          <p className="text-xs text-zinc-400 group-hover:text-zinc-300 line-clamp-1">
-                            Request your course completion credential
-                          </p>
-                        </div>
-                      </Link>
+                          <div>
+                            <div className="text-sm font-semibold text-zinc-100 group-hover:text-[#f6d96b] transition-colors">
+                              Our Certification
+                            </div>
+                            <p className="text-xs text-zinc-400 line-clamp-1">
+                              Govt. recognized & ISO 9001 certified credentials
+                            </p>
+                          </div>
+                        </Link>
 
-                      <Link
-                        to="/certificate-verification"
-                        role="menuitem"
-                        className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-400/10 group transition-all mt-1"
-                      >
-                        <div className="p-2 rounded-lg bg-[#1C1F2D] text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black transition-colors mt-0.5">
-                          <CheckCircle2 className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-zinc-100 group-hover:text-yellow-400 transition-colors flex items-center gap-1.5">
-                            <span>Certificate Verification</span>
-                            <span className="text-[10px] bg-yellow-400/20 text-yellow-400 px-1.5 py-0.5 rounded font-bold">
-                              Instant
-                            </span>
+                        {/* 2. Apply for Certificate */}
+                        <Link
+                          to="/apply-certificate"
+                          role="menuitem"
+                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f6d96b]/10 group transition-all mt-1"
+                        >
+                          <div className="p-2 rounded-xl bg-[#16120b] border border-[#2a2217] text-[#f6d96b] group-hover:bg-[#f6d96b] group-hover:text-black transition-colors mt-0.5">
+                            <FileCheck className="w-4 h-4" />
                           </div>
-                          <p className="text-xs text-zinc-400 group-hover:text-zinc-300 line-clamp-1">
-                            Verify authenticity via Roll Number
-                          </p>
-                        </div>
-                      </Link>
+                          <div>
+                            <div className="text-sm font-semibold text-zinc-100 group-hover:text-[#f6d96b] transition-colors">
+                              Apply for Certificate
+                            </div>
+                            <p className="text-xs text-zinc-400 line-clamp-1">
+                              Submit your final exam & roll details
+                            </p>
+                          </div>
+                        </Link>
+
+                        {/* 3. Certificate Verification */}
+                        <Link
+                          to="/certificate-verification"
+                          role="menuitem"
+                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f6d96b]/10 group transition-all mt-1"
+                        >
+                          <div className="p-2 rounded-xl bg-[#16120b] border border-[#2a2217] text-[#f6d96b] group-hover:bg-[#f6d96b] group-hover:text-black transition-colors mt-0.5">
+                            <CheckCircle2 className="w-4 h-4" />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-semibold text-zinc-100 group-hover:text-[#f3cf65] transition-colors">
+                                Certificate Verification
+                              </span>
+                              <span className="text-[9px] font-mono font-bold bg-[#f3cf65] text-black px-1.5 py-0.5 rounded">
+                                INSTANT
+                              </span>
+                            </div>
+                            <p className="text-xs text-zinc-400 line-clamp-1">
+                              Instant employer validation via Roll Number
+                            </p>
+                          </div>
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </li>
+                  )}
+                </li>
 
-              {/* 4. RISE AND SHINE (Dropdown with 4 options) */}
-              <li
-                className="relative"
-                onMouseEnter={() => setActiveDropdown("riseAndShine")}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <button
-                  type="button"
-                  aria-expanded={activeDropdown === "riseAndShine"}
-                  aria-haspopup="true"
-                  aria-controls="rise-shine-menu"
-                  onClick={() =>
-                    setActiveDropdown(
-                      activeDropdown === "riseAndShine" ? null : "riseAndShine"
-                    )
-                  }
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
-                    activeDropdown === "riseAndShine" ||
-                    isActive("/student-reviews") ||
-                    isActive("/jobs-and-placement") ||
-                    isActive("/our-team") ||
-                    isActive("/sweet-memories")
-                      ? "text-yellow-400 bg-yellow-400/10"
-                      : "text-zinc-200 hover:text-yellow-400 hover:bg-[#141620]"
-                  }`}
+                {/* 4. SUCCESS STORIES / RISE & SHINE (Dropdown) */}
+                <li
+                  className="relative"
+                  onMouseEnter={() => handleMouseEnter("riseAndShine")}
+                  onMouseLeave={handleMouseLeave}
                 >
-                  <Sparkles className="w-4 h-4 text-yellow-400 animate-pulse" />
-                  <span>Rise and Shine</span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
+                  <button
+                    type="button"
+                    aria-expanded={activeDropdown === "riseAndShine"}
+                    aria-haspopup="true"
+                    onClick={() =>
+                      setActiveDropdown(
+                        activeDropdown === "riseAndShine" ? null : "riseAndShine"
+                      )
+                    }
+                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[13px] xl:text-[14px] font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3cf65] ${
+                      isActive("/student-reviews") ||
+                      isActive("/jobs-and-placement") ||
+                      isActive("/our-team") ||
+                      isActive("/sweet-memories") ||
                       activeDropdown === "riseAndShine"
-                        ? "rotate-180 text-yellow-400"
-                        : "text-zinc-400"
+                        ? "text-[#f3cf65] bg-[#f3cf65]/15 font-semibold"
+                        : "text-zinc-300 hover:text-white hover:bg-white/[0.05]"
                     }`}
-                  />
-                </button>
-
-                {/* Rise and Shine Dropdown Menu */}
-                {activeDropdown === "riseAndShine" && (
-                  <div
-                    id="rise-shine-menu"
-                    role="menu"
-                    className="absolute left-0 top-full pt-2 w-80 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
                   >
-                    <div className="bg-[#141620] border border-[#272A38] rounded-xl shadow-2xl shadow-black/80 p-2 backdrop-blur-xl">
-                      {/* Option 1: Students Reviews */}
-                      <Link
-                        to="/student-reviews"
-                        role="menuitem"
-                        className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-400/10 group transition-all"
-                      >
-                        <div className="p-2 rounded-lg bg-[#1C1F2D] text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black transition-colors mt-0.5">
-                          <Star className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-zinc-100 group-hover:text-yellow-400 transition-colors">
-                            1. Students Reviews
-                          </div>
-                          <p className="text-xs text-zinc-400 group-hover:text-zinc-300 line-clamp-1">
-                            Alumni testimonials & success ratings
-                          </p>
-                        </div>
-                      </Link>
+                    <Sparkles className="w-3.5 h-3.5 text-[#f3cf65]" />
+                    <span>Rise & Shine</span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                        activeDropdown === "riseAndShine"
+                          ? "rotate-180 text-[#f3cf65]"
+                          : "text-zinc-400"
+                      }`}
+                    />
+                  </button>
 
-                      {/* Option 2: Jobs and Placement */}
-                      <Link
-                        to="/jobs-and-placement"
-                        role="menuitem"
-                        className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-400/10 group transition-all mt-1"
-                      >
-                        <div className="p-2 rounded-lg bg-[#1C1F2D] text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black transition-colors mt-0.5">
-                          <Briefcase className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-zinc-100 group-hover:text-yellow-400 transition-colors">
-                            2. Jobs and Placement
+                  {/* Rise and Shine Dropdown Menu */}
+                  {activeDropdown === "riseAndShine" && (
+                    <div
+                      role="menu"
+                      className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-84 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                    >
+                      <div className="bg-[#0e0c08]/98 border border-[#2a2217] rounded-2xl p-3 shadow-[0_20px_50px_rgba(0,0,0,0.92),0_0_30px_rgba(246,217,107,0.08)] backdrop-blur-2xl">
+                        {/* Student Reviews */}
+                        <Link
+                          to="/student-reviews"
+                          role="menuitem"
+                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f6d96b]/10 group transition-all"
+                        >
+                          <div className="p-2 rounded-xl bg-[#16120b] border border-[#2a2217] text-[#f6d96b] group-hover:bg-[#f6d96b] group-hover:text-black transition-colors mt-0.5">
+                            <Star className="w-4 h-4" />
                           </div>
-                          <p className="text-xs text-zinc-400 group-hover:text-zinc-300 line-clamp-1">
-                            Recruitment drives & partner companies
-                          </p>
-                        </div>
-                      </Link>
+                          <div>
+                            <div className="text-sm font-semibold text-zinc-100 group-hover:text-[#f6d96b] transition-colors flex items-center gap-1.5">
+                              <span>Student Reviews</span>
+                              <span className="text-[10px] text-amber-300 font-mono">
+                                ★ 4.9/5
+                              </span>
+                            </div>
+                            <p className="text-xs text-zinc-400 line-clamp-1">
+                              Alumni video reviews & transformation stories
+                            </p>
+                          </div>
+                        </Link>
 
-                      {/* Option 3: Our Team */}
-                      <Link
-                        to="/our-team"
-                        role="menuitem"
-                        className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-400/10 group transition-all mt-1"
-                      >
-                        <div className="p-2 rounded-lg bg-[#1C1F2D] text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black transition-colors mt-0.5">
-                          <Users className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-zinc-100 group-hover:text-yellow-400 transition-colors">
-                            3. Our Team
+                        {/* Jobs & Placement */}
+                        <Link
+                          to="/jobs-and-placement"
+                          role="menuitem"
+                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f6d96b]/10 group transition-all mt-1"
+                        >
+                          <div className="p-2 rounded-xl bg-[#16120b] border border-[#2a2217] text-[#f6d96b] group-hover:bg-[#f6d96b] group-hover:text-black transition-colors mt-0.5">
+                            <Briefcase className="w-4 h-4" />
                           </div>
-                          <p className="text-xs text-zinc-400 group-hover:text-zinc-300 line-clamp-1">
-                            Meet our certified mentors & faculty
-                          </p>
-                        </div>
-                      </Link>
+                          <div>
+                            <div className="text-sm font-semibold text-zinc-100 group-hover:text-[#f6d96b] transition-colors">
+                              Jobs & Placement Cell
+                            </div>
+                            <p className="text-xs text-zinc-400 line-clamp-1">
+                              Corporate hiring partners & recruitment drives
+                            </p>
+                          </div>
+                        </Link>
 
-                      {/* Option 4: Sweet Memories */}
-                      <Link
-                        to="/sweet-memories"
-                        role="menuitem"
-                        className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-yellow-400/10 group transition-all mt-1"
-                      >
-                        <div className="p-2 rounded-lg bg-[#1C1F2D] text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black transition-colors mt-0.5">
-                          <Camera className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-zinc-100 group-hover:text-yellow-400 transition-colors">
-                            4. Sweet Memories
+                        {/* Our Team */}
+                        <Link
+                          to="/our-team"
+                          role="menuitem"
+                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f6d96b]/10 group transition-all mt-1"
+                        >
+                          <div className="p-2 rounded-xl bg-[#16120b] border border-[#2a2217] text-[#f6d96b] group-hover:bg-[#f6d96b] group-hover:text-black transition-colors mt-0.5">
+                            <Users className="w-4 h-4" />
                           </div>
-                          <p className="text-xs text-zinc-400 group-hover:text-zinc-300 line-clamp-1">
-                            Moments, lab activities & celebrations
-                          </p>
-                        </div>
-                      </Link>
+                          <div>
+                            <div className="text-sm font-semibold text-zinc-100 group-hover:text-[#f6d96b] transition-colors">
+                              Mentors & Faculty
+                            </div>
+                            <p className="text-xs text-zinc-400 line-clamp-1">
+                              Learn directly from seasoned industry engineers
+                            </p>
+                          </div>
+                        </Link>
+
+                        {/* Sweet Memories */}
+                        <Link
+                          to="/sweet-memories"
+                          role="menuitem"
+                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f6d96b]/10 group transition-all mt-1"
+                        >
+                          <div className="p-2 rounded-xl bg-[#16120b] border border-[#2a2217] text-[#f6d96b] group-hover:bg-[#f6d96b] group-hover:text-black transition-colors mt-0.5">
+                            <Camera className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-sm font-semibold text-zinc-100 group-hover:text-[#f6d96b] transition-colors">
+                              Campus Memories
+                            </div>
+                            <p className="text-xs text-zinc-400 line-clamp-1">
+                              Hackathons, lab workshops & convocation days
+                            </p>
+                          </div>
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </li>
+                  )}
+                </li>
 
-              {/* 5. FRANCHISE (Direct Link) */}
-              <li>
-                <Link
-                  to="/franchise"
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
-                    isActive("/franchise")
-                      ? "text-yellow-400 bg-yellow-400/10"
-                      : "text-zinc-200 hover:text-yellow-400 hover:bg-[#141620]"
-                  }`}
+                {/* 5. COMPANY (Dropdown) */}
+                <li
+                  className="relative"
+                  onMouseEnter={() => handleMouseEnter("company")}
+                  onMouseLeave={handleMouseLeave}
                 >
-                  <Building className="w-4 h-4 text-yellow-400/80" />
-                  <span>Franchise</span>
-                </Link>
-              </li>
-            </ul>
-          </nav>
+                  <button
+                    type="button"
+                    aria-expanded={activeDropdown === "company"}
+                    aria-haspopup="true"
+                    onClick={() =>
+                      setActiveDropdown(
+                        activeDropdown === "company" ? null : "company"
+                      )
+                    }
+                    className={`flex items-center gap-1 px-3.5 py-1.5 rounded-full text-[13px] xl:text-[14px] font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3cf65] ${
+                      isActive("/about-us") ||
+                      isActive("/contact-us") ||
+                      activeDropdown === "company"
+                        ? "text-[#f3cf65] bg-[#f3cf65]/15 font-semibold"
+                        : "text-zinc-300 hover:text-white hover:bg-white/[0.05]"
+                    }`}
+                  >
+                    <span>Company</span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                        activeDropdown === "company"
+                          ? "rotate-180 text-[#f3cf65]"
+                          : "text-zinc-400"
+                      }`}
+                    />
+                  </button>
 
-          {/* ============================================================ */}
-          {/* RIGHT: Pay Now Button & Mobile Hamburger Menu Button         */}
-          {/* ============================================================ */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            {/* PAY NOW CTA BUTTON (Desktop / Laptop only - on mobile it is in the sidebar drawer) */}
-            <Link
-              to="/pay-now"
-              className="hidden lg:inline-flex relative items-center justify-center gap-2 px-5 py-2.5 text-sm font-extrabold text-black bg-yellow-400 rounded-full shadow-lg shadow-yellow-400/25 hover:bg-yellow-300 hover:shadow-yellow-400/40 active:scale-95 transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-black"
-              aria-label="Pay Course Fees or Registration Now"
-            >
-              <CreditCard className="w-4 h-4 transition-transform group-hover:scale-110" />
-              <span>Pay Now</span>
-              <ArrowRight className="w-3.5 h-3.5 -ml-0.5 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
-            </Link>
+                  {/* Company Dropdown Menu */}
+                  {activeDropdown === "company" && (
+                    <div
+                      role="menu"
+                      className="absolute left-1/2 -translate-x-1/2 top-full pt-3 w-72 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                    >
+                      <div className="bg-[#0e0c08]/98 border border-[#2a2217] rounded-2xl p-3 shadow-[0_20px_50px_rgba(0,0,0,0.92),0_0_30px_rgba(246,217,107,0.08)] backdrop-blur-2xl">
+                        <Link
+                          to="/about-us"
+                          role="menuitem"
+                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f6d96b]/10 group transition-all"
+                        >
+                          <div className="p-2 rounded-xl bg-[#16120b] border border-[#2a2217] text-[#f6d96b] group-hover:bg-[#f6d96b] group-hover:text-black transition-colors mt-0.5">
+                            <Building2 className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-sm font-semibold text-zinc-100 group-hover:text-[#f6d96b] transition-colors">
+                              About Us
+                            </div>
+                            <p className="text-xs text-zinc-400 line-clamp-1">
+                              Our history, pedagogy and 20+ year legacy
+                            </p>
+                          </div>
+                        </Link>
 
-            {/* Mobile Hamburger Toggle Button */}
-            <div className="flex lg:hidden">
+                        <Link
+                          to="/contact-us"
+                          role="menuitem"
+                          className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-[#f6d96b]/10 group transition-all mt-1"
+                        >
+                          <div className="p-2 rounded-xl bg-[#16120b] border border-[#2a2217] text-[#f6d96b] group-hover:bg-[#f6d96b] group-hover:text-black transition-colors mt-0.5">
+                            <PhoneCall className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <div className="text-sm font-semibold text-zinc-100 group-hover:text-[#f6d96b] transition-colors">
+                              Contact & Campuses
+                            </div>
+                            <p className="text-xs text-zinc-400 line-clamp-1">
+                              Speak with counselors or visit in-person
+                            </p>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </li>
+
+                {/* 6. FRANCHISE */}
+                <li>
+                  <Link
+                    to="/franchise"
+                    className={`px-3.5 py-1.5 rounded-full text-[13px] xl:text-[14px] font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3cf65] ${
+                      isActive("/franchise")
+                        ? "text-[#f3cf65] bg-[#f3cf65]/15 font-semibold"
+                        : "text-zinc-300 hover:text-white hover:bg-white/[0.05]"
+                    }`}
+                  >
+                    Franchise
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+
+            {/* ============================================================ */}
+            {/* RIGHT: Warm Golden CTA Button & Mobile Hamburger Toggle       */}
+            {/* ============================================================ */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              {/* Visible on both Mobile & Desktop Header */}
+              <Link
+                to="/pay-now"
+                className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm sm:text-base font-semibold tracking-normal text-zinc-950 bg-gradient-to-r from-[#ffd35a] via-[#f3cf65] to-[#fed156] shadow-[0_4px_20px_rgba(243,207,101,0.35)] hover:shadow-[0_6px_30px_rgba(243,207,101,0.55)] hover:brightness-105 active:scale-95 transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3cf65] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                aria-label="Apply or Pay Fees Now"
+              >
+                <span>Pay Now</span>
+                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 stroke-[2]" />
+              </Link>
+
+              {/* Mobile Hamburger Toggle Button */}
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-navigation"
                 aria-label="Toggle Navigation Menu"
-                className={`p-2 rounded-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 ${
+                className={`lg:hidden p-2.5 rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f3cf65] ${
                   mobileMenuOpen
-                    ? "bg-yellow-400 text-black shadow-md shadow-yellow-400/20"
-                    : "bg-[#141622] border border-[#272A38] text-zinc-300 hover:text-yellow-400 hover:border-yellow-400/40"
+                    ? "bg-[#f3cf65] text-black shadow-lg shadow-[#f3cf65]/30"
+                    : "bg-white/[0.06] border border-white/[0.1] text-zinc-200 hover:text-[#f3cf65] hover:border-[#f3cf65]/40"
                 }`}
               >
                 {mobileMenuOpen ? (
                   <X className="w-5 h-5 stroke-[2.5]" />
                 ) : (
-                  <Menu className="w-5 h-5" />
+                  <Menu className="w-5 h-5 stroke-[2]" />
                 )}
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* ============================================================ */}
-      {/* MOBILE NAVIGATION DRAWER (Full-screen app style sheet)       */}
+      {/* 2. SHERYIANS STYLE MOBILE SLIDE-OUT DRAWER                   */}
       {/* ============================================================ */}
-      {mobileMenuOpen && (
-        <div
-          id="mobile-navigation"
-          role="navigation"
-          aria-label="Mobile Navigation"
-          className="lg:hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-[#090A0F]/98 backdrop-blur-2xl border-t border-[#1F2230] p-4 flex flex-col justify-between overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-200"
-        >
-          <div className="space-y-4">
-            {/* Quick Action Pills: Fast access to Certificate & Helpline */}
-            <div className="grid grid-cols-2 gap-2.5">
-              <Link
-                to="/certificate-verification"
-                className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-[#141622] border border-[#272A38] text-xs font-semibold text-yellow-400 hover:border-yellow-400/40 active:scale-95 transition-all"
-              >
-                <CheckCircle2 className="w-4 h-4 text-yellow-400" />
-                <span>Verify Roll No</span>
-              </Link>
-              <a
-                href="tel:+919876543210"
-                className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-[#141622] border border-[#272A38] text-xs font-semibold text-zinc-300 hover:text-white active:scale-95 transition-all"
-              >
-                <PhoneCall className="w-4 h-4 text-yellow-400" />
-                <span>Call Helpline</span>
-              </a>
-            </div>
+      {/* Backdrop overlay */}
+      <div
+        className={`lg:hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 transition-opacity duration-300 ${
+          mobileMenuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+        aria-hidden="true"
+      />
 
-            {/* Menu Items Accordion / Cards List */}
-            <ul className="space-y-2 list-none p-0 m-0">
-              {/* 1. Mobile Company (Accordion Card) */}
-              <li className="bg-[#12141D] border border-[#222533] rounded-2xl overflow-hidden transition-all">
-                <button
-                  type="button"
-                  onClick={() => toggleMobileSection("company")}
-                  className="w-full flex items-center justify-between p-3.5 text-sm font-semibold text-zinc-100 hover:text-yellow-400"
-                >
-                  <span className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-yellow-400/10 text-yellow-400 flex items-center justify-center">
-                      <Building2 className="w-4 h-4" />
-                    </div>
-                    <span>Company</span>
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      mobileExpanded.company ? "rotate-180 text-yellow-400" : "text-zinc-500"
-                    }`}
-                  />
-                </button>
-                {mobileExpanded.company && (
-                  <div className="px-3.5 pb-3.5 pt-1 space-y-1.5 border-t border-[#1C1F2B]">
-                    <Link
-                      to="/about-us"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#171924] text-xs text-zinc-300 hover:text-yellow-400 active:bg-yellow-400/10 transition-colors"
-                    >
-                      <span>About Us</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                    </Link>
-                    <Link
-                      to="/contact-us"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#171924] text-xs text-zinc-300 hover:text-yellow-400 active:bg-yellow-400/10 transition-colors"
-                    >
-                      <span>Contact Us</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                    </Link>
-                  </div>
-                )}
-              </li>
+      {/* Drawer panel */}
+      <aside
+        id="mobile-navigation"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile Navigation Menu"
+        className={`lg:hidden fixed top-0 right-0 w-84 max-w-[88vw] h-full bg-[#0c0a07]/98 backdrop-blur-2xl border-l border-[#282116] z-50 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl transition-transform duration-300 ease-out ${
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div>
+          {/* Drawer Top Bar - Logo ONLY */}
+          <div className="flex items-center justify-between pb-5 border-b border-[#241d14]">
+            <img src={logo} alt="Third Eye Logo" className="h-11 sm:h-12 w-auto object-contain" />
 
-              {/* 2. Mobile Courses (Direct Card) */}
-              <li>
-                <Link
-                  to="/courses"
-                  className="flex items-center justify-between p-3.5 rounded-2xl bg-[#12141D] border border-[#222533] text-sm font-semibold text-zinc-100 hover:text-yellow-400 active:scale-98 transition-all"
-                >
-                  <span className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-yellow-400/10 text-yellow-400 flex items-center justify-center">
-                      <BookOpen className="w-4 h-4" />
-                    </div>
-                    <span>Courses</span>
-                  </span>
-                  <span className="text-[10px] font-bold bg-yellow-400/20 text-yellow-400 px-2 py-0.5 rounded-full">
-                    Explore
-                  </span>
-                </Link>
-              </li>
-
-              {/* 3. Mobile Certification (Accordion Card) */}
-              <li className="bg-[#12141D] border border-[#222533] rounded-2xl overflow-hidden transition-all">
-                <button
-                  type="button"
-                  onClick={() => toggleMobileSection("certification")}
-                  className="w-full flex items-center justify-between p-3.5 text-sm font-semibold text-zinc-100 hover:text-yellow-400"
-                >
-                  <span className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-yellow-400/10 text-yellow-400 flex items-center justify-center">
-                      <Award className="w-4 h-4" />
-                    </div>
-                    <span>Certification</span>
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      mobileExpanded.certification ? "rotate-180 text-yellow-400" : "text-zinc-500"
-                    }`}
-                  />
-                </button>
-                {mobileExpanded.certification && (
-                  <div className="px-3.5 pb-3.5 pt-1 space-y-1.5 border-t border-[#1C1F2B]">
-                    <Link
-                      to="/our-certification"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#171924] text-xs text-zinc-300 hover:text-yellow-400 active:bg-yellow-400/10 transition-colors"
-                    >
-                      <span>Our Certification</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                    </Link>
-                    <Link
-                      to="/apply-certificate"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#171924] text-xs text-zinc-300 hover:text-yellow-400 active:bg-yellow-400/10 transition-colors"
-                    >
-                      <span>Apply for Certificate</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                    </Link>
-                    <Link
-                      to="/certificate-verification"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#171924] text-xs text-yellow-400 font-semibold active:bg-yellow-400/10 transition-colors"
-                    >
-                      <span>Certificate Verification</span>
-                      <span className="text-[9px] bg-yellow-400 text-black px-1.5 py-0.5 rounded font-black">
-                        Instant
-                      </span>
-                    </Link>
-                  </div>
-                )}
-              </li>
-
-              {/* 4. Mobile Rise and Shine (Accordion Card) */}
-              <li className="bg-[#12141D] border border-[#222533] rounded-2xl overflow-hidden transition-all">
-                <button
-                  type="button"
-                  onClick={() => toggleMobileSection("riseAndShine")}
-                  className="w-full flex items-center justify-between p-3.5 text-sm font-semibold text-zinc-100 hover:text-yellow-400"
-                >
-                  <span className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-yellow-400/10 text-yellow-400 flex items-center justify-center">
-                      <Sparkles className="w-4 h-4" />
-                    </div>
-                    <span>Rise and Shine</span>
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      mobileExpanded.riseAndShine ? "rotate-180 text-yellow-400" : "text-zinc-500"
-                    }`}
-                  />
-                </button>
-                {mobileExpanded.riseAndShine && (
-                  <div className="px-3.5 pb-3.5 pt-1 space-y-1.5 border-t border-[#1C1F2B]">
-                    <Link
-                      to="/student-reviews"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#171924] text-xs text-zinc-300 hover:text-yellow-400 active:bg-yellow-400/10 transition-colors"
-                    >
-                      <span className="flex items-center gap-2">
-                        <Star className="w-3.5 h-3.5 text-yellow-400" />
-                        1. Students Reviews
-                      </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                    </Link>
-                    <Link
-                      to="/jobs-and-placement"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#171924] text-xs text-zinc-300 hover:text-yellow-400 active:bg-yellow-400/10 transition-colors"
-                    >
-                      <span className="flex items-center gap-2">
-                        <Briefcase className="w-3.5 h-3.5 text-yellow-400" />
-                        2. Jobs and Placement
-                      </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                    </Link>
-                    <Link
-                      to="/our-team"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#171924] text-xs text-zinc-300 hover:text-yellow-400 active:bg-yellow-400/10 transition-colors"
-                    >
-                      <span className="flex items-center gap-2">
-                        <Users className="w-3.5 h-3.5 text-yellow-400" />
-                        3. Our Team
-                      </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                    </Link>
-                    <Link
-                      to="/sweet-memories"
-                      className="flex items-center justify-between p-2.5 rounded-xl bg-[#171924] text-xs text-zinc-300 hover:text-yellow-400 active:bg-yellow-400/10 transition-colors"
-                    >
-                      <span className="flex items-center gap-2">
-                        <Camera className="w-3.5 h-3.5 text-yellow-400" />
-                        4. Sweet Memories
-                      </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-500" />
-                    </Link>
-                  </div>
-                )}
-              </li>
-
-              {/* 5. Mobile Franchise (Direct Card) */}
-              <li>
-                <Link
-                  to="/franchise"
-                  className="flex items-center justify-between p-3.5 rounded-2xl bg-[#12141D] border border-[#222533] text-sm font-semibold text-zinc-100 hover:text-yellow-400 active:scale-98 transition-all"
-                >
-                  <span className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-yellow-400/10 text-yellow-400 flex items-center justify-center">
-                      <Building className="w-4 h-4" />
-                    </div>
-                    <span>Franchise</span>
-                  </span>
-                  <span className="text-[10px] font-bold bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded-full">
-                    Partner
-                  </span>
-                </Link>
-              </li>
-            </ul>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 rounded-full bg-[#16120b] border border-[#2a2217] text-zinc-300 hover:text-white active:scale-95 transition-all"
+              aria-label="Close Navigation"
+            >
+              <X className="w-5 h-5 stroke-[2.5]" />
+            </button>
           </div>
 
-          {/* Drawer Bottom Action Section */}
-          <div className="pt-5 mt-4 border-t border-[#1C1F2B] space-y-3">
+          {/* Navigation Links */}
+          <nav className="mt-5 space-y-1.5">
+            {/* 1. Home */}
             <Link
-              to="/pay-now"
-              className="flex items-center justify-center gap-2 w-full py-3.5 text-sm font-black text-black bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-400 rounded-xl shadow-lg shadow-yellow-400/20 active:scale-98 transition-all"
+              to="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center justify-between p-3 rounded-xl text-sm font-medium transition-all ${
+                isActive("/")
+                  ? "bg-[#f6d96b]/15 text-[#f6d96b] font-semibold border border-[#f6d96b]/30"
+                  : "text-zinc-200 hover:bg-[#18130d]"
+              }`}
             >
-              <CreditCard className="w-4 h-4" />
-              <span>Pay Fees / Tuition Now</span>
-              <ArrowRight className="w-4 h-4" />
+              <span className="flex items-center gap-3">
+                <div className="w-7 h-7 rounded-lg bg-[#18130d] border border-[#2c2318] flex items-center justify-center text-[#f6d96b]">
+                  <Code2 className="w-4 h-4" />
+                </div>
+                <span>Home</span>
+              </span>
+              <ArrowUpRight className="w-4 h-4 text-zinc-500" />
             </Link>
 
-            <div className="text-center">
-              <span className="text-[11px] font-semibold tracking-wider text-zinc-400 uppercase">
-                Enlightening Success • ISO Certified Institute
+            {/* 2. Courses (Direct Link - NO Accordion/Dropdown) */}
+            <Link
+              to="/courses"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center justify-between p-3 rounded-xl text-sm font-medium transition-all ${
+                isActive("/courses") || isActive("/courses/2d-3d-animation")
+                  ? "bg-[#f6d96b]/15 text-[#f6d96b] font-semibold border border-[#f6d96b]/30"
+                  : "text-zinc-200 hover:bg-[#18130d]"
+              }`}
+            >
+              <span className="flex items-center gap-3">
+                <div className="w-7 h-7 rounded-lg bg-[#18130d] border border-[#2c2318] flex items-center justify-center text-[#f6d96b]">
+                  <BookOpen className="w-4 h-4" />
+                </div>
+                <span>Courses</span>
               </span>
+              <ArrowUpRight className="w-4 h-4 text-zinc-500" />
+            </Link>
+
+            {/* 3. Certification (Accordion) */}
+            <div className="rounded-xl overflow-hidden bg-[#110e0a] border border-[#241d14]">
+              <button
+                type="button"
+                onClick={() => toggleMobileSection("certification")}
+                className="w-full flex items-center justify-between p-3 text-sm font-medium text-zinc-200 hover:text-[#f6d96b]"
+              >
+                <span className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#18130d] border border-[#2c2318] flex items-center justify-center text-[#f6d96b]">
+                    <Award className="w-4 h-4" />
+                  </div>
+                  <span>Certification</span>
+                </span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    mobileExpanded.certification
+                      ? "rotate-180 text-[#f6d96b]"
+                      : "text-zinc-500"
+                  }`}
+                />
+              </button>
+              {mobileExpanded.certification && (
+                <div className="px-3 pb-3 pt-1 space-y-1 border-t border-[#241d14]">
+                  <Link
+                    to="/our-certification"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-2 rounded-lg text-xs text-zinc-300 hover:text-[#f6d96b] hover:bg-[#f6d96b]/10 transition-colors"
+                  >
+                    <span>Our Certification</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
+                  </Link>
+                  <Link
+                    to="/apply-certificate"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-2 rounded-lg text-xs text-zinc-300 hover:text-[#f6d96b] hover:bg-[#f6d96b]/10 transition-colors"
+                  >
+                    <span>Apply for Certificate</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
+                  </Link>
+                  <Link
+                    to="/certificate-verification"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-2 rounded-lg text-xs text-[#f6d96b] font-semibold hover:bg-[#f6d96b]/10 transition-colors"
+                  >
+                    <span>Instant Verification</span>
+                    <span className="text-[9px] font-mono bg-[#f6d96b] text-black px-1.5 py-0.2 rounded font-bold">
+                      FAST
+                    </span>
+                  </Link>
+                </div>
+              )}
             </div>
-          </div>
+
+            {/* 4. Rise and Shine (Accordion) */}
+            <div className="rounded-xl overflow-hidden bg-[#110e0a] border border-[#241d14]">
+              <button
+                type="button"
+                onClick={() => toggleMobileSection("riseAndShine")}
+                className="w-full flex items-center justify-between p-3 text-sm font-medium text-zinc-200 hover:text-[#f6d96b]"
+              >
+                <span className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#18130d] border border-[#2c2318] flex items-center justify-center text-[#f6d96b]">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <span>Rise & Shine</span>
+                </span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    mobileExpanded.riseAndShine
+                      ? "rotate-180 text-[#f6d96b]"
+                      : "text-zinc-500"
+                  }`}
+                />
+              </button>
+              {mobileExpanded.riseAndShine && (
+                <div className="px-3 pb-3 pt-1 space-y-1 border-t border-[#241d14]">
+                  <Link
+                    to="/student-reviews"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-2 rounded-lg text-xs text-zinc-300 hover:text-[#f6d96b] hover:bg-[#f6d96b]/10 transition-colors"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Star className="w-3.5 h-3.5 text-[#f6d96b]" />
+                      Student Reviews
+                    </span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
+                  </Link>
+                  <Link
+                    to="/jobs-and-placement"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-2 rounded-lg text-xs text-zinc-300 hover:text-[#f6d96b] hover:bg-[#f6d96b]/10 transition-colors"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Briefcase className="w-3.5 h-3.5 text-[#f6d96b]" />
+                      Jobs & Placements
+                    </span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
+                  </Link>
+                  <Link
+                    to="/our-team"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-2 rounded-lg text-xs text-zinc-300 hover:text-[#f6d96b] hover:bg-[#f6d96b]/10 transition-colors"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Users className="w-3.5 h-3.5 text-[#f6d96b]" />
+                      Our Mentors
+                    </span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
+                  </Link>
+                  <Link
+                    to="/sweet-memories"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-2 rounded-lg text-xs text-zinc-300 hover:text-[#f6d96b] hover:bg-[#f6d96b]/10 transition-colors"
+                  >
+                    <span className="flex items-center gap-2">
+                      <Camera className="w-3.5 h-3.5 text-[#f6d96b]" />
+                      Sweet Memories
+                    </span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 5. Company (Accordion) */}
+            <div className="rounded-xl overflow-hidden bg-[#110e0a] border border-[#241d14]">
+              <button
+                type="button"
+                onClick={() => toggleMobileSection("company")}
+                className="w-full flex items-center justify-between p-3 text-sm font-medium text-zinc-200 hover:text-[#f6d96b]"
+              >
+                <span className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-lg bg-[#18130d] border border-[#2c2318] flex items-center justify-center text-[#f6d96b]">
+                    <Building2 className="w-4 h-4" />
+                  </div>
+                  <span>Company</span>
+                </span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    mobileExpanded.company ? "rotate-180 text-[#f6d96b]" : "text-zinc-500"
+                  }`}
+                />
+              </button>
+              {mobileExpanded.company && (
+                <div className="px-3 pb-3 pt-1 space-y-1 border-t border-[#241d14]">
+                  <Link
+                    to="/about-us"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-2 rounded-lg text-xs text-zinc-300 hover:text-[#f6d96b] hover:bg-[#f6d96b]/10 transition-colors"
+                  >
+                    <span>About Us</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
+                  </Link>
+                  <Link
+                    to="/contact-us"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-2 rounded-lg text-xs text-zinc-300 hover:text-[#f6d96b] hover:bg-[#f6d96b]/10 transition-colors"
+                  >
+                    <span>Contact Us</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* 6. Franchise */}
+            <Link
+              to="/franchise"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`flex items-center justify-between p-3 rounded-xl text-sm font-medium transition-all ${
+                isActive("/franchise")
+                  ? "bg-[#f6d96b]/15 text-[#f6d96b] font-semibold border border-[#f6d96b]/30"
+                  : "text-zinc-200 hover:bg-[#18130d]"
+              }`}
+            >
+              <span className="flex items-center gap-3">
+                <div className="w-7 h-7 rounded-lg bg-[#18130d] border border-[#2c2318] flex items-center justify-center text-[#f6d96b]">
+                  <Building className="w-4 h-4" />
+                </div>
+                <span>Franchise</span>
+              </span>
+              <span className="text-[10px] font-mono font-bold bg-[#18130d] border border-[#2c2318] text-[#f6d96b] px-2 py-0.5 rounded-full">
+                PARTNER
+              </span>
+            </Link>
+          </nav>
         </div>
-      )}
+
+        {/* Drawer Footer Branding */}
+        <div className="pt-5 border-t border-[#241d14] text-center">
+          <span className="text-[10px] font-mono tracking-wider text-zinc-500 uppercase">
+            THIRD EYE • ENLIGHTENING SUCCESS • ISO 9001
+          </span>
+        </div>
+      </aside>
 
       {/* JSON-LD Schema for SEO SiteNavigationElement */}
       <script
@@ -788,24 +853,26 @@ export default function Navbar() {
             "@context": "https://schema.org",
             "@type": "SiteNavigationElement",
             "name": [
-              "Company",
+              "Home",
               "Courses",
               "Certification",
               "Rise and Shine",
+              "Company",
               "Franchise",
               "Pay Now"
             ],
             "url": [
-              "/about-us",
+              "/",
               "/courses",
               "/our-certification",
               "/student-reviews",
+              "/about-us",
               "/franchise",
               "/pay-now"
             ]
           }),
         }}
       />
-    </header>
+    </>
   );
 }

@@ -1,62 +1,77 @@
-import React, { useEffect, Suspense, lazy } from "react";
-import Hero3D from "../components/home/Hero3D";
-import InteractiveLearningMethodology from "../components/home/InteractiveLearningMethodology";
-import FaqAccordion from "../components/home/FaqAccordion";
-import FinalCta3D from "../components/home/FinalCta3D";
-
-// Lazy-loaded components for optimal 60 FPS performance and smooth scrolling
-const CyberBentoAdvantage = lazy(() => import("../components/home/CyberBentoAdvantage"));
-const PlacementSection = lazy(() => import("../components/home/PlacementSection"));
-const ScrollingStudentReviews = lazy(() => import("../components/home/ScrollingStudentReviews"));
-
-// Futuristic Cyber Skeleton Loader for Zero Cumulative Layout Shift (CLS = 0)
-function SectionLoadingSkeleton() {
-  return (
-    <div className="py-24 bg-[#090C16] flex items-center justify-center">
-      <div className="flex flex-col items-center gap-3">
-        <div className="w-10 h-10 rounded-full border-2 border-yellow-400/30 border-t-yellow-400 animate-spin" />
-        <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
-          Loading Content...
-        </span>
-      </div>
-    </div>
-  );
-}
+import React, { useEffect } from "react";
+import HeroSection from "../components/home/HeroSection";
+import PlacementStatsMarquee from "../components/home/PlacementStatsMarquee";
+import Immersive3DJourneySection from "../components/home/Immersive3DJourneySection";
+import CoursesFolderVaultSection from "../components/home/CoursesFolderVaultSection";
+import StudioCardsScrollSection from "../components/home/StudioCardsScrollSection";
+import MentorsCarouselSection from "../components/home/MentorsCarouselSection";
+import FAQSection from "../components/home/FAQSection";
+import ThirdEyeBrandTorchSection from "../components/home/ThirdEyeBrandTorchSection";
+import ScrollReveal from "../components/common/ScrollReveal";
 
 export default function HomePage() {
   useEffect(() => {
-    // Dynamic page title
-    document.title = "Third Eye Computer Classes | Next-Gen 3D Tech Labs & Job Placement";
+    document.title = "Third Eye Computer Classes | Premier 3D Animation, IT & Tech Labs Jaipur";
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#090C16] text-white selection:bg-yellow-400 selection:text-black scroll-smooth">
-      {/* 1. Landing Hero: Master In-Demand Tech Skills (KEPT) */}
-      <Hero3D />
+    <div className="home-page-container relative min-h-screen bg-[#050505] text-white selection:bg-[#f6d96b] selection:text-black overflow-x-clip">
+      {/* Background Ambience: Subtle Tech Grid & Warm Golden Ambient Glows */}
+      <style>{`
+        .home-page-container {
+          background:
+            radial-gradient(circle at 18% 12%, rgba(246, 217, 107, 0.08), transparent 30%),
+            radial-gradient(circle at 85% 25%, rgba(246, 217, 107, 0.07), transparent 35%),
+            radial-gradient(circle at 50% 65%, rgba(246, 217, 107, 0.06), transparent 40%),
+            radial-gradient(circle at 20% 90%, rgba(246, 217, 107, 0.05), transparent 40%),
+            #050505;
+          position: relative;
+        }
 
-      {/* 2. Interactive Practical Learning Methodology (Directly below Hero) */}
-      <InteractiveLearningMethodology />
+        .home-page-container::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+          background-size: 45px 45px;
+          pointer-events: none;
+          z-index: 1;
+        }
+      `}</style>
 
-      {/* 3. Mouse-Reactive Cyber Bento Grid: The Third Eye Advantage */}
-      <Suspense fallback={<SectionLoadingSkeleton />}>
-        <CyberBentoAdvantage />
-      </Suspense>
+      {/* 1. Hero Section (First Section User Sees) */}
+      <ScrollReveal direction="up" duration={800} delay={30}>
+        <HeroSection />
+      </ScrollReveal>
 
-      {/* 4. Dedicated Corporate Placement Cell (Just above Student Reviews) */}
-      <Suspense fallback={<SectionLoadingSkeleton />}>
-        <PlacementSection />
-      </Suspense>
+      {/* 2. Placement Stats & Top Hiring Partners Marquee */}
+      <ScrollReveal direction="up" duration={800} delay={50}>
+        <PlacementStatsMarquee />
+      </ScrollReveal>
 
-      {/* 5. Infinite Scrolling Student Reviews (Dual-Track with Photos & Feedback) */}
-      <Suspense fallback={<SectionLoadingSkeleton />}>
-        <ScrollingStudentReviews />
-      </Suspense>
+      {/* 3. The Converging Hands Journey & Connected Timeline */}
+      <Immersive3DJourneySection />
 
-      {/* 5. Frequently Asked Questions Accordion (KEPT) */}
-      <FaqAccordion />
+      {/* 4. The 300+ Digital Courses Vault (ReactBits FolderFloat) */}
+      <ScrollReveal direction="up" duration={800} delay={50}>
+        <CoursesFolderVaultSection />
+      </ScrollReveal>
 
-      {/* 6. High-Voltage Final CTA: Ready To Launch Your Career (KEPT) */}
-      <FinalCta3D />
+      {/* 5. Studio Immersion 3-Split Image & 3D Card Flip Scrub (Sheryians Kodr style) */}
+      <StudioCardsScrollSection />
+
+      {/* 6. Our Expert Faculty — 3D Coverflow Carousel */}
+      <MentorsCarouselSection />
+
+      {/* 7. Frequently Asked Questions */}
+      <FAQSection />
+
+      {/* 8. Giant Typographic Brand Torch Finale (Sheryians style) */}
+      <ScrollReveal direction="up" duration={700} delay={40}>
+        <ThirdEyeBrandTorchSection />
+      </ScrollReveal>
     </div>
   );
 }

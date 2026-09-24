@@ -5,7 +5,7 @@ import Layout from "../layout/Layout";
 // Placeholder Page Component with consistent dark & yellow branding
 function PlaceholderPage({ title, subtitle }) {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-20 text-center">
+    <div className="max-w-5xl mx-auto px-4 pt-32 pb-20 text-center">
       <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-yellow-400/10 text-yellow-400 border border-yellow-400/20 mb-4">
         Third Eye Computer Classes
       </div>

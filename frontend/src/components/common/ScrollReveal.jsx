@@ -13,30 +13,37 @@ export default function ScrollReveal({
   const domRef = useRef(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          if (once && domRef.current) {
-            observer.unobserve(domRef.current);
-          }
-        } else if (!once) {
-          setIsVisible(false);
-        }
-      },
-      {
-        threshold,
-        rootMargin: "0px 0px -50px 0px",
-      }
-    );
-
+    let observer;
     const currentRef = domRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
+
+    const timer = setTimeout(() => {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            if (once && currentRef) {
+              observer.unobserve(currentRef);
+            }
+          } else if (!once) {
+            setIsVisible(false);
+          }
+        },
+        {
+          threshold,
+          rootMargin: "0px 0px -40px 0px",
+        }
+      );
+
+      if (currentRef) {
+        observer.observe(currentRef);
+      }
+    }, 40);
 
     return () => {
-      if (currentRef) observer.unobserve(currentRef);
+      clearTimeout(timer);
+      if (observer && currentRef) {
+        observer.unobserve(currentRef);
+      }
     };
   }, [threshold, once]);
 
