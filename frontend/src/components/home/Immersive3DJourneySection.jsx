@@ -92,35 +92,28 @@ export default function Immersive3DJourneySection() {
       ref={containerRef}
       className="relative w-full md:min-h-[100vh] lg:min-h-[110vh] bg-[#050505] overflow-hidden flex flex-col items-center justify-start md:justify-between py-6 sm:py-10 md:py-16 z-10 select-none"
     >
-      {/* 1. Ambient Background Warm Golden Radial Glow */}
-      <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[70vw] max-w-[650px] max-h-[650px] rounded-full bg-[#f6d96b]/10 blur-[110px] pointer-events-none -z-10" />
-
-      {/* Subtle Background Tech Grid Lines */}
+      {/* Subtle Background Tech Grid Lines (Black Boxes) */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-30 -z-10"
+        className="absolute inset-0 pointer-events-none opacity-100 -z-10"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(246, 217, 107, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(246, 217, 107, 0.04) 1px, transparent 1px)",
-          backgroundSize: "44px 44px",
+            "linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px)",
+          backgroundSize: "45px 45px",
         }}
       />
 
       {/* 2. Heading Section */}
-      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 text-center z-20 mb-1 sm:mb-3 md:mb-0">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-[#f6d96b]/10 text-[#f6d96b] border border-[#f6d96b]/25 mb-2 sm:mb-3 shadow-[0_0_20px_rgba(246,217,107,0.1)]">
+      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 text-center z-20 mb-2 sm:mb-4 md:mb-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] sm:text-xs font-medium bg-white/[0.04] text-[#f6d96b] border border-white/[0.12] mb-3 sm:mb-4">
           <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#f6d96b] animate-pulse" />
           <span className="font-mono tracking-widest uppercase text-[10px] sm:text-[11px]">
             The Third Eye Roadmap
           </span>
         </div>
 
-        <h2 className="text-2xl sm:text-4xl md:text-6xl font-bold text-white tracking-tight leading-[1.15] mb-2 sm:mb-3">
-          One Journey. Every Skill That Matters.
+        <h2 className="text-2xl sm:text-4xl md:text-6xl font-semibold text-white tracking-tight leading-[1.15]">
+          <span className="text-[#f6d96b]">One Journey.</span> Every Skill That Matters.
         </h2>
-
-        <p className="text-xs sm:text-sm md:text-base text-zinc-300 max-w-xl mx-auto font-normal leading-relaxed">
-          Watch human creativity and machine intelligence converge as you scroll.
-        </p>
       </div>
 
       {/* 3. The Hands Arena: Both hands travel smoothly from outside the screen to the center */}

@@ -16,15 +16,10 @@ export default function HomePage() {
 
   return (
     <div className="home-page-container relative min-h-screen bg-[#050505] text-white selection:bg-[#f6d96b] selection:text-black overflow-x-clip">
-      {/* Background Ambience: Subtle Tech Grid & Warm Golden Ambient Glows */}
+      {/* Background Ambience: Clean Tech Grid (Black Boxes) without Yellow Gradients */}
       <style>{`
         .home-page-container {
-          background:
-            radial-gradient(circle at 18% 12%, rgba(246, 217, 107, 0.08), transparent 30%),
-            radial-gradient(circle at 85% 25%, rgba(246, 217, 107, 0.07), transparent 35%),
-            radial-gradient(circle at 50% 65%, rgba(246, 217, 107, 0.06), transparent 40%),
-            radial-gradient(circle at 20% 90%, rgba(246, 217, 107, 0.05), transparent 40%),
-            #050505;
+          background-color: #050505;
           position: relative;
         }
 
@@ -33,8 +28,8 @@ export default function HomePage() {
           position: absolute;
           inset: 0;
           background-image:
-            linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
           background-size: 45px 45px;
           pointer-events: none;
           z-index: 1;

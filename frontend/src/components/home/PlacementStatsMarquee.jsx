@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { TrendingUp, Handshake, Trophy, GraduationCap } from "lucide-react";
 
-// Interactive 3D tilt card component with mouse-tracking radial sheen
+// Interactive 3D tilt card component
 function TiltCard({ children, className = "" }) {
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
-  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
 
   const handleMouseMove = (e) => {
     const card = e.currentTarget;
@@ -17,16 +16,10 @@ function TiltCard({ children, className = "" }) {
     const rotateY = ((x - centerX) / centerX) * 6;
 
     setRotate({ x: rotateX, y: rotateY });
-    setGlare({
-      x: (x / rect.width) * 100,
-      y: (y / rect.height) * 100,
-      opacity: 0.18,
-    });
   };
 
   const handleMouseLeave = () => {
     setRotate({ x: 0, y: 0 });
-    setGlare({ x: 50, y: 50, opacity: 0 });
   };
 
   return (
@@ -42,52 +35,52 @@ function TiltCard({ children, className = "" }) {
       {/* Top Edge Golden Micro-Glow Accent */}
       <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#f6d96b]/35 to-transparent pointer-events-none" />
 
-      {/* Warm Ambient Internal Depth Glow */}
-      <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-40 h-20 bg-[#f6d96b]/[0.04] rounded-full blur-2xl pointer-events-none" />
-
-      {/* Glare Sheen following cursor */}
-      <div
-        className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(246, 217, 107, ${glare.opacity}), transparent 65%)`,
-        }}
-      />
       {children}
     </div>
   );
 }
 
-// Smooth count-up counter component triggered on viewport entry
-function AnimatedCounter({ end, decimals = 0, suffix = "", duration = 1800 }) {
+// Smooth count-up counter component triggered on viewport entry or trigger prop
+function AnimatedCounter({ end, decimals = 0, suffix = "", duration = 1800, trigger = false }) {
   const [count, setCount] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const hasAnimatedRef = useRef(false);
   const ref = useRef(null);
 
   useEffect(() => {
+    const startAnimation = () => {
+      if (hasAnimatedRef.current) return;
+      hasAnimatedRef.current = true;
+      let startTime = null;
+
+      const animate = (currentTime) => {
+        if (!startTime) startTime = currentTime;
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+        // Cubic ease out
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        setCount(easeOut * end);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          setCount(end);
+        }
+      };
+
+      requestAnimationFrame(animate);
+    };
+
+    if (trigger) {
+      startAnimation();
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          let startTime = null;
-
-          const animate = (currentTime) => {
-            if (!startTime) startTime = currentTime;
-            const progress = Math.min((currentTime - startTime) / duration, 1);
-            // Cubic ease out
-            const easeOut = 1 - Math.pow(1 - progress, 3);
-            setCount(easeOut * end);
-
-            if (progress < 1) {
-              requestAnimationFrame(animate);
-            } else {
-              setCount(end);
-            }
-          };
-
-          requestAnimationFrame(animate);
+        if (entry.isIntersecting) {
+          startAnimation();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.15 }
     );
 
     const el = ref.current;
@@ -96,7 +89,7 @@ function AnimatedCounter({ end, decimals = 0, suffix = "", duration = 1800 }) {
     return () => {
       if (el) observer.unobserve(el);
     };
-  }, [end, duration, hasAnimated]);
+  }, [trigger, end, duration]);
 
   return (
     <span ref={ref}>
@@ -266,96 +259,156 @@ const companyLogos = [
 ];
 
 export default function PlacementStatsMarquee() {
+  const [cardsInView, setCardsInView] = useState(false);
+  const cardsRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setCardsInView(true);
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    const el = cardsRef.current;
+    if (el) observer.observe(el);
+
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, []);
+
   return (
-    <section className="relative z-10 pt-0 sm:pt-2 pb-16 sm:pb-24 overflow-hidden w-full">
+    <section className="relative z-10 pt-8 sm:pt-14 pb-16 sm:pb-24 overflow-hidden w-full">
       {/* 1. Top Section: Centered 4 Animative 3D Metric Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mb-12 sm:mb-16">
+        <div
+          ref={cardsRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 mb-12 sm:mb-16"
+        >
           {/* Card 1: 7.5 Lakh Average Package */}
-          <TiltCard>
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <div className="flex items-baseline text-4xl sm:text-5xl font-bold text-white tracking-tight">
-                  <AnimatedCounter end={7.5} decimals={1} />
-                  <span className="text-2xl sm:text-3xl font-normal text-[#f6d96b] ml-2">
-                    Lakh
-                  </span>
+          <div
+            style={{ transitionDelay: cardsInView ? "100ms" : "0ms" }}
+            className={`transition-all duration-700 ease-out transform ${
+              cardsInView
+                ? "opacity-100 translate-y-0 scale-100"
+                : "opacity-0 translate-y-12 scale-[0.96]"
+            }`}
+          >
+            <TiltCard className="h-full">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <div className="flex items-baseline text-4xl sm:text-5xl font-bold text-white tracking-tight">
+                    <AnimatedCounter end={7.5} decimals={1} trigger={cardsInView} />
+                    <span className="text-2xl sm:text-3xl font-normal text-[#f6d96b] ml-2">
+                      Lakh
+                    </span>
+                  </div>
+                  <div className="text-sm sm:text-base font-medium text-zinc-300 mt-2">
+                    Average Package
+                  </div>
                 </div>
-                <div className="text-sm sm:text-base font-medium text-zinc-300 mt-2">
-                  Average Package
+                <div className="w-12 h-12 rounded-2xl bg-[#f6d96b]/10 border border-[#f6d96b]/25 flex items-center justify-center text-[#f6d96b] group-hover:scale-110 group-hover:bg-[#f6d96b] group-hover:text-black transition-all duration-300">
+                  <TrendingUp className="w-6 h-6" />
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-[#f6d96b]/10 border border-[#f6d96b]/25 flex items-center justify-center text-[#f6d96b] group-hover:scale-110 group-hover:bg-[#f6d96b] group-hover:text-black transition-all duration-300">
-                <TrendingUp className="w-6 h-6" />
+              <div className="text-xs text-zinc-400 font-normal">
+                Across tech & animation placements
               </div>
-            </div>
-            <div className="text-xs text-zinc-400 font-normal">
-              Across tech & animation placements
-            </div>
-          </TiltCard>
+            </TiltCard>
+          </div>
 
           {/* Card 2: 47 Lakh Highest Package */}
-          <TiltCard>
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <div className="flex items-baseline text-4xl sm:text-5xl font-bold text-white tracking-tight">
-                  <AnimatedCounter end={47} />
-                  <span className="text-2xl sm:text-3xl font-normal text-[#f6d96b] ml-2">
-                    Lakh
-                  </span>
+          <div
+            style={{ transitionDelay: cardsInView ? "220ms" : "0ms" }}
+            className={`transition-all duration-700 ease-out transform ${
+              cardsInView
+                ? "opacity-100 translate-y-0 scale-100"
+                : "opacity-0 translate-y-12 scale-[0.96]"
+            }`}
+          >
+            <TiltCard className="h-full">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <div className="flex items-baseline text-4xl sm:text-5xl font-bold text-white tracking-tight">
+                    <AnimatedCounter end={47} trigger={cardsInView} />
+                    <span className="text-2xl sm:text-3xl font-normal text-[#f6d96b] ml-2">
+                      Lakh
+                    </span>
+                  </div>
+                  <div className="text-sm sm:text-base font-medium text-zinc-300 mt-2">
+                    Highest Package
+                  </div>
                 </div>
-                <div className="text-sm sm:text-base font-medium text-zinc-300 mt-2">
-                  Highest Package
+                <div className="w-12 h-12 rounded-2xl bg-[#f6d96b]/10 border border-[#f6d96b]/25 flex items-center justify-center text-[#f6d96b] group-hover:scale-110 group-hover:bg-[#f6d96b] group-hover:text-black transition-all duration-300">
+                  <Handshake className="w-6 h-6" />
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-[#f6d96b]/10 border border-[#f6d96b]/25 flex items-center justify-center text-[#f6d96b] group-hover:scale-110 group-hover:bg-[#f6d96b] group-hover:text-black transition-all duration-300">
-                <Handshake className="w-6 h-6" />
+              <div className="text-xs text-zinc-400 font-normal">
+                Top global studio offer record
               </div>
-            </div>
-            <div className="text-xs text-zinc-400 font-normal">
-              Top global studio offer record
-            </div>
-          </TiltCard>
+            </TiltCard>
+          </div>
 
           {/* Card 3: 300+ Hiring Partners */}
-          <TiltCard>
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <div className="flex items-baseline text-4xl sm:text-5xl font-bold text-white tracking-tight">
-                  <AnimatedCounter end={300} suffix="+" />
+          <div
+            style={{ transitionDelay: cardsInView ? "340ms" : "0ms" }}
+            className={`transition-all duration-700 ease-out transform ${
+              cardsInView
+                ? "opacity-100 translate-y-0 scale-100"
+                : "opacity-0 translate-y-12 scale-[0.96]"
+            }`}
+          >
+            <TiltCard className="h-full">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <div className="flex items-baseline text-4xl sm:text-5xl font-bold text-white tracking-tight">
+                    <AnimatedCounter end={300} suffix="+" trigger={cardsInView} />
+                  </div>
+                  <div className="text-sm sm:text-base font-medium text-zinc-300 mt-2">
+                    Hiring Partners
+                  </div>
                 </div>
-                <div className="text-sm sm:text-base font-medium text-zinc-300 mt-2">
-                  Hiring Partners
+                <div className="w-12 h-12 rounded-2xl bg-[#f6d96b]/10 border border-[#f6d96b]/25 flex items-center justify-center text-[#f6d96b] group-hover:scale-110 group-hover:bg-[#f6d96b] group-hover:text-black transition-all duration-300">
+                  <Trophy className="w-6 h-6" />
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-[#f6d96b]/10 border border-[#f6d96b]/25 flex items-center justify-center text-[#f6d96b] group-hover:scale-110 group-hover:bg-[#f6d96b] group-hover:text-black transition-all duration-300">
-                <Trophy className="w-6 h-6" />
+              <div className="text-xs text-zinc-400 font-normal">
+                Active campus placement network
               </div>
-            </div>
-            <div className="text-xs text-zinc-400 font-normal">
-              Active campus placement network
-            </div>
-          </TiltCard>
+            </TiltCard>
+          </div>
 
           {/* Card 4: 10M+ Monthly Tech Reach */}
-          <TiltCard>
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <div className="flex items-baseline text-4xl sm:text-5xl font-bold text-white tracking-tight">
-                  <AnimatedCounter end={10} suffix=" M+" />
+          <div
+            style={{ transitionDelay: cardsInView ? "460ms" : "0ms" }}
+            className={`transition-all duration-700 ease-out transform ${
+              cardsInView
+                ? "opacity-100 translate-y-0 scale-100"
+                : "opacity-0 translate-y-12 scale-[0.96]"
+            }`}
+          >
+            <TiltCard className="h-full">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <div className="flex items-baseline text-4xl sm:text-5xl font-bold text-white tracking-tight">
+                    <AnimatedCounter end={10} suffix=" M+" trigger={cardsInView} />
+                  </div>
+                  <div className="text-sm sm:text-base font-medium text-zinc-300 mt-2">
+                    Monthly Tech Reach
+                  </div>
                 </div>
-                <div className="text-sm sm:text-base font-medium text-zinc-300 mt-2">
-                  Monthly Tech Reach
+                <div className="w-12 h-12 rounded-2xl bg-[#f6d96b]/10 border border-[#f6d96b]/25 flex items-center justify-center text-[#f6d96b] group-hover:scale-110 group-hover:bg-[#f6d96b] group-hover:text-black transition-all duration-300">
+                  <GraduationCap className="w-6 h-6" />
                 </div>
               </div>
-              <div className="w-12 h-12 rounded-2xl bg-[#f6d96b]/10 border border-[#f6d96b]/25 flex items-center justify-center text-[#f6d96b] group-hover:scale-110 group-hover:bg-[#f6d96b] group-hover:text-black transition-all duration-300">
-                <GraduationCap className="w-6 h-6" />
+              <div className="text-xs text-zinc-400 font-normal">
+                10,000+ certified alumni community
               </div>
-            </div>
-            <div className="text-xs text-zinc-400 font-normal">
-              10,000+ certified alumni community
-            </div>
-          </TiltCard>
+            </TiltCard>
+          </div>
         </div>
 
         {/* Recruiter Marquee Header */}
