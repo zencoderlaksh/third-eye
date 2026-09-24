@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowUp,
@@ -11,6 +11,29 @@ import logo from "../assets/logo.webp";
 export default function Footer() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // State for interactive watermark spotlight glow on hover (Sheryians style)
+  const [watermarkPos, setWatermarkPos] = useState({ x: -999, y: -999 });
+  const [isWatermarkHovered, setIsWatermarkHovered] = useState(false);
+
+  const handleWatermarkMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setWatermarkPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const handleWatermarkTouchMove = (e) => {
+    if (e.touches && e.touches[0]) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      setWatermarkPos({
+        x: e.touches[0].clientX - rect.left,
+        y: e.touches[0].clientY - rect.top,
+      });
+      setIsWatermarkHovered(true);
+    }
   };
 
   const usefulLinks = [
@@ -268,17 +291,43 @@ export default function Footer() {
         </div>
 
         {/* ============================================================ */}
-        {/* ── GIANT TYPOGRAPHIC WATERMARK: "THIRD EYE" (Restored to original start styling) ── */}
+        {/* ── GIANT TYPOGRAPHIC WATERMARK: "THIRD EYE" (Glow Strictly Inside Text Only) ── */}
         {/* ============================================================ */}
-        <div className="relative w-full overflow-hidden select-none pointer-events-none pt-4 pb-2 sm:pb-4 flex items-center justify-center">
+        <div
+          onMouseMove={handleWatermarkMouseMove}
+          onMouseEnter={() => setIsWatermarkHovered(true)}
+          onMouseLeave={() => setIsWatermarkHovered(false)}
+          onTouchMove={handleWatermarkTouchMove}
+          onTouchEnd={() => setIsWatermarkHovered(false)}
+          className="relative w-full overflow-hidden select-none pt-4 pb-2 sm:pb-4 flex items-center justify-center cursor-default"
+        >
+          {/* Layer 1: Base Wireframe Outline (Default State) */}
           <span
-            className="w-full text-center font-black tracking-tight uppercase whitespace-nowrap leading-none block font-sans -translate-x-[2vw] sm:-translate-x-[3vw]"
+            className="w-full text-center font-black tracking-tight uppercase whitespace-nowrap leading-none block font-sans -translate-x-[2vw] sm:-translate-x-[3vw] select-none"
             style={{
               fontSize: "clamp(44px, 13.2vw, 190px)",
               letterSpacing: "clamp(0.01em, 0.3vw, 0.025em)",
               color: "rgba(255, 255, 255, 0.045)",
-              WebkitTextStroke: "1px rgba(255, 255, 255, 0.06)",
+              WebkitTextStroke: "1px rgba(255, 255, 255, 0.08)",
               lineHeight: 0.85,
+            }}
+          >
+            THIRD EYE
+          </span>
+
+          {/* Layer 2: Interactive Lit Fill (Strictly Inside Letters - Zero Outside Bleed) */}
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 w-full text-center font-black tracking-tight uppercase whitespace-nowrap leading-none block font-sans -translate-x-[2vw] sm:-translate-x-[3vw] select-none pointer-events-none pt-4 pb-2 sm:pb-4 transition-opacity duration-150"
+            style={{
+              fontSize: "clamp(44px, 13.2vw, 190px)",
+              letterSpacing: "clamp(0.01em, 0.3vw, 0.025em)",
+              color: "#f6d96b",
+              WebkitTextStroke: "1px rgba(255, 245, 180, 0.95)",
+              lineHeight: 0.85,
+              maskImage: `radial-gradient(circle 240px at ${watermarkPos.x}px ${watermarkPos.y}px, black 35%, transparent 100%)`,
+              WebkitMaskImage: `radial-gradient(circle 240px at ${watermarkPos.x}px ${watermarkPos.y}px, black 35%, transparent 100%)`,
+              opacity: isWatermarkHovered ? 1 : 0,
             }}
           >
             THIRD EYE
