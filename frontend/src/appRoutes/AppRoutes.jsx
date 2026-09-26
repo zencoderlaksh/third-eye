@@ -22,10 +22,10 @@ function PlaceholderPage({ title, subtitle }) {
   );
 }
 
-import HomePage from "../pages/HomePage";
+import HomePage from "../pages/home/HomePage";
 import Courses from "../pages/Courses";
-import TwoDThreeDAnimation from "../pages/TwoDThreeDAnimation";
-import ThreeDCADMatrix from "../pages/ThreeDCADMatrix";
+import TwoDThreeDAnimation from "../pages/course/TwoDThreeDAnimation";
+import ThreeDCADMatrix from "../pages/course/ThreeDCADMatrix";
 
 export default function AppRoutes() {
   return (
