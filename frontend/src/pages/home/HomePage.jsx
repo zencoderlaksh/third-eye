@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-import HeroSection from "../components/home/HeroSection";
-import PlacementStatsMarquee from "../components/home/PlacementStatsMarquee";
-import Immersive3DJourneySection from "../components/home/Immersive3DJourneySection";
-import CoursesFolderVaultSection from "../components/home/CoursesFolderVaultSection";
-import StudioCardsScrollSection from "../components/home/StudioCardsScrollSection";
-import MentorsCarouselSection from "../components/home/MentorsCarouselSection";
-import FAQSection from "../components/home/FAQSection";
-import ThirdEyeBrandTorchSection from "../components/home/ThirdEyeBrandTorchSection";
-import ScrollReveal from "../components/common/ScrollReveal";
+import HeroSection from "../../components/home/HeroSection";
+import PlacementStatsMarquee from "../../components/home/PlacementStatsMarquee";
+import Immersive3DJourneySection from "../../components/home/Immersive3DJourneySection";
+import CoursesFolderVaultSection from "../../components/home/CoursesFolderVaultSection";
+import StudioCardsScrollSection from "../../components/home/StudioCardsScrollSection";
+import MentorsCarouselSection from "../../components/home/MentorsCarouselSection";
+import FAQSection from "../../components/home/FAQSection";
+import ThirdEyeBrandTorchSection from "../../components/home/ThirdEyeBrandTorchSection";
+import ScrollReveal from "../../components/common/ScrollReveal";
+import "./HomePage.css";
 
 export default function HomePage() {
   useEffect(() => {
@@ -16,25 +17,6 @@ export default function HomePage() {
 
   return (
     <div className="home-page-container relative min-h-screen bg-[#050505] text-white selection:bg-[#f6d96b] selection:text-black overflow-x-clip">
-      {/* Background Ambience: Clean Tech Grid (Black Boxes) without Yellow Gradients */}
-      <style>{`
-        .home-page-container {
-          background-color: #050505;
-          position: relative;
-        }
-
-        .home-page-container::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background-image:
-            linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-          background-size: 45px 45px;
-          pointer-events: none;
-          z-index: 1;
-        }
-      `}</style>
 
       {/* 1. Hero Section (First Section User Sees) */}
       <ScrollReveal direction="up" duration={800} delay={30}>
