@@ -25,12 +25,14 @@ function PlaceholderPage({ title, subtitle }) {
 import HomePage from "../pages/home/HomePage";
 import Courses from "../pages/course/Courses";
 import CourseDetails from "../pages/courseDetails/CourseDetails";
+import AdminPage from "../pages/admin/AdminPage";
 
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
+        <Route path="admin" element={<AdminPage />} />
         <Route path="courses" element={<Courses />} />
         <Route
           path="courses/2d-3d-animation"

@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { getCourseBySlug } from "../../services/courseApi";
 import CourseHeroSection from "./components/CourseHeroSection";
 import RealProductsSection from "./components/RealProductsSection";
 import IndustryToolsSection from "./components/IndustryToolsSection";
@@ -45,27 +46,13 @@ const formatSlugTitle = (slug) => {
     .join(" ");
 };
 
-// 4 Tools per Course Category (passed dynamically via props)
-const COURSE_TOOLS_MAP = {
-  "2d-3d-animation": [
-    { id: "blender", name: "Blender 3D", iconType: "blender", glowColor: "rgba(234, 118, 0, 0.3)" },
-    { id: "maya", name: "Autodesk Maya", iconType: "maya", glowColor: "rgba(6, 150, 215, 0.3)" },
-    { id: "aftereffects", name: "After Effects", iconType: "aftereffects", glowColor: "rgba(153, 153, 255, 0.3)" },
-    { id: "photoshop", name: "Photoshop", iconType: "photoshop", glowColor: "rgba(49, 168, 255, 0.3)" },
-  ],
-  "3d-cad-matrix": [
-    { id: "rhino", name: "Rhino 3D", iconType: "blender", glowColor: "rgba(234, 118, 0, 0.3)" },
-    { id: "matrix", name: "Matrix 3D", iconType: "maya", glowColor: "rgba(6, 150, 215, 0.3)" },
-    { id: "keyshot", name: "KeyShot", iconType: "aftereffects", glowColor: "rgba(153, 153, 255, 0.3)" },
-    { id: "photoshop", name: "Photoshop", iconType: "photoshop", glowColor: "rgba(49, 168, 255, 0.3)" },
-  ],
-  default: [
-    { id: "react", name: "React", iconType: "react", glowColor: "rgba(97, 218, 251, 0.3)" },
-    { id: "nextjs", name: "Next.Js", iconType: "nextjs", glowColor: "rgba(255, 255, 255, 0.25)" },
-    { id: "typescript", name: "TypeScript", iconType: "typescript", glowColor: "rgba(49, 120, 198, 0.3)" },
-    { id: "tailwind", name: "Tailwind CSS", iconType: "tailwind", glowColor: "rgba(56, 189, 248, 0.3)" },
-  ],
-};
+// 4 Universal Standards / Normal Signs (Same for every course so they go with every course)
+const UNIVERSAL_COURSE_TOOLS = [
+  { id: "workstation", name: "Industry Workstations", iconType: "workstation", glowColor: "rgba(246, 217, 107, 0.28)" },
+  { id: "software", name: "Licensed Pro Suites", iconType: "software", glowColor: "rgba(246, 217, 107, 0.28)" },
+  { id: "projects", name: "Live Project Labs", iconType: "projects", glowColor: "rgba(246, 217, 107, 0.28)" },
+  { id: "certification", name: "ISO Certified Standards", iconType: "certification", glowColor: "rgba(246, 217, 107, 0.28)" },
+];
 
 // Exactly 5 Modules per Course Category (passed dynamically via props, no dropdowns)
 const COURSE_MODULES_MAP = {
@@ -137,20 +124,37 @@ const COURSE_MODULES_MAP = {
 
 export default function CourseDetails() {
   const { courseSlug } = useParams();
+  const [dynamicCourse, setDynamicCourse] = useState(null);
 
   useEffect(() => {
     document.title = "Course Details | Third Eye Computer Classes Jaipur";
     window.scrollTo(0, 0);
-  }, []);
 
-  const courseName = formatSlugTitle(courseSlug);
-  const currentTools = (courseSlug && COURSE_TOOLS_MAP[courseSlug]) || COURSE_TOOLS_MAP.default;
-  const currentModules = (courseSlug && COURSE_MODULES_MAP[courseSlug]) || COURSE_MODULES_MAP.default;
+    if (courseSlug) {
+      getCourseBySlug(courseSlug).then((c) => {
+        if (c) setDynamicCourse(c);
+      });
+    }
+  }, [courseSlug]);
+
+  const courseName = dynamicCourse?.title || formatSlugTitle(courseSlug);
+  const currentTools =
+    dynamicCourse?.tools && dynamicCourse.tools.length >= 4
+      ? dynamicCourse.tools.slice(0, 4)
+      : UNIVERSAL_COURSE_TOOLS;
+
+  const currentModules =
+    dynamicCourse?.modules && dynamicCourse.modules.length >= 5
+      ? dynamicCourse.modules.slice(0, 5)
+      : (courseSlug && COURSE_MODULES_MAP[courseSlug]) || COURSE_MODULES_MAP.default;
 
   return (
     <div className="course-details-page">
       {/* 1. Hero Showcase Section (Dynamic Course Image + Quick Facts Card with URL-driven title) */}
-      <CourseHeroSection />
+      <CourseHeroSection
+        customTitle={courseName}
+        customImage={dynamicCourse?.image}
+      />
 
       {/* 2. Build Real Products Section (Interactive 3D Stage & Animated Counters) */}
       <RealProductsSection />
@@ -158,7 +162,7 @@ export default function CourseDetails() {
       {/* 3. Industry Tools You'll Master (4 Cards via Props, Filter Tabs Removed) */}
       <IndustryToolsSection tools={currentTools} />
 
-      {/* 4. Structured Curriculum Section (5-8 Modules from Props, No Dropdowns) */}
+      {/* 4. Structured Curriculum Section (5 Modules from Props, No Dropdowns) */}
       <CurriculumSection modules={currentModules} />
 
       {/* 5. Recognized Certification (Course Name passed via props!) */}
