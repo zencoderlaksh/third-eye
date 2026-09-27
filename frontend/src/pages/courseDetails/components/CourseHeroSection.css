@@ -5,7 +5,7 @@
 .course-hero-section {
   position: relative;
   z-index: 2;
-  padding: 10px 5% 50px;
+  padding: 0 5% 50px;
 }
 
 /* Subtle Golden Ambient Spotlight */
@@ -375,7 +375,7 @@
 
 @media (max-width: 650px) {
   .course-hero-section {
-    padding: 10px 4% 35px;
+    padding: 0 4% 35px;
     width: 100%;
     box-sizing: border-box;
   }
