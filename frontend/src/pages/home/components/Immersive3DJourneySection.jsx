@@ -8,8 +8,8 @@ import {
   Compass,
 } from "lucide-react";
 
-import humanHandImg from "../../assets/human_hand.png";
-import robotHandImg from "../../assets/robot_hand.png";
+import humanHandImg from "../../../assets/human_hand.png";
+import robotHandImg from "../../../assets/robot_hand.png";
 
 // 4 Sections matching Sheryians pattern: Come -> Connect -> Grow -> Succeed
 const timelineSections = [

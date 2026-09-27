@@ -1,0 +1,411 @@
+/* ==========================================================================
+   Course Hero Section (Left Image + Right Quick Facts Card)
+   ========================================================================== */
+
+.course-hero-section {
+  position: relative;
+  z-index: 2;
+  padding: 10px 5% 50px;
+}
+
+/* Subtle Golden Ambient Spotlight */
+.course-hero-section::before {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 550px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(246, 217, 107, 0.07) 0%, transparent 70%);
+  filter: blur(70px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.course-hero-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.course-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 36px;
+  align-items: stretch;
+}
+
+/* Left: Course Banner Showcase */
+.course-hero-banner-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.course-hero-banner-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #090a0f;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.85),
+    0 0 40px rgba(246, 217, 107, 0.06);
+}
+
+.course-hero-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.course-hero-banner-card:hover .course-hero-banner-img {
+  transform: scale(1.03);
+}
+
+.course-hero-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 5, 5, 0.65) 0%,
+    rgba(5, 5, 5, 0.2) 40%,
+    rgba(5, 5, 5, 0.95) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px;
+  pointer-events: none;
+}
+
+.course-hero-banner-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.course-hero-brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(14, 16, 22, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.course-hero-logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.course-hero-status-pill {
+  padding: 6px 12px;
+  background: rgba(246, 217, 107, 0.15);
+  border: 1px solid rgba(246, 217, 107, 0.4);
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #f6d96b;
+  text-transform: uppercase;
+}
+
+.course-hero-banner-bottom {
+  max-width: 90%;
+}
+
+.course-hero-subtag {
+  display: inline-block;
+  color: #f6d96b;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.course-hero-banner-title {
+  margin: 0 0 10px;
+  font-size: clamp(28px, 3.5vw, 42px);
+  font-weight: 850;
+  line-height: 1.15;
+  color: #ffffff;
+  letter-spacing: -1px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.course-hero-banner-desc {
+  margin: 0;
+  color: #d1d5db;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Right: Course Quick Facts Card */
+.course-hero-info-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.course-hero-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 34px 32px;
+  background: #0d1017;
+  border: 1px solid #232938;
+  border-radius: 28px;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.75),
+    0 0 35px rgba(246, 217, 107, 0.05);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.course-hero-card:hover {
+  border-color: rgba(246, 217, 107, 0.35);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.85),
+    0 0 45px rgba(246, 217, 107, 0.1);
+}
+
+.course-hero-card-header {
+  margin-bottom: 22px;
+}
+
+.course-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  background: rgba(246, 217, 107, 0.1);
+  border: 1px solid rgba(246, 217, 107, 0.25);
+  font-size: 11px;
+  font-weight: 750;
+  color: #f6d96b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.course-hero-card-title {
+  margin: 0;
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 850;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+/* 4 Metadata Badges in 2x2 grid */
+.course-hero-pills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.course-hero-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background: #141824;
+  border: 1px solid #273044;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #9ca3af;
+  line-height: 1.3;
+  transition: all 0.2s ease;
+}
+
+.course-hero-pill:hover {
+  border-color: rgba(246, 217, 107, 0.3);
+  background: #181d2c;
+}
+
+.course-hero-pill strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Highlight Features */
+.course-hero-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.course-hero-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.course-hero-feature-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(246, 217, 107, 0.12);
+  border: 1px solid rgba(246, 217, 107, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f6d96b;
+  flex-shrink: 0;
+}
+
+.course-hero-feature-item p {
+  margin: 0;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.course-hero-feature-item strong {
+  color: #ffffff;
+}
+
+/* Divider with Centered Label */
+.course-hero-divider {
+  position: relative;
+  text-align: center;
+  margin: 16px 0 20px;
+}
+
+.course-hero-divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 1;
+}
+
+.course-hero-divider span {
+  position: relative;
+  z-index: 2;
+  background: #0d1017;
+  padding: 0 14px;
+  font-size: 12px;
+  color: #71717a;
+  letter-spacing: 0.5px;
+}
+
+/* 5 Key Bullet Points with Checkmarks */
+.course-hero-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.course-hero-checklist li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: #d1d5db;
+  line-height: 1.45;
+}
+
+/* Call-to-Action Button */
+.course-hero-cta-wrap {
+  margin-top: auto;
+}
+
+.course-hero-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 24px;
+  border-radius: 14px;
+  background: #f6d96b;
+  color: #080808;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(246, 217, 107, 0.25);
+  transition: all 0.25s ease;
+}
+
+.course-hero-cta-btn:hover {
+  background: #fbe38a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(246, 217, 107, 0.4);
+}
+
+.course-hero-cta-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.course-hero-cta-btn:hover svg {
+  transform: translateX(3px);
+}
+
+/* Responsive */
+@media (max-width: 1080px) {
+  .course-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .course-hero-banner-card {
+    min-height: 380px;
+  }
+}
+
+@media (max-width: 650px) {
+  .course-hero-section {
+    padding: 10px 4% 35px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .course-hero-banner-card {
+    min-height: 270px;
+    border-radius: 20px;
+  }
+
+  .course-hero-banner-overlay {
+    padding: 18px 16px;
+  }
+
+  .course-hero-banner-title {
+    font-size: clamp(22px, 5.5vw, 32px);
+    word-break: break-word;
+  }
+
+  .course-hero-card {
+    padding: 22px 18px;
+    border-radius: 20px;
+  }
+
+  .course-hero-card-title {
+    font-size: clamp(20px, 5vw, 26px);
+    word-break: break-word;
+  }
+
+  .course-hero-pills-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}

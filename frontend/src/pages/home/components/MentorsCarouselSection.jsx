@@ -1,10 +1,10 @@
 import React from "react";
 import { Sparkles } from "lucide-react";
-import TiltedCard from "../common/TiltedCard";
+import TiltedCard from "./TiltedCard";
 
-import mlChaudharyImg from "../../assets/leadership/ml_chaudhary.png";
-import preetiSharmaImg from "../../assets/leadership/preeti_sharma.png";
-import suumitSharmaImg from "../../assets/leadership/suumit_sharma.png";
+import mlChaudharyImg from "../../../assets/leadership/ml_chaudhary.png";
+import preetiSharmaImg from "../../../assets/leadership/preeti_sharma.png";
+import suumitSharmaImg from "../../../assets/leadership/suumit_sharma.png";
 
 // 3 Executive Leadership Profiles
 const LEADERSHIP = [

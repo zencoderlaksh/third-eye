@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import HeroSection from "../../components/home/HeroSection";
-import PlacementStatsMarquee from "../../components/home/PlacementStatsMarquee";
-import Immersive3DJourneySection from "../../components/home/Immersive3DJourneySection";
-import CoursesFolderVaultSection from "../../components/home/CoursesFolderVaultSection";
-import StudioCardsScrollSection from "../../components/home/StudioCardsScrollSection";
-import MentorsCarouselSection from "../../components/home/MentorsCarouselSection";
-import FAQSection from "../../components/home/FAQSection";
-import ThirdEyeBrandTorchSection from "../../components/home/ThirdEyeBrandTorchSection";
-import ScrollReveal from "../../components/common/ScrollReveal";
+import HeroSection from "./components/HeroSection";
+import PlacementStatsMarquee from "./components/PlacementStatsMarquee";
+import Immersive3DJourneySection from "./components/Immersive3DJourneySection";
+import CoursesFolderVaultSection from "./components/CoursesFolderVaultSection";
+import StudioCardsScrollSection from "./components/StudioCardsScrollSection";
+import MentorsCarouselSection from "./components/MentorsCarouselSection";
+import FAQSection from "./components/FAQSection";
+import ThirdEyeBrandTorchSection from "./components/ThirdEyeBrandTorchSection";
+import ScrollReveal from "./components/ScrollReveal";
 import "./HomePage.css";
 
 export default function HomePage() {
