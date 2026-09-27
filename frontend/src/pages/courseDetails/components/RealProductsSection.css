@@ -1,0 +1,249 @@
+/* ==========================================================================
+   Real Products Section (Real 3D Objects WebGL Canvas + Animated Counters)
+   ========================================================================== */
+
+.real-products-section {
+  position: relative;
+  z-index: 2;
+  padding: 60px 5% 80px;
+  background: #050505;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.real-products-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+/* Ambient Yellow Spotlight Glow behind 3D Objects */
+.real-products-glow {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(246, 217, 107, 0.18) 0%, rgba(246, 217, 107, 0.05) 50%, transparent 75%);
+  filter: blur(65px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Section Header */
+.real-products-header {
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.real-products-title {
+  margin: 0 0 12px;
+  font-size: clamp(32px, 5.5vw, 68px);
+  font-weight: 850;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  color: #f6d96b;
+  text-shadow: 0 0 35px rgba(246, 217, 107, 0.4);
+}
+
+.real-products-subtitle {
+  margin: 0;
+  color: #e4e4e7;
+  font-size: clamp(15px, 2.2vw, 22px);
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  opacity: 0.9;
+}
+
+/* Interactive 3D Objects Stage */
+.real-products-stage-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1040px;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 35px;
+  z-index: 1;
+}
+
+.retro-terminal-3d-canvas {
+  width: 100%;
+  height: 540px;
+  display: block;
+  cursor: grab;
+  outline: none;
+  user-select: none;
+}
+
+.retro-terminal-3d-canvas:active {
+  cursor: grabbing;
+}
+
+.retro-terminal-3d-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  pointer-events: auto;
+}
+
+/* Hand-Drawn "And Many More! ⤴" */
+.real-products-more-note {
+  position: absolute;
+  bottom: 25px;
+  right: 12%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #f6d96b;
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: 0.5px;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+  text-shadow: 0 0 16px rgba(246, 217, 107, 0.55);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Animated Metric Counter Boxes */
+.real-products-counters {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  width: 100%;
+  max-width: 580px;
+  position: relative;
+  z-index: 2;
+}
+
+.counter-box {
+  flex: 1;
+  min-width: 125px;
+  padding: 18px 14px 16px;
+  background: rgba(14, 15, 18, 0.85);
+  border: 1.5px solid rgba(246, 217, 107, 0.4);
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.65),
+    0 0 25px rgba(246, 217, 107, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.counter-box:hover {
+  border-color: rgba(246, 217, 107, 0.95);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.85),
+    0 0 32px rgba(246, 217, 107, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.counter-value {
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 850;
+  color: #f6d96b;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+  text-shadow: 0 0 20px rgba(246, 217, 107, 0.45);
+}
+
+.counter-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.2px;
+}
+
+/* ==========================================================================
+   Responsive Adaptations (3D Computer Hidden On Mobile)
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .real-products-counters {
+    gap: 16px;
+  }
+}
+
+/* Mobile: Remove 3D Stage completely, focus on counters */
+@media (max-width: 768px) {
+  .real-products-section {
+    padding: 50px 4% 60px;
+  }
+
+  .real-products-stage-wrapper {
+    display: none !important;
+  }
+
+  .real-products-glow {
+    width: 340px;
+    height: 340px;
+    top: 50%;
+  }
+
+  .real-products-header {
+    margin-bottom: 30px;
+  }
+
+  .real-products-counters {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 100%;
+  }
+
+  .counter-box {
+    min-width: auto;
+    padding: 14px 8px;
+    border-radius: 14px;
+  }
+
+  .counter-value {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+
+  .counter-label {
+    font-size: 11.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .real-products-counters {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .counter-box {
+    padding: 16px 14px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .counter-value {
+    font-size: 24px;
+    margin-bottom: 0;
+  }
+
+  .counter-label {
+    font-size: 13px;
+  }
+}

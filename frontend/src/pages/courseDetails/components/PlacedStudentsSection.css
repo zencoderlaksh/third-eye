@@ -1,0 +1,375 @@
+/* ==========================================================================
+   Placed Students Section (Dual Marquee Opposite Scrolling & Pause on Hover)
+   ========================================================================== */
+
+.placed-students-section {
+  position: relative;
+  z-index: 2;
+  padding: 80px 0 95px;
+  background: #050505;
+  overflow: hidden;
+}
+
+/* Ambient Yellow Glow */
+.placed-section-glow {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(246, 217, 107, 0.12) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Section Header */
+.placed-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 50px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.placed-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(246, 217, 107, 0.1);
+  border: 1px solid rgba(246, 217, 107, 0.28);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+  color: #f6d96b;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.placed-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f6d96b;
+  box-shadow: 0 0 10px #f6d96b;
+  animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.placed-title {
+  margin: 0 0 12px;
+  font-size: clamp(34px, 4.5vw, 54px);
+  font-weight: 850;
+  color: #ffffff;
+  letter-spacing: -1.2px;
+  line-height: 1.15;
+}
+
+.placed-subtitle {
+  margin: 0;
+  font-size: clamp(15px, 2vw, 18px);
+  color: #a1a1aa;
+  line-height: 1.55;
+}
+
+/* Dual Marquee Container */
+.placed-marquee-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  z-index: 1;
+}
+
+/* Left & Right Edge Gradient Fade Masks */
+.placed-edge-mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 160px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.mask-left {
+  left: 0;
+  background: linear-gradient(to right, #050505 20%, transparent 100%);
+}
+
+.mask-right {
+  right: 0;
+  background: linear-gradient(to left, #050505 20%, transparent 100%);
+}
+
+/* Marquee Row & Track */
+.placed-marquee-row {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  padding: 8px 0;
+}
+
+.placed-marquee-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  will-change: transform;
+}
+
+/* Row 1: Scrolling Left */
+.track-left {
+  animation: scrollMarqueeLeft 42s linear infinite;
+}
+
+/* Row 2: Scrolling Right (Opposite Direction) */
+.track-right {
+  animation: scrollMarqueeRight 42s linear infinite;
+}
+
+/* Pause on Hover on either Row or any Card */
+.placed-marquee-row:hover .placed-marquee-track {
+  animation-play-state: paused;
+}
+
+/* ==========================================================================
+   Placed Student Card
+   ========================================================================== */
+
+.placed-student-card {
+  width: 220px;
+  height: 300px;
+  flex-shrink: 0;
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #0c0e14;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.placed-student-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  border-color: rgba(246, 217, 107, 0.65);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.85),
+    0 0 30px rgba(246, 217, 107, 0.25);
+  z-index: 5;
+}
+
+/* Ambient Radial Aura Behind Person */
+.placed-card-glow {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(246, 217, 107, 0.3) 0%,
+    rgba(246, 217, 107, 0.08) 55%,
+    transparent 75%
+  );
+  filter: blur(25px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Repeating Watermark "PLACED" Behind Person */
+.placed-watermark-row {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  color: rgba(246, 217, 107, 0.14);
+  letter-spacing: 2px;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Student Image */
+.placed-student-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 15%;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.5s ease;
+}
+
+.placed-student-card:hover .placed-student-img {
+  transform: scale(1.05);
+}
+
+/* Foreground Bottom Overlay */
+.placed-card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 18px 16px;
+  background: linear-gradient(
+    to top,
+    rgba(5, 5, 5, 0.95) 0%,
+    rgba(5, 5, 5, 0.6) 35%,
+    rgba(5, 5, 5, 0.15) 60%,
+    transparent 80%
+  );
+  z-index: 3;
+}
+
+.placed-text-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.placed-main-title {
+  font-size: 32px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
+}
+
+.placed-sub-brand {
+  font-size: 10px;
+  font-weight: 800;
+  color: #f6d96b;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  text-shadow: 0 0 10px rgba(246, 217, 107, 0.4);
+}
+
+.placed-company-badge {
+  align-self: flex-start;
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: rgba(246, 217, 107, 0.15);
+  color: #f6d96b;
+  border: 1px solid rgba(246, 217, 107, 0.35);
+  backdrop-filter: blur(8px);
+}
+
+/* Keyframes for Continuous Marquee */
+@keyframes scrollMarqueeLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.3333%);
+  }
+}
+
+@keyframes scrollMarqueeRight {
+  0% {
+    transform: translateX(-33.3333%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .placed-students-section {
+    padding: 55px 0 65px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .placed-header {
+    margin-bottom: 30px;
+    padding: 0 16px;
+  }
+
+  .placed-edge-mask {
+    width: 50px;
+  }
+
+  .placed-student-card {
+    width: 165px;
+    height: 235px;
+    border-radius: 16px;
+  }
+
+  .placed-main-title {
+    font-size: 24px;
+  }
+
+  .placed-sub-brand {
+    font-size: 8.5px;
+    letter-spacing: 2px;
+  }
+
+  .placed-company-badge {
+    font-size: 9.5px;
+    padding: 2px 7px;
+  }
+
+  .track-left {
+    animation-duration: 28s;
+  }
+
+  .track-right {
+    animation-duration: 28s;
+  }
+}
+
+@media (max-width: 480px) {
+  .placed-edge-mask {
+    width: 30px;
+  }
+
+  .placed-student-card {
+    width: 145px;
+    height: 210px;
+    border-radius: 14px;
+  }
+
+  .placed-main-title {
+    font-size: 20px;
+  }
+
+  .placed-sub-brand {
+    font-size: 7.5px;
+    letter-spacing: 1.5px;
+  }
+
+  .placed-card-overlay {
+    padding: 12px 10px;
+  }
+}

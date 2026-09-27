@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-import classroomSliceLeft from "../../assets/classroom_slice_left.webp";
-import classroomSliceCenter from "../../assets/classroom_slice_center.webp";
-import classroomSliceRight from "../../assets/classroom_slice_right.webp";
+import classroomSliceLeft from "../../../assets/classroom_slice_left.webp";
+import classroomSliceCenter from "../../../assets/classroom_slice_center.webp";
+import classroomSliceRight from "../../../assets/classroom_slice_right.webp";
 
 // Minimalist 3D Isometric Cube Vector Icon (100% transparent, perfectly visible on all card themes)
 function IsometricCubeIcon({ className = "w-[26px] h-[26px]", isDark = false }) {

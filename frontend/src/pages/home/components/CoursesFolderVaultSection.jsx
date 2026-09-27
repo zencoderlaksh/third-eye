@@ -11,7 +11,7 @@ import {
   Layers,
   BookOpen,
 } from "lucide-react";
-import FolderFloat from "../common/FolderFloat";
+import FolderFloat from "./FolderFloat";
 
 // 4 Flagship Digital Programs Matching the 4 Discipline Tracks
 const vaultCourseItems = [

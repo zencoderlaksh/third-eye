@@ -23,9 +23,8 @@ function PlaceholderPage({ title, subtitle }) {
 }
 
 import HomePage from "../pages/home/HomePage";
-import Courses from "../pages/Courses";
-import TwoDThreeDAnimation from "../pages/course/TwoDThreeDAnimation";
-import ThreeDCADMatrix from "../pages/course/ThreeDCADMatrix";
+import Courses from "../pages/course/Courses";
+import CourseDetails from "../pages/courseDetails/CourseDetails";
 
 export default function AppRoutes() {
   return (
@@ -35,11 +34,19 @@ export default function AppRoutes() {
         <Route path="courses" element={<Courses />} />
         <Route
           path="courses/2d-3d-animation"
-          element={<TwoDThreeDAnimation />}
+          element={<CourseDetails />}
         />
         <Route
           path="courses/3d-cad-matrix"
-          element={<ThreeDCADMatrix />}
+          element={<CourseDetails />}
+        />
+        <Route
+          path="courses/:courseSlug"
+          element={<CourseDetails />}
+        />
+        <Route
+          path="course-details"
+          element={<CourseDetails />}
         />
         {/* Company Dropdown Routes */}
         <Route
