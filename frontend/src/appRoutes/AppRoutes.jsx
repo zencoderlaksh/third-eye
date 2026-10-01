@@ -27,6 +27,7 @@ import Courses from "../pages/course/Courses";
 import CourseDetails from "../pages/courseDetails/CourseDetails";
 import AdminPage from "../pages/admin/AdminPage";
 import OurTeam from "../pages/team/OurTeam";
+import AboutPage from "../pages/about/AboutPage";
 
 export default function AppRoutes() {
   return (
@@ -54,7 +55,7 @@ export default function AppRoutes() {
         {/* Company Dropdown Routes */}
         <Route
           path="about-us"
-          element={<PlaceholderPage title="About Us" subtitle="Learn about the legacy, mission and vision of Third Eye Computer Classes." />}
+          element={<AboutPage />}
         />
         <Route
           path="contact-us"

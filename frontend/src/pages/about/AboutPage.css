@@ -1,0 +1,137 @@
+/* ============================================================
+   THIRD EYE COMPUTER CLASSES - ABOUT US PAGE STYLING
+   High-Tech Cyber-Luxury Theme (Dark #050505 + Gold #f6d96b)
+   ============================================================ */
+
+/* Ambient Golden Iris Radial Pulse */
+@keyframes eye-iris-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.28;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.45;
+  }
+}
+
+.animate-iris-pulse {
+  animation: eye-iris-pulse 7s ease-in-out infinite;
+}
+
+/* Timeline Glowing Laser Beam Shimmer */
+@keyframes laser-shimmer {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.laser-beam-gradient {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(246, 217, 107, 0.2) 20%,
+    #f6d96b 50%,
+    #fff 60%,
+    #f6d96b 70%,
+    rgba(246, 217, 107, 0.2) 80%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: laser-shimmer 3.5s linear infinite;
+}
+
+/* Vertical Laser Beam */
+.laser-beam-vertical {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(246, 217, 107, 0.15) 15%,
+    #f6d96b 50%,
+    #ffe07a 65%,
+    transparent 100%
+  );
+  background-size: 100% 200%;
+  animation: laser-shimmer 4s linear infinite;
+}
+
+/* Floating Orb Micro-Animation */
+@keyframes orb-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+.animate-orb-float {
+  animation: orb-float 5s ease-in-out infinite;
+}
+
+/* Tech Glassmorphic Card Surface */
+.glass-panel-tech {
+  background: rgba(14, 12, 8, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(246, 217, 107, 0.14);
+  box-shadow: 0 10px 35px -5px rgba(0, 0, 0, 0.8),
+              0 0 20px -2px rgba(246, 217, 107, 0.04);
+}
+
+.glass-panel-tech:hover {
+  border-color: rgba(246, 217, 107, 0.35);
+  box-shadow: 0 14px 45px -5px rgba(0, 0, 0, 0.9),
+              0 0 30px -2px rgba(246, 217, 107, 0.1);
+}
+
+/* Glow Card Highlight */
+.glass-panel-highlight {
+  background: radial-gradient(circle at 50% 0%, rgba(246, 217, 107, 0.12), transparent 70%),
+              rgba(14, 12, 8, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(246, 217, 107, 0.28);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9),
+              0 0 40px rgba(246, 217, 107, 0.08);
+}
+
+/* Subtle Tech Matrix Dot Grid */
+.bg-tech-grid {
+  background-image: 
+    linear-gradient(rgba(246, 217, 107, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246, 217, 107, 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Diagonal Cyber Hash Grid */
+.bg-cyber-dots {
+  background-image: radial-gradient(rgba(246, 217, 107, 0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Shimmer Border for Hero Card & Highlight elements */
+@keyframes border-glow {
+  0%, 100% {
+    border-color: rgba(246, 217, 107, 0.2);
+  }
+  50% {
+    border-color: rgba(246, 217, 107, 0.6);
+  }
+}
+
+.shimmer-border {
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+/* Custom Scroll Pill Horizontal */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
