@@ -26,6 +26,7 @@ import HomePage from "../pages/home/HomePage";
 import Courses from "../pages/course/Courses";
 import CourseDetails from "../pages/courseDetails/CourseDetails";
 import AdminPage from "../pages/admin/AdminPage";
+import OurTeam from "../pages/team/OurTeam";
 
 export default function AppRoutes() {
   return (
@@ -85,11 +86,7 @@ export default function AppRoutes() {
         />
         <Route
           path="our-team"
-          element={<PlaceholderPage title="Our Team" subtitle="Meet the qualified educators, technical trainers, and staff behind your learning." />}
-        />
-        <Route
-          path="sweet-memories"
-          element={<PlaceholderPage title="Sweet Memories" subtitle="Cherished moments, annual ceremonies, coding competitions, and campus life." />}
+          element={<OurTeam />} 
         />
 
         {/* Franchise & Pay Now */}
