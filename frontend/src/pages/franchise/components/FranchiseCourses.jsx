@@ -1,106 +1,106 @@
-import React from "react";
+import React, { useState } from "react";
 import "./FranchiseCourses.css";
 import { 
   BookOpen, 
-  Layers, 
   Clock, 
-  CheckCircle, 
-  Sparkles, 
+  Award, 
+  Globe, 
+  Zap, 
   MonitorPlay, 
-  Briefcase, 
-  Globe 
+  Building2, 
+  CheckCircle2, 
+  RotateCw 
 } from "lucide-react";
 
 export default function FranchiseCourses() {
+  const [flippedCards, setFlippedCards] = useState({});
+
+  const toggleFlip = (id) => {
+    setFlippedCards((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   const categories = [
     {
       id: "professional",
+      number: "01",
       title: "PROFESSIONAL COURSES",
-      badge: "2 to 6 Months",
-      icon: <Clock size={20} />,
+      duration: "2 to 6 Months",
+      icon: <Clock size={24} />,
+      tagline: "Rapid career-launch modules with live client projects and technical interview readiness.",
       points: [
-        "Duration: 2 to 6 Months intensive curriculum",
-        "Project-Based Learning with real-world business applications",
-        "Placement Readiness Program (Soft skills & technical interview prep)"
+        "2 to 6 Months intensive curriculum",
+        "Project-based real business applications",
+        "Placement readiness & soft skills prep"
       ]
     },
     {
       id: "job-oriented",
+      number: "02",
       title: "JOB-ORIENTED PROGRAMS",
-      badge: "8 + 4 Months",
-      icon: <Briefcase size={20} />,
+      duration: "8 + 4 Months",
+      icon: <Award size={24} />,
+      tagline: "Comprehensive dual-track mastery with 4 months of guaranteed industry internship.",
       points: [
-        "8 Months Advanced Training + 4 Months Guaranteed Industry Internship",
-        "Curriculum co-designed in direct collaboration with industry tech leaders",
-        "Minimum 3 Live Industry Projects for comprehensive student portfolio building"
+        "8 Months training + 4 Months internship",
+        "Curriculum co-designed with tech leaders",
+        "Minimum 3 live industry projects"
       ]
     },
     {
       id: "overseas",
+      number: "03",
       title: "OVERSEAS CAREER SUPPORT",
-      badge: "Global Pathways",
-      icon: <Globe size={20} />,
+      duration: "Global Pathways",
+      icon: <Globe size={24} />,
+      tagline: "Global tech career counselling, international university selection, and visa facilitation.",
       points: [
-        "Dedicated career counselling for global tech opportunities",
-        "Complete assistance with international university selection & visa documentation",
-        "Guidance for admission into reputed accredited international programs"
+        "Dedicated global tech counselling",
+        "University selection & visa support",
+        "Accredited international admissions"
       ]
     },
     {
       id: "bootcamps",
+      number: "04",
       title: "WORKSHOPS & BOOTCAMPS",
-      badge: "7 to 10 Days",
-      icon: <Layers size={20} />,
+      duration: "7 to 10 Days",
+      icon: <Zap size={24} />,
+      tagline: "High-intensity skill sprints engineered for rapid, hands-on domain breakthroughs.",
       points: [
-        "Intensive 7 to 10 days short-term specialized programs",
-        "Laser-focused on rapid upskilling and cutting-edge domain knowledge",
-        "100% Hands-on practical lab sessions with immediate output"
+        "7 to 10 Days short-term specialized sprints",
+        "Laser-focused rapid upskilling",
+        "100% Hands-on practical lab sessions"
       ]
     },
     {
       id: "hybrid",
+      number: "05",
       title: "RECORDED + LIVE CLASSES",
-      badge: "Hybrid Flexibility",
-      icon: <MonitorPlay size={20} />,
+      duration: "Hybrid Flexibility",
+      icon: <MonitorPlay size={24} />,
+      tagline: "24/7 unlimited access to HD video archives paired with live mentor masterclasses.",
       points: [
-        "Unlimited access to recorded video sessions anytime for seamless revision",
-        "Attend live interactive masterclasses for real-time doubt clearing",
-        "A proven blend of self-paced flexibility and expert instructor guidance"
+        "24/7 Unlimited recorded video access",
+        "Live interactive masterclasses",
+        "Real-time expert doubt resolution"
       ]
     },
     {
       id: "corporate",
+      number: "06",
       title: "CORPORATE TRAINING",
-      badge: "Enterprise Grade",
-      icon: <BookOpen size={20} />,
+      duration: "Enterprise Grade",
+      icon: <Building2 size={24} />,
+      tagline: "Custom workforce upskilling roadmaps engineered for measurable enterprise workplace ROI.",
       points: [
-        "Engineered to bridge specific technical skill gaps within enterprises",
-        "Customized workforce performance enhancement roadmaps",
-        "Project-driven modules designed for immediate workplace ROI"
+        "Bridge technical gaps in enterprises",
+        "Customized performance roadmaps",
+        "Project modules with immediate ROI"
       ]
     }
-  ];
-
-  const trendingCourses = [
-    { name: "Digital Marketing", tag: "High Demand", category: "marketing" },
-    { name: "Web Designing & UI/UX", tag: "Creative Tech", category: "design" },
-    { name: "Graphic Designing", tag: "Visual Arts", category: "design" },
-    { name: "Ethical Hacking & Cyber Security", tag: "Security", category: "tech" },
-    { name: "2D & 3D Animation", tag: "VFX / Media", category: "media" },
-    { name: "SAP-FICO | SAP-MM", tag: "Enterprise ERP", category: "finance" },
-    { name: "Data Science & AI", tag: "Trending", category: "tech" },
-    { name: "CAD | CAM & Architecture", tag: "Engineering", category: "engineering" },
-    { name: "Jewellery Design & Matrix", tag: "Specialized", category: "design" },
-    { name: "Tally Prime | GST Accounting", tag: "Finance", category: "finance" },
-    { name: "Android App Development", tag: "Mobile Tech", category: "tech" },
-    { name: "PGDCA Degree Support", tag: "Academics", category: "academics" },
-    { name: "SketchUp 3D Modeling", tag: "Civil / Interior", category: "engineering" },
-    { name: "MERN & MEAN Full Stack", tag: "Software Eng", category: "tech" },
-    { name: "3Ds Max Architecture", tag: "Visualization", category: "design" },
-    { name: "E-Commerce & Dropshipping", tag: "Business", category: "marketing" },
-    { name: "Interior Designing", tag: "Creative", category: "design" },
-    { name: "Z-Brush Sculpting", tag: "3D Art", category: "media" }
   ];
 
   return (
@@ -114,54 +114,86 @@ export default function FranchiseCourses() {
           </div>
           <h2 className="courses-title">300+ JOB-ORIENTED COURSES</h2>
           <p className="courses-sub">
-            As a Thirdeye franchise partner, your center gains instant rights to teach high-margin, 
-            market-aligned training programs across tech, design, finance, and enterprise software.
+            As a Thirdeye franchise partner, your center gains instant rights to deliver 
+            high-margin training programs across tech, design, finance, and enterprise software.
           </p>
         </div>
 
-        {/* Categories Grid */}
+        {/* 3D Flip Cards Grid */}
         <div className="categories-grid">
-          {categories.map((cat) => (
-            <div key={cat.id} className="category-card">
-              <div className="category-card-top">
-                <div className="cat-icon-badge">{cat.icon}</div>
-                <span className="cat-duration-badge">{cat.badge}</span>
-              </div>
-              <h3 className="cat-card-title">{cat.title}</h3>
-              <div className="cat-points-list">
-                {cat.points.map((pt, i) => (
-                  <div key={i} className="cat-point-row">
-                    <CheckCircle size={15} className="cat-point-check" />
-                    <span>{pt}</span>
+          {categories.map((cat) => {
+            const isFlipped = !!flippedCards[cat.id];
+            return (
+              <div 
+                key={cat.id} 
+                className={`flip-card-wrapper ${isFlipped ? "is-flipped" : ""}`}
+                onClick={() => toggleFlip(cat.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    toggleFlip(cat.id);
+                  }
+                }}
+                aria-label={`${cat.title} - click or hover to view details`}
+              >
+                <div className="flip-card-inner">
+                  {/* FRONT: Full Yellow Box */}
+                  <div className="flip-card-front">
+                    <div className="card-front-top">
+                      <span className="card-front-num">{cat.number}</span>
+                      <div className="card-front-icon-box">
+                        {cat.icon}
+                      </div>
+                    </div>
+
+                    <div className="card-front-body">
+                      <span className="card-front-duration-pill">{cat.duration}</span>
+                      <h3 className="card-front-title">{cat.title}</h3>
+                    </div>
+
+                    <div className="card-front-bottom">
+                      <span className="card-flip-prompt">
+                        <RotateCw size={14} className="flip-cue-icon" />
+                        <span className="prompt-desktop">Hover to explore details</span>
+                        <span className="prompt-mobile">Tap to explore details</span>
+                      </span>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
 
-        {/* Trending Courses Grid */}
-        <div className="trending-courses-wrapper">
-          <div className="trending-header-bar">
-            <div className="trending-title-left">
-              <Sparkles size={22} className="sparkle-icon" />
-              <div>
-                <h3 className="trending-title">TOP ENROLLMENT COURSES</h3>
-                <p className="trending-sub">High-conversion curriculum with immediate local batch demand</p>
-              </div>
-            </div>
-            <div className="trending-count-badge">18+ HIGH DEMAND TRACKS</div>
-          </div>
+                  {/* BACK: Detailed View */}
+                  <div className="flip-card-back">
+                    <div className="card-back-top">
+                      <div className="card-back-label">
+                        <span className="back-num-tag">{cat.number}</span>
+                        <h4 className="card-back-title">{cat.title}</h4>
+                      </div>
+                      <span className="card-back-duration-chip">{cat.duration}</span>
+                    </div>
 
-          <div className="trending-chips-grid">
-            {trendingCourses.map((course, idx) => (
-              <div key={idx} className="trending-chip">
-                <span className="chip-indicator"></span>
-                <span className="chip-name">{course.name}</span>
-                <span className="chip-tag">{course.tag}</span>
+                    <p className="card-back-tagline">{cat.tagline}</p>
+
+                    <div className="card-back-points">
+                      {cat.points.map((pt, idx) => (
+                        <div key={idx} className="card-back-point-row">
+                          <CheckCircle2 size={18} className="back-point-check" />
+                          <span>{pt}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="card-back-footer">
+                      <span className="card-back-badge">Franchise Curriculum Ready</span>
+                      <span className="card-back-tap-hint">
+                        <RotateCw size={12} className="flip-cue-icon" />
+                        <span>Tap to flip back</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

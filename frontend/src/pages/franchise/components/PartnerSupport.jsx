@@ -14,75 +14,127 @@ import {
   Wrench, 
   PiggyBank, 
   ShieldCheck, 
-  PackageCheck 
+  PackageCheck,
+  Sparkles,
+  CheckCircle2,
+  TrendingUp,
+  Zap
 } from "lucide-react";
 
 export default function PartnerSupport() {
   const supportPillars = [
     {
+      number: "01",
+      theme: "cyan",
       icon: <Headset size={22} />,
       title: "Dedicated Partner Support Team",
-      desc: "Direct single-point-of-contact at Head Office for operational queries, academic escalations, and smooth daily execution."
+      tag: "Direct HO Line",
+      badge: "Single Point Contact"
     },
     {
+      number: "02",
+      theme: "emerald",
       icon: <Clock size={22} />,
       title: "Faculty Hiring Within 72 Hours",
-      desc: "Our centralized recruitment desk sources and technically screens qualified instructors for your center within 72 hours."
+      tag: "< 72h Fast-Track",
+      badge: "Screened Instructors"
     },
     {
+      number: "03",
+      theme: "orange",
       icon: <Megaphone size={22} />,
       title: "Centralized Digital Marketing & Leads",
-      desc: "Head Office runs localized Google Ads, Meta campaigns, and SEO drives to funnel high-intent student leads directly to your center."
+      tag: "Google & Meta Ads",
+      badge: "High-Intent Leads"
     },
     {
+      number: "04",
+      theme: "purple",
       icon: <FileText size={22} />,
       title: "Updated Curriculum & Study Kits",
-      desc: "Modern syllabus aligned with current tech requirements, complete with workbooks, assignment sheets, and test modules."
+      tag: "Modern Syllabus",
+      badge: "Complete Workbooks"
     },
     {
+      number: "05",
+      theme: "amber",
       icon: <Users size={22} />,
       title: "Batch & Student Management",
-      desc: "Guidance on optimal batch timing, teacher-student ratios, lab utilization, and academic timetable scheduling."
+      tag: "SOP Timetables",
+      badge: "Lab Optimization"
     },
     {
+      number: "06",
+      theme: "rose",
       icon: <Building2 size={22} />,
       title: "Corporate & Placement Tie-Ups",
-      desc: "Direct access to Thirdeye’s network of 200+ recruiters, pooling your students into statewide placement drives."
+      tag: "200+ Recruiters",
+      badge: "Statewide Drives"
     },
     {
+      number: "07",
+      theme: "indigo",
       icon: <PlusCircle size={22} />,
       title: "Continuous New Course Additions",
-      desc: "Whenever industry demand shifts (AI, Cloud, Cyber), we introduce new verticals without demanding new licensing fees."
+      tag: "Zero License Fees",
+      badge: "AI & Cloud Verticals"
     },
     {
+      number: "08",
+      theme: "lime",
       icon: <PhoneCall size={22} />,
       title: "Head Office Audits & Feedback",
-      desc: "Senior management visits and regular student feedback calls ensure your branch maintains gold-standard academic ratings."
+      tag: "Regular Audits",
+      badge: "Gold-Standard NPS"
     },
     {
+      number: "09",
+      theme: "sky",
       icon: <Wrench size={22} />,
       title: "24/7 Technical & Operational Backup",
-      desc: "Assistance with lab computer configuration, software licensing, ERP management, and LMS portals."
+      tag: "ERP & LMS Backup",
+      badge: "Lab IT Assistance"
     },
     {
+      number: "10",
+      theme: "yellow",
       icon: <PiggyBank size={22} />,
       title: "Cost Management & Profitability",
-      desc: "Guidance on operational expenses, staff payroll optimization, utility budgets, and margin maximization."
+      tag: "Expense Control",
+      badge: "Margin Maximization"
     },
     {
+      number: "11",
+      theme: "fuchsia",
       icon: <ShieldCheck size={22} />,
       title: "Standardized Quality Delivery",
-      desc: "Rigorous instructor onboarding criteria ensuring uniform student satisfaction matching our flagship centers."
+      tag: "Instructor Screening",
+      badge: "Uniform Delivery"
     },
     {
+      number: "12",
+      theme: "gold",
       icon: <PackageCheck size={22} />,
       title: "Franchise Onboarding Kit",
-      desc: "Complete branded welcome kit: signage artwork, brochures, student folders, certificate templates, and operational SOPs."
+      tag: "Branded Artwork",
+      badge: "Turnkey Launch Kit"
     }
+  ];
+
+  const emiHighlights = [
+    { title: "Zero / Low-Cost EMI", desc: "No student admission barrier" },
+    { title: "Instant 15-Min Approvals", desc: "Rapid spot enrollment" },
+    { title: "Upfront Tuition Credit", desc: "100% payout to center" },
+    { title: "Top Bank & NBFC Tie-ups", desc: "Pan-India lending network" }
   ];
 
   return (
     <section className="partner-support-section" id="partner-support">
+      {/* Background ambient lighting */}
+      <div className="support-ambient-glow support-glow-cyan" />
+      <div className="support-ambient-glow support-glow-amber" />
+      <div className="support-ambient-glow support-glow-rose" />
+
       <div className="partner-support-container">
         {/* Section Header */}
         <div className="support-header-block">
@@ -90,35 +142,87 @@ export default function PartnerSupport() {
             <HeartHandshake size={16} />
             <span>360° OPERATIONAL ECOSYSTEM</span>
           </div>
+
           <h2 className="support-title">HOW THIRDEYE HELPS YOU GROW</h2>
+
           <div className="support-motto-pill">
-            #Your growth is our priority, because Thirdeye grows only when their partners succeed
+            <span className="motto-pulse-dot" />
+            <span>#Your growth is our priority, because Thirdeye grows only when their partners succeed</span>
           </div>
         </div>
 
-        {/* Feature Highlight: EMI Facilities */}
-        <div className="emi-highlight-card">
-          <div className="emi-icon-box">
-            <CreditCard size={32} />
+        {/* Feature Highlight: EMI Facilities Command Banner */}
+        <div className="emi-highlight-module">
+          <div className="emi-top-laser" />
+
+          <div className="emi-header-row">
+            <div className="emi-title-group">
+              <div className="emi-icon-pod">
+                <CreditCard size={28} />
+              </div>
+              <div>
+                <div className="emi-micro-tag">
+                  <Sparkles size={13} />
+                  <span>FINANCIAL ENABLER FOR ENROLLMENTS</span>
+                </div>
+                <h3 className="emi-main-title">
+                  Exclusive EMI Facilities Through Partner Banks
+                </h3>
+              </div>
+            </div>
+
+            <div className="emi-partner-shield">
+              <span className="shield-dot" />
+              <span>INSTANT STUDENT DISBURSAL</span>
+            </div>
           </div>
-          <div className="emi-content">
-            <div className="emi-badge">FINANCIAL ENABLER FOR ENROLLMENTS</div>
-            <h3 className="emi-title">Exclusive EMI Facilities Through Partner Banks</h3>
-            <p className="emi-desc">
-              High course fees never become a barrier to enrollment at your center. We provide instant, low-cost/zero-cost 
-              EMI financing for students through our banking and NBFC partners, allowing you to close admissions instantly 
-              while receiving upfront tuition credits.
-            </p>
+
+          {/* Quick Metrics Strip */}
+          <div className="emi-pills-grid">
+            {emiHighlights.map((item, index) => (
+              <div key={index} className="emi-feature-chip">
+                <CheckCircle2 size={18} className="emi-check-icon" />
+                <div className="emi-chip-text">
+                  <span className="emi-chip-name">{item.title}</span>
+                  <span className="emi-chip-sub">{item.desc}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Support Grid */}
-        <div className="support-grid">
+        {/* 12 Support Pillars Grid — Colorful, Vibrant & Zero Paragraph Clutter */}
+        <div className="support-pillars-grid">
           {supportPillars.map((item, idx) => (
-            <div key={idx} className="support-card">
-              <div className="support-icon-wrap">{item.icon}</div>
-              <h3 className="support-card-title">{item.title}</h3>
-              <p className="support-card-desc">{item.desc}</p>
+            <div 
+              key={idx} 
+              className={`support-node-card card-theme-${item.theme}`}
+            >
+              {/* Colored Top Accent Beam */}
+              <div className="card-top-beam" />
+
+              {/* Watermark Number */}
+              <span className="card-watermark-num">{item.number}</span>
+
+              {/* Header: Solid Color Icon Pod & Number Pill */}
+              <div className="support-node-header">
+                <div className="support-icon-pod">
+                  {item.icon}
+                </div>
+                <span className="node-index-pill">{item.number}</span>
+              </div>
+
+              {/* Bold Title */}
+              <h3 className="support-node-title">{item.title}</h3>
+
+              {/* Themed Micro Tags */}
+              <div className="support-node-tags">
+                <span className="node-tag-item">
+                  <span className="tag-dot" />
+                  {item.tag}
+                </span>
+                <span className="node-badge-item">{item.badge}</span>
+              </div>
             </div>
           ))}
         </div>

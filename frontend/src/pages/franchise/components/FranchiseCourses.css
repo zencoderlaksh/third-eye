@@ -1,263 +1,402 @@
-/* ─── Franchise Courses Styles ─── */
+/* ─── Franchise Courses — 3D Flip Cards (Full Yellow Front & Detailed Back) ─── */
+
 .courses-franchise-section {
   width: 100%;
-  background-color: #ffd300;
-  color: #000000;
-  padding: 85px 24px 90px;
+  background-color: transparent;
+  color: #ffffff;
+  padding: 85px 24px 95px;
   position: relative;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
-  border-top: 3px solid #000000;
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  border-top: 1px solid rgba(246, 217, 107, 0.15);
+  overflow: hidden;
 }
 
 .courses-franchise-container {
   max-width: 1280px;
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
-/* Header */
+/* ── Section Header ── */
 .courses-header-block {
   text-align: center;
   max-width: 860px;
-  margin: 0 auto 45px;
+  margin: 0 auto 55px;
 }
 
 .courses-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: #000000;
+  background-color: rgba(246, 217, 107, 0.1);
   color: #ffd300;
-  padding: 6px 18px;
+  border: 1px solid rgba(246, 217, 107, 0.35);
+  padding: 7px 20px;
   border-radius: 9999px;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 800;
-  letter-spacing: 0.5px;
-  margin-bottom: 16px;
+  letter-spacing: 0.8px;
+  margin-bottom: 18px;
+  font-family: "Space Grotesk", sans-serif;
+  box-shadow: 0 0 16px rgba(255, 211, 0, 0.1);
 }
 
 .courses-title {
-  font-size: clamp(32px, 4.4vw, 52px);
+  font-size: clamp(34px, 4.6vw, 54px);
   font-weight: 900;
   line-height: 1.15;
-  letter-spacing: -1px;
-  color: #000000;
-  margin: 0 0 14px 0;
+  letter-spacing: -1.2px;
+  color: #ffffff;
+  margin: 0 0 16px 0;
   text-transform: uppercase;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .courses-sub {
-  font-size: clamp(15px, 1.25vw, 18px);
-  font-weight: 550;
-  line-height: 1.6;
-  color: #222222;
-  margin: 0;
+  font-size: clamp(15.5px, 1.25vw, 18px);
+  font-weight: 500;
+  line-height: 1.65;
+  color: #d4d4d8;
+  margin: 0 auto;
+  max-width: 780px;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-/* Categories Grid */
+/* ── 3D Flip Cards Grid ── */
 .categories-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-  margin-bottom: 50px;
+  gap: 26px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1040px) {
   .categories-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
   }
 }
 
 @media (max-width: 640px) {
   .categories-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 
-.category-card {
-  background-color: #ffffff;
-  border: 3px solid #000000;
-  border-radius: 20px;
-  padding: 26px 22px;
-  box-shadow: 5px 5px 0px #000000;
+/* ── 3D Card Flip Mechanism ── */
+.flip-card-wrapper {
+  perspective: 1200px;
+  min-height: 350px;
+  height: 100%;
+  cursor: pointer;
+  outline: none;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 350px;
+  text-align: left;
+  transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .flip-card-wrapper:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+.flip-card-wrapper.is-flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* ── Card Faces Common Styles ── */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 22px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease;
 }
 
-.category-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 7px 7px 0px #000000;
+/* ── FRONT FACE: Full Yellow Box ── */
+.flip-card-front {
+  background: #ffd300;
+  color: #000000;
+  border: 2px solid #000000;
+  padding: 30px 26px;
+  justify-content: space-between;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 211, 0, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.category-card-top {
+.flip-card-wrapper:hover .flip-card-front {
+  box-shadow: 0 22px 45px -8px rgba(0, 0, 0, 0.8), 0 0 35px rgba(255, 211, 0, 0.5);
+}
+
+.card-front-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
 }
 
-.cat-icon-badge {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  background-color: #000000;
+.card-front-num {
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  color: #000000;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.card-front-icon-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background: #000000;
   color: #ffd300;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s ease;
 }
 
-.cat-duration-badge {
-  background-color: #ffd300;
+.flip-card-wrapper:hover .card-front-icon-box {
+  transform: scale(1.08) rotate(5deg);
+}
+
+.card-front-body {
+  margin: 18px 0;
+}
+
+.card-front-duration-pill {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.1);
   color: #000000;
-  border: 2px solid #000000;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  font-size: 11.5px;
+  border: 1.5px solid #000000;
+  font-size: 12px;
   font-weight: 800;
+  padding: 5px 13px;
+  border-radius: 9999px;
+  margin-bottom: 14px;
+  letter-spacing: 0.4px;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-.cat-card-title {
-  font-size: 17px;
+.card-front-title {
+  font-size: 23px;
   font-weight: 900;
   color: #000000;
-  margin: 0 0 16px 0;
-  line-height: 1.25;
+  margin: 0;
+  line-height: 1.22;
+  letter-spacing: -0.6px;
+  text-transform: uppercase;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-.cat-points-list {
+.card-front-bottom {
+  border-top: 1.5px solid rgba(0, 0, 0, 0.2);
+  padding-top: 14px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-flip-prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: 0.3px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.prompt-desktop {
+  display: inline;
+}
+
+.prompt-mobile {
+  display: none;
+}
+
+.card-back-tap-hint {
+  display: none;
+}
+
+.flip-cue-icon {
+  color: #000000;
+  transition: transform 0.4s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .flip-card-wrapper:hover .flip-cue-icon {
+    transform: rotate(180deg);
+  }
+}
+
+.flip-card-wrapper.is-flipped .flip-cue-icon {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 768px), (hover: none) {
+  .prompt-desktop {
+    display: none;
+  }
+
+  .prompt-mobile {
+    display: inline;
+  }
+
+  .card-back-tap-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 750;
+    color: #ffd300;
+  }
+}
+
+/* ── BACK FACE: Detailed Obsidian View ── */
+.flip-card-back {
+  background: linear-gradient(170deg, #18150c 0%, #0d0b07 100%);
+  border: 1.5px solid rgba(255, 211, 0, 0.45);
+  color: #ffffff;
+  padding: 28px 24px;
+  transform: rotateY(180deg);
+  justify-content: space-between;
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.98), 0 0 30px rgba(255, 211, 0, 0.15);
+  overflow: hidden;
+  position: absolute;
+  inset: 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.flip-card-back::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #ffd300 50%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.card-back-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card-back-label {
+  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-.cat-point-row {
+.back-num-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #ffd300;
+  color: #000000;
+  font-size: 13px;
+  font-weight: 900;
+  flex-shrink: 0;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.card-back-title {
+  font-size: 17px;
+  font-weight: 850;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.card-back-duration-chip {
+  background: rgba(255, 211, 0, 0.12);
+  color: #ffd300;
+  border: 1px solid rgba(255, 211, 0, 0.35);
+  padding: 4px 11px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  letter-spacing: 0.2px;
+}
+
+.card-back-tagline {
+  font-size: 14.5px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: #f4f4f5;
+  margin: 0 0 16px 0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.card-back-points {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.card-back-point-row {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   font-size: 13.5px;
-  font-weight: 550;
-  color: #333333;
+  font-weight: 600;
+  color: #e4e4e7;
   line-height: 1.45;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-.cat-point-check {
-  color: #000000;
+.back-point-check {
+  color: #ffd300;
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
-/* Trending Courses Grid */
-.trending-courses-wrapper {
-  background-color: #000000;
-  border: 3px solid #000000;
-  border-radius: 24px;
-  padding: 36px 32px;
-  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
-}
-
-.trending-header-bar {
+.card-back-footer {
+  border-top: 1px solid rgba(255, 211, 0, 0.18);
+  padding-top: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 26px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid #282828;
 }
 
-.trending-title-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.sparkle-icon {
-  color: #ffd300;
-}
-
-.trending-title {
-  font-size: 22px;
-  font-weight: 900;
-  color: #ffd300;
-  margin: 0 0 4px 0;
-}
-
-.trending-sub {
-  font-size: 13.5px;
-  color: #aaaaaa;
-  margin: 0;
-  font-weight: 500;
-}
-
-.trending-count-badge {
-  background-color: #ffd300;
-  color: #000000;
+.card-back-badge {
   font-size: 12px;
   font-weight: 850;
-  padding: 6px 14px;
-  border-radius: 9999px;
-}
-
-.trending-chips-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-
-@media (max-width: 992px) {
-  .trending-chips-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 580px) {
-  .trending-chips-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.trending-chip {
-  background-color: #161616;
-  border: 1px solid #2c2c2c;
-  border-radius: 12px;
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: all 0.2s ease;
-}
-
-.trending-chip:hover {
-  border-color: #ffd300;
-  background-color: #1f1f1f;
-  transform: translateY(-2px);
-}
-
-.chip-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #ffd300;
-  flex-shrink: 0;
-}
-
-.chip-name {
-  font-size: 14px;
-  font-weight: 750;
-  color: #ffffff;
-  flex-grow: 1;
-}
-
-.chip-tag {
-  font-size: 10.5px;
-  font-weight: 700;
   color: #ffd300;
-  background-color: rgba(255, 211, 0, 0.12);
-  padding: 2px 8px;
-  border-radius: 9999px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-family: "Space Grotesk", sans-serif;
 }
