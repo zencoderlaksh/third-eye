@@ -4,11 +4,9 @@ import "./Franchise.css";
 // Components inside components/ folder
 import FranchiseHero from "./components/FranchiseHero";
 import ExpansionTimeline from "./components/ExpansionTimeline";
-import IndustryOverview from "./components/IndustryOverview";
 import FranchiseCourses from "./components/FranchiseCourses";
 import PartnerSupport from "./components/PartnerSupport";
-import PlacementHighlights from "./components/PlacementHighlights";
-import RunningCentres from "./components/RunningCentres";
+import NetworkCentres from "./components/NetworkCentres";
 import PartnerTestimonials from "./components/PartnerTestimonials";
 import LeadershipTeam from "./components/LeadershipTeam";
 import StepsToStart from "./components/StepsToStart";
@@ -26,49 +24,46 @@ export default function Franchise() {
 
   return (
     <div className="franchise-page-wrapper">
+      {/* Global Seamless Yellow-Tinted Tech Grid (Same as Home Page) */}
+      <div className="franchise-grid-overlay" />
+
       {/* 1. Hero Section */}
       <ScrollReveal direction="up" delay={20} duration={700}>
         <FranchiseHero onOpenInquiry={scrollToInquiry} />
       </ScrollReveal>
+      
+      {/* 3. 300+ Courses Portfolio */}
+      <ScrollReveal direction="up" delay={40} duration={750}>
+        <FranchiseCourses />
+      </ScrollReveal> 
 
+      
       {/* 2. Expansion Timeline (2023 - 2026) */}
       <ScrollReveal direction="up" delay={40} duration={750}>
         <ExpansionTimeline />
       </ScrollReveal>
-
-      {/* 3. Industry Overview (Why Education is a Smart Investment) */}
+      
+      {/* 5. 10 Running Centres & Phase II Upcoming Hubs */}
       <ScrollReveal direction="up" delay={40} duration={750}>
-        <IndustryOverview />
+        <NetworkCentres onOpenInquiry={scrollToInquiry} />
       </ScrollReveal>
+      
 
-      {/* 4. 300+ Courses Portfolio */}
-      <ScrollReveal direction="up" delay={40} duration={750}>
-        <FranchiseCourses />
-      </ScrollReveal>
-
-      {/* 5. 360° Partner Support Ecosystem & EMI Facilities */}
+      {/* 4. 360° Partner Support Ecosystem & EMI Facilities */}
       <ScrollReveal direction="up" delay={40} duration={750}>
         <PartnerSupport />
       </ScrollReveal>
 
-      {/* 6. Placement Drives & Student Hiring Outcomes */}
-      <ScrollReveal direction="up" delay={40} duration={750}>
-        <PlacementHighlights />
-      </ScrollReveal>
+      
 
-      {/* 7. Running Centers in Jaipur & Upcoming Rajasthan Hubs */}
-      <ScrollReveal direction="up" delay={40} duration={750}>
-        <RunningCentres />
-      </ScrollReveal>
-
-      {/* 8. Partner Testimonials & Reviews */}
+      {/* 6. Partner Testimonials & Reviews (Success Begins Here) */}
       <ScrollReveal direction="up" delay={40} duration={750}>
         <PartnerTestimonials />
       </ScrollReveal>
 
       {/* 9. Leadership Team Behind the Brand */}
       <ScrollReveal direction="up" delay={40} duration={750}>
-        <LeadershipTeam />
+        <LeadershipTeam onOpenInquiry={scrollToInquiry} />
       </ScrollReveal>
 
       {/* 10. 6-Step Roadmap to Launch */}

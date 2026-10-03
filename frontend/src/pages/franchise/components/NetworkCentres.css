@@ -1,0 +1,200 @@
+/* ─── Network Centres — 10 Running Centres 3D Circular Carousel (Cyber Yellow) ─── */
+
+.network-centres-section {
+  width: 100%;
+  background-color: transparent;
+  color: #ffffff;
+  padding: 85px 24px 105px;
+  position: relative;
+  box-sizing: border-box;
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  border-top: 1px solid rgba(255, 211, 0, 0.2);
+  overflow: hidden;
+}
+
+.network-centres-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Cyber Yellow Ambient Background Lighting ── */
+.network-ambient-glow {
+  position: absolute;
+  width: 580px;
+  height: 580px;
+  border-radius: 50%;
+  filter: blur(150px);
+  pointer-events: none;
+  opacity: 0.16;
+  z-index: 1;
+}
+
+.glow-top-left {
+  top: 10%;
+  left: -200px;
+  background: radial-gradient(circle, #ffd300 0%, transparent 70%);
+}
+
+.glow-bottom-right {
+  bottom: 10%;
+  right: -200px;
+  background: radial-gradient(circle, #f59e0b 0%, transparent 70%);
+}
+
+/* ── Section Header (Exact Match to User Banner) ── */
+.network-header-block {
+  text-align: center;
+  max-width: 980px;
+  margin: 0 auto 35px;
+}
+
+.network-title {
+  font-size: clamp(30px, 4.2vw, 56px);
+  font-weight: 950;
+  line-height: 1.15;
+  letter-spacing: -1.2px;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.network-title-gold {
+  color: #ffd300;
+  text-shadow: 0 0 35px rgba(255, 211, 0, 0.55);
+}
+
+/* ── 3D Circular Carousel Stage ── */
+.carousel-stage-container {
+  width: 100%;
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.circular-carousel-wrapper {
+  width: 100%;
+  height: 440px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+  .circular-carousel-wrapper {
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .circular-carousel-wrapper {
+    height: 360px;
+  }
+}
+
+/* ── Minimal Centre Name & Open on Map Button Bar ── */
+.carousel-centre-bar-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.carousel-centre-bar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  background: rgba(22, 18, 11, 0.9);
+  border: 1.5px solid rgba(255, 211, 0, 0.38);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 9999px;
+  padding: 8px 10px 8px 24px;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 211, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carousel-centre-bar:hover {
+  border-color: rgba(255, 211, 0, 0.7);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 0 0 25px rgba(255, 211, 0, 0.2);
+}
+
+.carousel-centre-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(19px, 2vw, 24px);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.4px;
+  white-space: nowrap;
+  animation: centre-name-fade 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes centre-name-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.carousel-open-map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 22px;
+  background: #ffd300;
+  color: #0c0a06;
+  border: 1.5px solid #ffd300;
+  border-radius: 9999px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13.5px;
+  font-weight: 900;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 18px rgba(255, 211, 0, 0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carousel-open-map-btn:hover {
+  background: #ffffff;
+  color: #0c0a06;
+  border-color: #ffffff;
+  box-shadow: 0 8px 28px rgba(255, 255, 255, 0.5), 0 0 18px rgba(255, 211, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.map-btn-icon {
+  color: currentColor;
+  flex-shrink: 0;
+}
+
+.map-btn-arrow {
+  color: currentColor;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.carousel-open-map-btn:hover .map-btn-arrow {
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 520px) {
+  .carousel-centre-bar {
+    gap: 14px;
+    padding: 8px 8px 8px 18px;
+  }
+  .carousel-centre-name {
+    font-size: 18px;
+  }
+  .carousel-open-map-btn {
+    padding: 9px 16px;
+    font-size: 12.5px;
+  }
+}
