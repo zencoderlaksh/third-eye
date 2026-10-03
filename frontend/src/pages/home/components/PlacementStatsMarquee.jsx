@@ -423,10 +423,10 @@ export default function PlacementStatsMarquee() {
       {/* 2. Full-Width Infinite Scrolling Marquee */}
       <div className="relative w-full overflow-hidden py-4 bg-transparent">
         {/* Left Edge Subtle Dark Fade Mask (Short & Clean) */}
-        <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-20 bg-gradient-to-r from-[#050505] to-transparent z-20 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-20 bg-gradient-to-r from-[#0c0a04]/90 to-transparent z-20 pointer-events-none" />
 
         {/* Right Edge Subtle Dark Fade Mask (Short & Clean) */}
-        <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-20 bg-gradient-to-l from-[#050505] to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-20 bg-gradient-to-l from-[#0c0a04]/90 to-transparent z-20 pointer-events-none" />
 
         {/* Continuous Full-Width Marquee Track */}
         <div className="flex items-center gap-16 sm:gap-24 w-max animate-marquee pause-hover py-4 sm:py-5">

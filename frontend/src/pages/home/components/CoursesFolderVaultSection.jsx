@@ -243,17 +243,8 @@ export default function CoursesFolderVaultSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-10 py-12 sm:py-20 lg:py-24 bg-[#050505] overflow-hidden w-full select-none"
+      className="relative z-10 py-12 sm:py-20 lg:py-24 bg-transparent overflow-hidden w-full select-none"
     >
-      {/* Subtle Background Tech Grid (Black Boxes) */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-100 -z-10"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px)",
-          backgroundSize: "45px 45px",
-        }}
-      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Mobile Header (displayed on mobile, hidden on lg) */}

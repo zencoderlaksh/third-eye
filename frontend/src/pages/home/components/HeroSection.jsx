@@ -72,12 +72,12 @@ export default function HeroSection() {
           grainIntensity={0.05}
           mouseInteraction={true}
           mouseStrength={0.3}
-          backgroundColor="#050505"
+          backgroundColor="#0c0a04"
         />
-        {/* Soft bottom fade into dark page background */}
-        <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none" />
-        {/* Soft top fade below navbar */}
-        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#050505]/85 via-[#050505]/40 to-transparent pointer-events-none" />
+        {/* Soft subtle bottom fade */}
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0c0a04]/40 to-transparent pointer-events-none" />
+        {/* Soft subtle top fade below navbar */}
+        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#0c0a04]/50 via-[#0c0a04]/15 to-transparent pointer-events-none" />
       </div>
 
       {/* 4. Main Clean Centered Content with Staggered Downwards-to-Upwards Transitions */}
@@ -105,7 +105,7 @@ export default function HeroSection() {
         {/* Layer 2: Main Headline & Animated Rotating Discipline with Contrast Protector */}
         <div className="relative mb-8 sm:mb-10 font-sans w-full flex flex-col items-center">
           {/* Subtle ambient radial dark shield to guarantee 100% text legibility over WebGL threads */}
-          <div className="absolute inset-0 -inset-x-8 sm:-inset-x-20 -my-10 bg-[#050505]/75 rounded-full blur-3xl pointer-events-none -z-10" />
+          <div className="absolute inset-0 -inset-x-8 sm:-inset-x-20 -my-10 bg-[#0b0904]/75 rounded-full blur-3xl pointer-events-none -z-10" />
 
           <h1
             className={`text-3xl sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[70px] font-black text-white tracking-tight leading-[1.1] mb-2 sm:mb-3 drop-shadow-[0_4px_20px_rgba(0,0,0,0.95)] sm:whitespace-nowrap transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] delay-200 ${

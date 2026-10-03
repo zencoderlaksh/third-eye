@@ -1,0 +1,29 @@
+/* ─── Franchise Scroll Reveal Animation Styles ─── */
+.franchise-scroll-reveal {
+  opacity: 0;
+  transition-property: opacity, transform, filter;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.franchise-scroll-reveal.up {
+  transform: translateY(44px) scale(0.985);
+}
+
+.franchise-scroll-reveal.down {
+  transform: translateY(-44px) scale(0.985);
+}
+
+.franchise-scroll-reveal.zoom {
+  transform: scale(0.92);
+}
+
+.franchise-scroll-reveal.fade {
+  transform: none;
+}
+
+/* State when scrolled into viewport */
+.franchise-scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}

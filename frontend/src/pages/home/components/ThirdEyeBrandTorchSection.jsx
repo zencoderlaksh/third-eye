@@ -8,17 +8,7 @@ import { ArrowUpRight, Play, CheckCircle2, Sparkles } from "lucide-react";
  */
 export default function ThirdEyeBrandTorchSection() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#050505] py-20 sm:py-24 border-t border-white/[0.08] select-none">
-      {/* Background Ambience: Subtle Tech Grid & Radial Glow */}
-      <div
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#050505] via-[#0c0905]/40 to-[#050505] -z-10" />
+    <section className="relative w-full overflow-hidden bg-transparent py-20 sm:py-24 border-t border-[#f6d96b]/15 select-none">
 
       {/* Ambient Central Lens Flare */}
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-[#f6d96b]/[0.06] rounded-full blur-[100px] -z-10" />

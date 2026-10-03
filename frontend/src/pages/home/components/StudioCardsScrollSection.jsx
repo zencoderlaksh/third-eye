@@ -250,13 +250,13 @@ export default function StudioCardsScrollSection() {
   });
 
   return (
-    <section className="relative hidden md:block w-full bg-[#050505] select-none">
+    <section className="relative hidden md:block w-full bg-transparent select-none">
       {/* ================================================================= */}
       {/* DESKTOP & TABLET: THE EXACT PINNED STICKY 3D SCROLL SCRUB (250vh) */}
       {/* ================================================================= */}
       <div
         ref={containerRef}
-        className="relative w-full bg-[#050505]"
+        className="relative w-full bg-transparent"
         style={{ height: "250vh" }}
       >
         <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">

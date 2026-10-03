@@ -90,17 +90,8 @@ export default function Immersive3DJourneySection() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full md:min-h-[100vh] lg:min-h-[110vh] bg-[#050505] overflow-hidden flex flex-col items-center justify-start md:justify-between py-6 sm:py-10 md:py-16 z-10 select-none"
+      className="relative w-full md:min-h-[100vh] lg:min-h-[110vh] bg-transparent overflow-hidden flex flex-col items-center justify-start md:justify-between py-6 sm:py-10 md:py-16 z-10 select-none"
     >
-      {/* Subtle Background Tech Grid Lines (Black Boxes) */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-100 -z-10"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px)",
-          backgroundSize: "45px 45px",
-        }}
-      />
 
       {/* 2. Heading Section */}
       <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 text-center z-20 mb-2 sm:mb-4 md:mb-2">
