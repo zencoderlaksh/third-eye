@@ -29,6 +29,7 @@ import AdminPage from "../pages/admin/AdminPage";
 import OurTeam from "../pages/team/OurTeam";
 import AboutPage from "../pages/about/AboutPage";
 import OurCertificationPage from "../pages/certification/OurCertificationPage";
+import Franchise from "../pages/franchise/Franchise";
 
 export default function AppRoutes() {
   return (
@@ -94,7 +95,7 @@ export default function AppRoutes() {
         {/* Franchise & Pay Now */}
         <Route
           path="franchise"
-          element={<PlaceholderPage title="Franchise Opportunities" subtitle="Partner with Third Eye Computer Classes to bring high-impact tech education to your city." />}
+          element={<Franchise />}
         />
         <Route
           path="pay-now"

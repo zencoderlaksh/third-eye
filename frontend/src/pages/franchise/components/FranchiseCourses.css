@@ -1,0 +1,263 @@
+/* ─── Franchise Courses Styles ─── */
+.courses-franchise-section {
+  width: 100%;
+  background-color: #ffd300;
+  color: #000000;
+  padding: 85px 24px 90px;
+  position: relative;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  border-top: 3px solid #000000;
+}
+
+.courses-franchise-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Header */
+.courses-header-block {
+  text-align: center;
+  max-width: 860px;
+  margin: 0 auto 45px;
+}
+
+.courses-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #000000;
+  color: #ffd300;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.courses-title {
+  font-size: clamp(32px, 4.4vw, 52px);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  color: #000000;
+  margin: 0 0 14px 0;
+  text-transform: uppercase;
+}
+
+.courses-sub {
+  font-size: clamp(15px, 1.25vw, 18px);
+  font-weight: 550;
+  line-height: 1.6;
+  color: #222222;
+  margin: 0;
+}
+
+/* Categories Grid */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 50px;
+}
+
+@media (max-width: 1024px) {
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.category-card {
+  background-color: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 20px;
+  padding: 26px 22px;
+  box-shadow: 5px 5px 0px #000000;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 7px 7px 0px #000000;
+}
+
+.category-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cat-icon-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background-color: #000000;
+  color: #ffd300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cat-duration-badge {
+  background-color: #ffd300;
+  color: #000000;
+  border: 2px solid #000000;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 800;
+}
+
+.cat-card-title {
+  font-size: 17px;
+  font-weight: 900;
+  color: #000000;
+  margin: 0 0 16px 0;
+  line-height: 1.25;
+}
+
+.cat-points-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cat-point-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  font-weight: 550;
+  color: #333333;
+  line-height: 1.45;
+}
+
+.cat-point-check {
+  color: #000000;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Trending Courses Grid */
+.trending-courses-wrapper {
+  background-color: #000000;
+  border: 3px solid #000000;
+  border-radius: 24px;
+  padding: 36px 32px;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+}
+
+.trending-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 26px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #282828;
+}
+
+.trending-title-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sparkle-icon {
+  color: #ffd300;
+}
+
+.trending-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffd300;
+  margin: 0 0 4px 0;
+}
+
+.trending-sub {
+  font-size: 13.5px;
+  color: #aaaaaa;
+  margin: 0;
+  font-weight: 500;
+}
+
+.trending-count-badge {
+  background-color: #ffd300;
+  color: #000000;
+  font-size: 12px;
+  font-weight: 850;
+  padding: 6px 14px;
+  border-radius: 9999px;
+}
+
+.trending-chips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 992px) {
+  .trending-chips-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .trending-chips-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.trending-chip {
+  background-color: #161616;
+  border: 1px solid #2c2c2c;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.trending-chip:hover {
+  border-color: #ffd300;
+  background-color: #1f1f1f;
+  transform: translateY(-2px);
+}
+
+.chip-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ffd300;
+  flex-shrink: 0;
+}
+
+.chip-name {
+  font-size: 14px;
+  font-weight: 750;
+  color: #ffffff;
+  flex-grow: 1;
+}
+
+.chip-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #ffd300;
+  background-color: rgba(255, 211, 0, 0.12);
+  padding: 2px 8px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

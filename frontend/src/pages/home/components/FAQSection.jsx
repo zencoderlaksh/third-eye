@@ -187,7 +187,7 @@ export default function FAQSection() {
   const col2 = FAQS.slice(6);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#050505] pt-16 md:pt-24 pb-8 md:pb-12">
+    <section className="relative w-full overflow-hidden bg-transparent pt-16 md:pt-24 pb-8 md:pb-12">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         {/* ── Header ── */}
         <motion.div

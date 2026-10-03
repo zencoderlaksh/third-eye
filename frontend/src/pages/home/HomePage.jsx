@@ -16,7 +16,9 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="home-page-container relative min-h-screen bg-[#050505] text-white selection:bg-[#f6d96b] selection:text-black overflow-x-clip">
+    <div className="home-page-container relative min-h-screen text-white selection:bg-[#f6d96b] selection:text-black overflow-x-clip">
+      {/* Global Seamless Yellow-Tinted Tech Grid (Covers 100% of Whole Page) */}
+      <div className="home-page-grid-overlay" />
 
       {/* 1. Hero Section (First Section User Sees) */}
       <ScrollReveal direction="up" duration={800} delay={30}>

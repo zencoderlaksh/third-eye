@@ -30,16 +30,7 @@ const LEADERSHIP = [
 
 export default function MentorsCarouselSection() {
   return (
-    <section className="relative w-full overflow-hidden bg-[#050505] py-16 md:py-24 select-none">
-      {/* Subtle Background Tech Grid Lines (Black Boxes) */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-100 -z-10"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px)",
-          backgroundSize: "45px 45px",
-        }}
-      />
+    <section className="relative w-full overflow-hidden bg-transparent py-16 md:py-24 select-none">
 
       {/* ── Section Header ── */}
       <div className="relative z-10 text-center mb-10 md:mb-16 px-4 max-w-4xl mx-auto">

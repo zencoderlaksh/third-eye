@@ -1,0 +1,184 @@
+/* ─── Partner Support Styles ─── */
+.partner-support-section {
+  width: 100%;
+  background-color: #ffd300;
+  color: #000000;
+  padding: 85px 24px 90px;
+  position: relative;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+  border-top: 3px solid #000000;
+}
+
+.partner-support-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Header */
+.support-header-block {
+  text-align: center;
+  max-width: 960px;
+  margin: 0 auto 40px;
+}
+
+.support-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #000000;
+  color: #ffd300;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+
+.support-title {
+  font-size: clamp(32px, 4.4vw, 52px);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  color: #000000;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+}
+
+.support-motto-pill {
+  display: inline-block;
+  background-color: #000000;
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  font-size: clamp(13px, 1.2vw, 16px);
+  font-weight: 750;
+  letter-spacing: 0.3px;
+}
+
+/* EMI Highlight Card */
+.emi-highlight-card {
+  background-color: #000000;
+  border: 3px solid #000000;
+  border-radius: 24px;
+  padding: 34px 32px;
+  display: flex;
+  align-items: flex-start;
+  gap: 26px;
+  margin-bottom: 45px;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+  .emi-highlight-card {
+    flex-direction: column;
+    padding: 26px 20px;
+  }
+}
+
+.emi-icon-box {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background-color: #ffd300;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.emi-content {
+  flex-grow: 1;
+}
+
+.emi-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.6px;
+  color: #ffd300;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.emi-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  line-height: 1.2;
+}
+
+.emi-desc {
+  font-size: 14.5px;
+  font-weight: 450;
+  line-height: 1.6;
+  color: #cccccc;
+  margin: 0;
+}
+
+/* Support Grid */
+.support-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+@media (max-width: 1024px) {
+  .support-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .support-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.support-card {
+  background-color: #ffffff;
+  border: 3px solid #000000;
+  border-radius: 20px;
+  padding: 26px 22px;
+  box-shadow: 5px 5px 0px #000000;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease;
+}
+
+.support-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 7px 7px 0px #000000;
+}
+
+.support-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: #ffd300;
+  color: #000000;
+  border: 2px solid #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.support-card-title {
+  font-size: 17px;
+  font-weight: 850;
+  color: #000000;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+
+.support-card-desc {
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.55;
+  color: #444444;
+  margin: 0;
+}
