@@ -28,6 +28,7 @@ import CourseDetails from "../pages/courseDetails/CourseDetails";
 import AdminPage from "../pages/admin/AdminPage";
 import OurTeam from "../pages/team/OurTeam";
 import AboutPage from "../pages/about/AboutPage";
+import OurCertificationPage from "../pages/certification/OurCertificationPage";
 
 export default function AppRoutes() {
   return (
@@ -65,7 +66,7 @@ export default function AppRoutes() {
         {/* Certification Dropdown Routes */}
         <Route
           path="our-certification"
-          element={<PlaceholderPage title="Our Certification" subtitle="Government recognized, ISO accredited course completion credentials." />}
+          element={<OurCertificationPage />}
         />
         <Route
           path="apply-certificate"
