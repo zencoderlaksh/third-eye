@@ -33,6 +33,7 @@ import Franchise from "../pages/franchise/Franchise";
 import ContactPage from "../pages/contact/ContactPage";
 import JobsAndPlacement from "../pages/placements/JobsAndPlacement";
 import JobDetailPage from "../pages/placements/JobDetailPage";
+import Memories from "../pages/Memories/memories";
 
 export default function AppRoutes() {
   return (
@@ -113,6 +114,14 @@ export default function AppRoutes() {
         <Route
           path="our-team"
           element={<OurTeam />} 
+        />
+        <Route
+          path="sweet-memories"
+          element={<Memories />}
+        />
+        <Route
+          path="memories"
+          element={<Memories />}
         />
 
         {/* Franchise & Pay Now */}
