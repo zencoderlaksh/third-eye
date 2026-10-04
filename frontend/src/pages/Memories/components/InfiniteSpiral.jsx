@@ -27,7 +27,7 @@ const InfiniteSpiral = ({
   centerScale = 1.2,
   edgeFade = 0.3,
   edgeBlur = 6,
-  pauseOnHover = true,
+  pauseOnHover = false,
   imageFit = 'cover',
   grayscale = 0,
   className = ''
@@ -36,7 +36,7 @@ const InfiniteSpiral = ({
   const cardRefs = useRef([]);
   const progressRef = useRef(0);
   const targetProgressRef = useRef(0);
-  const autoSpeedRef = useRef(0);
+  const autoSpeedRef = useRef(speed * (direction === 'down' ? -1 : 1));
   const hoveredRef = useRef(false);
   const visibleRef = useRef(true);
   const draggingRef = useRef(false);
@@ -105,14 +105,13 @@ const InfiniteSpiral = ({
       const motionPaused = draggingRef.current || (pauseOnHover && hoveredRef.current);
       const directionMultiplier = direction === 'down' ? -1 : 1;
       const desiredAutoSpeed =
-        autoEnabled && visibleRef.current && !reducedMotion.matches && !motionPaused
+        autoEnabled && !motionPaused
           ? speed * directionMultiplier
           : 0;
-      const speedBlend = 1 - Math.exp(-delta * 7);
-      autoSpeedRef.current += (desiredAutoSpeed - autoSpeedRef.current) * speedBlend;
+      autoSpeedRef.current = desiredAutoSpeed;
       targetProgressRef.current += autoSpeedRef.current * delta;
 
-      const followBlend = 1 - Math.exp(-delta * (draggingRef.current ? 22 : 11));
+      const followBlend = 1 - Math.exp(-delta * (draggingRef.current ? 22 : 14));
       progressRef.current += (targetProgressRef.current - progressRef.current) * followBlend;
 
       const count = normalizedItems.length;

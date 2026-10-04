@@ -201,7 +201,9 @@ function Memories() {
         <div className="infinite-spiral-wrapper">
           <InfiniteSpiral
             items={CELEBRATION_IMAGES}
-            speed={0.45}
+            speed={0.55}
+            direction="up"
+            animationMode="auto"
             radius={180}
             cardWidth={120}
             cardHeight={120}
@@ -209,7 +211,7 @@ function Memories() {
             perspective={1000}
             cardsPerTurn={7}
             centerScale={1.25}
-            pauseOnHover={true}
+            pauseOnHover={false}
             imageFit="cover"
             edgeBlur={2}
           />
