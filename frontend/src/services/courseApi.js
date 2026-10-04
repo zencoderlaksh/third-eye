@@ -4,9 +4,23 @@
  * All course data is stored strictly in MongoDB Atlas.
  */
 
-const BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+const getCleanBaseUrl = () => {
+  const envUrl = (import.meta.env.VITE_API_URL || "").trim().replace(/\/+$/, "");
+  if (!envUrl) return "";
+  return envUrl.endsWith("/api") ? envUrl.slice(0, -4) : envUrl;
+};
+
+const BASE_URL = getCleanBaseUrl();
 const API_BASE = `${BASE_URL}/api/courses`;
 const UPLOAD_API = `${BASE_URL}/api/upload`;
+
+if (typeof window !== "undefined" && !BASE_URL && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+  console.warn(
+    "[courseApi] VITE_API_URL is not set! API calls are defaulting to " +
+      window.location.origin +
+      ". If your frontend is on Netlify and backend is on Render, configure VITE_API_URL in Netlify site environment variables and redeploy."
+  );
+}
 
 /**
  * Check backend health status
@@ -27,7 +41,11 @@ export async function getHealthStatus() {
 export async function getCourses() {
   const res = await fetch(API_BASE);
   if (!res.ok) {
-    throw new Error(`Failed to fetch courses from server (HTTP ${res.status})`);
+    let msg = `Failed to fetch courses from server (HTTP ${res.status})`;
+    if (res.status === 404 && !BASE_URL) {
+      msg += `. VITE_API_URL is missing. Please set VITE_API_URL to your Render backend URL in Netlify and redeploy.`;
+    }
+    throw new Error(msg);
   }
   const data = await res.json();
   return Array.isArray(data) ? data : data.courses || [];
@@ -63,7 +81,9 @@ export async function uploadImageToImageKit(file) {
       const errData = await res.json();
       if (errData.error) errMsg = errData.error;
     } catch {
-      // ignore json parse error
+      if (res.status === 404 && !BASE_URL) {
+        errMsg = `Image upload failed (HTTP 404 at ${UPLOAD_API}). VITE_API_URL is not configured in Netlify.`;
+      }
     }
     throw new Error(errMsg);
   }
@@ -100,9 +120,15 @@ export async function createCourse(courseData, imageFile = null) {
     let errMsg = `Failed to create course in MongoDB (HTTP ${res.status})`;
     try {
       const errData = await res.json();
-      if (errData.error) errMsg = errData.error;
+      if (errData.error) errMsg = `${errData.error}${errData.message ? `: ${errData.message}` : ""}`;
     } catch {
-      // ignore
+      if (res.status === 404) {
+        errMsg = `Failed to create course in MongoDB (HTTP 404 at ${API_BASE}). ${
+          !BASE_URL
+            ? "VITE_API_URL is not set in Netlify site settings. Please set VITE_API_URL to your Render backend URL and trigger a redeploy."
+            : "Please verify that your Render backend URL is correct and the service is active."
+        }`;
+      }
     }
     throw new Error(errMsg);
   }
@@ -136,9 +162,11 @@ export async function updateCourse(id, courseData, imageFile = null) {
     let errMsg = `Failed to update course in MongoDB (HTTP ${res.status})`;
     try {
       const errData = await res.json();
-      if (errData.error) errMsg = errData.error;
+      if (errData.error) errMsg = `${errData.error}${errData.message ? `: ${errData.message}` : ""}`;
     } catch {
-      // ignore
+      if (res.status === 404 && !BASE_URL) {
+        errMsg = `Failed to update course in MongoDB (HTTP 404 at ${API_BASE}/${id}). VITE_API_URL is missing in Netlify.`;
+      }
     }
     throw new Error(errMsg);
   }
@@ -158,9 +186,11 @@ export async function deleteCourse(id) {
     let errMsg = `Failed to delete course from MongoDB (HTTP ${res.status})`;
     try {
       const errData = await res.json();
-      if (errData.error) errMsg = errData.error;
+      if (errData.error) errMsg = `${errData.error}${errData.message ? `: ${errData.message}` : ""}`;
     } catch {
-      // ignore
+      if (res.status === 404 && !BASE_URL) {
+        errMsg = `Failed to delete course from MongoDB (HTTP 404 at ${API_BASE}/${id}). VITE_API_URL is missing in Netlify.`;
+      }
     }
     throw new Error(errMsg);
   }

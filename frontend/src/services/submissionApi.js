@@ -3,8 +3,22 @@
  * Dispatches website form submissions to MongoDB and retrieves them for Admin panel.
  */
 
-const BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+const getCleanBaseUrl = () => {
+  const envUrl = (import.meta.env.VITE_API_URL || "").trim().replace(/\/+$/, "");
+  if (!envUrl) return "";
+  return envUrl.endsWith("/api") ? envUrl.slice(0, -4) : envUrl;
+};
+
+const BASE_URL = getCleanBaseUrl();
 const API_BASE = `${BASE_URL}/api/submissions`;
+
+if (typeof window !== "undefined" && !BASE_URL && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+  console.warn(
+    "[submissionApi] VITE_API_URL is not set! API calls are defaulting to " +
+      window.location.origin +
+      ". Please configure VITE_API_URL in Netlify site environment variables and redeploy."
+  );
+}
 
 /**
  * Submit any website form to MongoDB (supports optional resume file upload to ImageKit)
