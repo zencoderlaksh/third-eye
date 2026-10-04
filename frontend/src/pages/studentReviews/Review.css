@@ -1,0 +1,284 @@
+/* Reviews Page - Entire Yellow Background with Ambient Texture Effect */
+.reviews-page {
+  background-color: #ffd300;
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  color: #000000;
+  overflow-x: hidden;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Ambient Yellow Grid & Architectural Blueprint Dot Matrix Effect */
+.reviews-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.5) 0%, transparent 60%),
+    radial-gradient(circle at 100% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 45%),
+    radial-gradient(rgba(0, 0, 0, 0.09) 1.5px, transparent 1.5px),
+    linear-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 28px 28px, 84px 84px, 84px 84px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Dynamic Ambient FX Layer */
+.reviews-ambient-fx {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Interactive Cursor Spotlight Glow */
+.reviews-spotlight-halo {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(255, 245, 140, 0.22) 35%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: left 0.16s ease-out, top 0.16s ease-out;
+  filter: blur(45px);
+  will-change: left, top;
+}
+
+/* Floating Ambient Golden Light Blobs */
+.reviews-glow-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.reviews-glow-blob-1 {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, #ffffff 0%, rgba(255, 220, 0, 0.65) 50%, transparent 70%);
+  top: -100px;
+  left: -80px;
+  animation: floatOrb1 18s ease-in-out infinite alternate;
+}
+
+.reviews-glow-blob-2 {
+  width: 620px;
+  height: 620px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 0%, rgba(255, 195, 0, 0.55) 60%, transparent 75%);
+  bottom: 8%;
+  right: -120px;
+  animation: floatOrb2 22s ease-in-out infinite alternate;
+}
+
+.reviews-glow-blob-3 {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 235, 120, 0.45) 50%, transparent 70%);
+  top: 45%;
+  left: 20%;
+  animation: floatOrb3 20s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrb1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(80px, 120px) scale(1.15); }
+  100% { transform: translate(-40px, 60px) scale(0.95); }
+}
+
+@keyframes floatOrb2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-100px, -90px) scale(1.1); }
+  100% { transform: translate(50px, -40px) scale(0.9); }
+}
+
+@keyframes floatOrb3 {
+  0% { transform: translate(0, 0) scale(0.95); }
+  50% { transform: translate(60px, -80px) scale(1.12); }
+  100% { transform: translate(-50px, 40px) scale(1); }
+}
+
+/* Floating Geometric Wireframe Tech Glyphs */
+.reviews-particle {
+  position: absolute;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.16);
+  user-select: none;
+  pointer-events: none;
+  line-height: 1;
+  will-change: transform, opacity;
+  animation: floatParticle 14s ease-in-out infinite alternate;
+}
+
+.reviews-p1 { font-size: 28px; top: 16%; left: 8%; animation-duration: 16s; animation-delay: 0s; }
+.reviews-p2 { font-size: 22px; top: 30%; right: 10%; animation-duration: 20s; animation-delay: 2s; }
+.reviews-p3 { font-size: 18px; top: 55%; left: 7%; animation-duration: 18s; animation-delay: 4s; }
+.reviews-p4 { font-size: 34px; top: 72%; right: 8%; animation-duration: 22s; animation-delay: 1s; }
+.reviews-p5 { font-size: 20px; top: 86%; left: 12%; animation-duration: 19s; animation-delay: 3s; }
+.reviews-p6 { font-size: 24px; top: 46%; right: 16%; animation-duration: 24s; animation-delay: 5s; }
+
+@keyframes floatParticle {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0.12; }
+  50% { transform: translateY(-35px) rotate(45deg); opacity: 0.32; }
+  100% { transform: translateY(15px) rotate(90deg); opacity: 0.12; }
+}
+
+/* Common Section Container with generous breathing gaps */
+.reviews-section {
+  position: relative;
+  z-index: 1;
+  padding: 95px 24px 85px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.reviews-section-first {
+  padding-top: 130px;
+  padding-bottom: 95px;
+  margin-bottom: 60px;
+}
+
+/* Black Text Hero Heading */
+.reviews-hero-heading {
+  font-size: clamp(2.2rem, 5.8vw, 5.2rem);
+  font-weight: 950;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+  margin: 16px auto 24px;
+  max-width: 1100px;
+  text-align: center;
+  user-select: none;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.08));
+}
+
+/* Black Text Section Heading */
+.reviews-section-heading {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 950;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  margin: 14px 0 16px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.08));
+}
+
+/* High Contrast Pill Badge */
+.reviews-badge-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.92);
+  color: #ffd300;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  margin-bottom: 8px;
+}
+
+/* Subtitle */
+.reviews-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 600;
+  color: #18181b;
+  max-width: 680px;
+  margin: 0 auto 36px;
+  line-height: 1.6;
+}
+
+/* Quick Stats Bar */
+.reviews-stats-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.reviews-stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.88);
+  color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.95);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.reviews-stat-val {
+  color: #ffd300;
+  font-weight: 900;
+  font-size: 16px;
+}
+
+/* ========================================================
+   SECTION 4: Reviews Stroke Text Section
+   ======================================================== */
+.reviews-stroke-section {
+  padding: 100px 24px 135px;
+  margin-bottom: 0;
+}
+
+.reviews-stroke-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 20px auto 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reviews-stroke-watermark {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 950;
+  font-size: clamp(2rem, 7vw, 5.5rem);
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  user-select: none;
+  transition: all 0.4s ease;
+  margin-top: 10px;
+}
+
+.reviews-stroke-watermark:hover {
+  -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.95);
+  filter: drop-shadow(0 0 24px rgba(0, 0, 0, 0.22));
+  transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+  .reviews-section {
+    padding: 70px 16px;
+    margin-bottom: 35px;
+  }
+  .reviews-section-first {
+    padding-top: 95px;
+    padding-bottom: 65px;
+    margin-bottom: 45px;
+  }
+  .reviews-stroke-section {
+    padding: 70px 16px 95px;
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,213 @@
+import React, { memo, useState, useCallback } from 'react';
+import './Review.css';
+import VideoCarousel from './components/VideoCarousel';
+import ReviewTrail from './components/ReviewTrail';
+import FoldText from './components/FoldText';
+import StrokeText from './components/StrokeText';
+
+const VIDEO_TESTIMONIALS = [
+  {
+    id: 1,
+    videoId: 'xIr9tSA5vj4',
+    title: 'Graphic Design Training & Real-world Placement Review',
+    studentName: 'Shina Mathur',
+    course: 'Graphic Designing'
+  },
+  {
+    id: 2,
+    videoId: 'MvTcXGfCCls',
+    title: 'Web Development & Full Stack Practical Experience',
+    studentName: 'Ilmuddin Behlim',
+    course: 'Web Development'
+  },
+  {
+    id: 3,
+    videoId: 'QyM5b3PxyDU',
+    title: 'React JS Fast-Track Mentorship & Live Project Review',
+    studentName: 'Punya Singh',
+    course: 'React JS Development'
+  },
+  {
+    id: 4,
+    videoId: 'NzywyzmIYAE',
+    title: 'Data Analytics, SQL & Python Online Training Review',
+    studentName: 'Shadab Mohammad',
+    course: 'Data Analytics'
+  },
+  {
+    id: 5,
+    videoId: 'B8qv3oMP0Co',
+    title: 'Digital Marketing Comprehensive Course Feedback',
+    studentName: 'Geet Kashyap',
+    course: 'Digital Marketing'
+  },
+  {
+    id: 6,
+    videoId: 'aiOyEoe6Cz4',
+    title: 'CAD 3D Modeling & Mechanical Design Student Review',
+    studentName: 'Rohit Khandelwal',
+    course: '3D CAD & Modeling'
+  },
+  {
+    id: 7,
+    videoId: '9bVvGjYvyAw',
+    title: 'Animation & VFX Career Transformation Journey',
+    studentName: 'Vikas Meena',
+    course: '2D & 3D Animation'
+  },
+  {
+    id: 8,
+    videoId: 'xWd_207x-Hg',
+    title: 'Campus Culture, Dedicated Faculty & Industry Skills',
+    studentName: 'Anjali Sharma',
+    course: 'Software Engineering'
+  }
+];
+
+function Review() {
+  const [mousePos, setMousePos] = useState({ x: 50, y: 30 });
+
+  const handleMouseMove = useCallback((e) => {
+    const x = Math.round((e.clientX / window.innerWidth) * 100);
+    const y = Math.round((e.clientY / window.innerHeight) * 100);
+    setMousePos({ x, y });
+  }, []);
+
+  const scrollToVideos = () => {
+    const el = document.getElementById('video-testimonials-section');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <div className="reviews-page" onMouseMove={handleMouseMove}>
+      {/* Dynamic Ambient Background Effects */}
+      <div className="reviews-ambient-fx" aria-hidden="true">
+        {/* Interactive Mouse Spotlight Halo */}
+        <div
+          className="reviews-spotlight-halo"
+          style={{
+            left: `${mousePos.x}%`,
+            top: `${mousePos.y}%`
+          }}
+        />
+
+        {/* Floating Ambient Glowing Light Blobs */}
+        <div className="reviews-glow-blob reviews-glow-blob-1" />
+        <div className="reviews-glow-blob reviews-glow-blob-2" />
+        <div className="reviews-glow-blob reviews-glow-blob-3" />
+
+        {/* Floating Geometric Wireframe Tech Glyphs */}
+        <span className="reviews-particle reviews-p1">+</span>
+        <span className="reviews-particle reviews-p2">✦</span>
+        <span className="reviews-particle reviews-p3">◆</span>
+        <span className="reviews-particle reviews-p4">+</span>
+        <span className="reviews-particle reviews-p5">✦</span>
+        <span className="reviews-particle reviews-p6">◆</span>
+      </div>
+      
+      <section className="reviews-section reviews-section-first">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col items-center">
+        
+          {/* Heading "HEAR FROM OUR STUDENTS" with React Bits FoldText */}
+          <h1 className="reviews-hero-heading" aria-label="Hear From Our Students">
+            <FoldText
+              text="HEAR FROM OUR STUDENTS"
+              splitBy="char"
+              hinge="top"
+              duration={0.7}
+              stagger={0.035}
+              trigger="mount"
+              color="#000000"
+              fontWeight={950}
+              fontSize="inherit"
+            />
+          </h1>
+
+          {/* Subtitle */}
+          <p className="reviews-subtitle">
+            Hear genuine experiences, career transformations, and unfiltered feedback directly from our students and alumni across Jaipur and beyond.
+          </p>
+
+          {/* Quick Metrics Bar */}
+          <div className="reviews-stats-bar">
+            <div className="reviews-stat-pill">
+              <span className="reviews-stat-val">4.9 ★</span>
+              <span>Google Verified Rating</span>
+            </div>
+            <div className="reviews-stat-pill">
+              <span className="reviews-stat-val">15,000+</span>
+              <span>Upskilled Alumni</span>
+            </div>
+            <div className="reviews-stat-pill">
+              <span className="reviews-stat-val">100%</span>
+              <span>Practical & Lab Focused</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================
+          SECTION 2: Video Carousel from React Bits
+          ======================================================== */}
+      <section className="reviews-section">
+        {/* React Bits 3D Video Carousel */}
+        <VideoCarousel
+          items={VIDEO_TESTIMONIALS}
+          baseWidth={380}
+          autoplay={false}
+          loop={true}
+        />
+      </section>
+
+      {/* ========================================================
+          SECTION 3: Heading "FEEDBACK" & Moving Trail of Reviews
+          ======================================================== */}
+      <section className="reviews-section">
+        <div className="max-w-6xl mx-auto px-4 mb-8">
+        
+          <h2 className="reviews-section-heading">
+            FEEDBACK
+          </h2>
+        </div>
+
+        {/* Continuous Moving Trail of Reviews */}
+        <ReviewTrail />
+      </section>
+
+      {/* ========================================================
+          SECTION 4: Reviews Stroke Text Section
+          ======================================================== */}
+      <section className="reviews-section reviews-stroke-section text-center">
+        <div className="max-w-5xl mx-auto px-4 flex flex-col items-center">
+
+          <div className="reviews-stroke-wrapper my-4 w-full">
+            <StrokeText
+              text="REVIEWS"
+              strokeColor="#000000"
+              fillColor="#000000"
+              strokeWidth={1.8}
+              drawDuration={1.8}
+              fillDelay={0.3}
+              trigger="scroll"
+              fillMode="wipe"
+              fontSize={140}
+              fontWeight={950}
+              letterSpacing={-2}
+              className="w-full"
+            />
+          </div>
+
+          <p className="reviews-stroke-watermark mt-2">
+            THIRD EYE
+          </p>
+
+          <p className="reviews-subtitle mt-6 max-w-2xl mx-auto">
+            Every review, milestone, and student success story fuels our mission to deliver elite technical education and life-changing career opportunities.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+export default memo(Review);
