@@ -14,7 +14,7 @@ import {
   RefreshCw,
   CheckCircle2,
 } from "lucide-react";
-import { getCourses, createCourse, updateCourse, deleteCourse } from "../../services/courseApi";
+import { getCourses, createCourse, updateCourse, deleteCourse, getHealthStatus } from "../../services/courseApi";
 import CourseFormModal from "./components/CourseFormModal";
 import DeleteConfirmModal from "./components/DeleteConfirmModal";
 import "./AdminPage.css";
@@ -53,8 +53,7 @@ export default function AdminPage() {
         setIsLoading(false);
       });
 
-    fetch("/api/health")
-      .then((res) => (res.ok ? res.json() : null))
+    getHealthStatus()
       .then((h) => {
         if (h) setServerHealth(h);
       })
@@ -77,8 +76,7 @@ export default function AdminPage() {
         if (isMounted) setIsLoading(false);
       });
 
-    fetch("/api/health")
-      .then((res) => (res.ok ? res.json() : null))
+    getHealthStatus()
       .then((h) => {
         if (isMounted && h) setServerHealth(h);
       })
@@ -232,6 +230,12 @@ export default function AdminPage() {
           <div>
             <div className="admin-badge-row">
               <span className="admin-badge">ADMIN CONSOLE</span>
+              <span className="admin-status-pill">
+                <Database size={14} />
+                <span>
+                  MongoDB: {serverHealth?.database === "connected" ? "Connected" : "Connecting..."}
+                </span>
+              </span>
               <span className="admin-status-pill">
                 <Cloud size={14} />
                 <span>
