@@ -34,6 +34,7 @@ import ContactPage from "../pages/contact/ContactPage";
 import JobsAndPlacement from "../pages/placements/JobsAndPlacement";
 import JobDetailPage from "../pages/placements/JobDetailPage";
 import Memories from "../pages/Memories/memories";
+import Review from "../pages/studentReviews/Review";
 
 export default function AppRoutes() {
   return (
@@ -89,7 +90,15 @@ export default function AppRoutes() {
         {/* Rise and Shine Dropdown Routes */}
         <Route
           path="student-reviews"
-          element={<PlaceholderPage title="Students Reviews" subtitle="Hear genuine feedback, ratings and transformation journeys from our alumni." />}
+          element={<Review />}
+        />
+        <Route
+          path="reviews"
+          element={<Review />}
+        />
+        <Route
+          path="review"
+          element={<Review />}
         />
         <Route
           path="jobs-and-placement"

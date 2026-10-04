@@ -77,13 +77,54 @@
   contain-intrinsic-size: 1px 700px;
 }
 
+/* Section 3: Celebration with Infinite Spiral - Yellow Background */
 .sweet-memories-section-alt {
   position: relative;
-  background: linear-gradient(180deg, #0b0c10 0%, #11131b 50%, #0b0c10 100%);
+  background-color: #ffd300;
   padding: 100px 24px 120px;
   overflow: hidden;
   content-visibility: auto;
   contain-intrinsic-size: 1px 800px;
+}
+
+.sweet-memories-section-alt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+.sweet-memories-section-alt .sweet-memories-section-title {
+  color: #000000;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+}
+
+.sweet-memories-section-alt .sweet-memories-pill {
+  background: rgba(0, 0, 0, 0.9);
+  color: #ffd300;
+  border: 1px solid rgba(0, 0, 0, 0.95);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.sweet-memories-section-alt .infinite-spiral-wrapper {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.sweet-memories-section-alt .infinite-spiral__item {
+  border: 2.5px solid #ffffff;
+  background: #ffffff;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.sweet-memories-section-alt .infinite-spiral__item:hover {
+  border-color: #000000;
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.45);
 }
 
 /* Section Header Typography */
