@@ -6,8 +6,22 @@
 
 import { JOB_OPENINGS as FALLBACK_JOBS, getJobBySlug as fallbackGetBySlug } from "../pages/placements/jobsData";
 
-const BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+const getCleanBaseUrl = () => {
+  const envUrl = (import.meta.env.VITE_API_URL || "").trim().replace(/\/+$/, "");
+  if (!envUrl) return "";
+  return envUrl.endsWith("/api") ? envUrl.slice(0, -4) : envUrl;
+};
+
+const BASE_URL = getCleanBaseUrl();
 const API_BASE = `${BASE_URL}/api/jobs`;
+
+if (typeof window !== "undefined" && !BASE_URL && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+  console.warn(
+    "[jobApi] VITE_API_URL is not set! API calls are defaulting to " +
+      window.location.origin +
+      ". Please configure VITE_API_URL in Netlify site environment variables and redeploy."
+  );
+}
 
 /**
  * Fetch all jobs from MongoDB

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { Sparkles, Users, ArrowRight } from "lucide-react";
+import { Users, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import teamPhotoLocal from "../../../assets/team_photo.webp";
 
@@ -53,6 +53,7 @@ export default function AboutScrollExpandTeam() {
 
   // Overlay badge opacity when enlarged
   const badgeOpacity = useTransform(smoothProgress, [0.45, 0.75], [0, 1]);
+  const textPointerEvents = useTransform(smoothProgress, (v) => (v > 0.4 ? "none" : "auto"));
 
   return (
     <section
@@ -75,7 +76,7 @@ export default function AboutScrollExpandTeam() {
                 opacity: textOpacity,
                 x: textX,
                 scale: textScale,
-                pointerEvents: useTransform(smoothProgress, (v) => (v > 0.4 ? "none" : "auto")),
+                pointerEvents: textPointerEvents,
               }}
               className="absolute left-8 xl:left-12 w-[48%] z-10 pr-6"
             >

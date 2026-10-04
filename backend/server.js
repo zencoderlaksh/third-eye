@@ -29,9 +29,11 @@ app.use(
       if (!origin) return callback(null, true);
 
       const normalizedOrigin = origin.replace(/\/$/, "");
+      const isNetlify = normalizedOrigin.endsWith(".netlify.app");
       if (
         allowedOrigins.includes("*") ||
         allowedOrigins.includes(normalizedOrigin) ||
+        isNetlify ||
         process.env.NODE_ENV !== "production"
       ) {
         return callback(null, true);
