@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import "./FranchiseHero.css";
 import { 
   Sparkles,
@@ -309,17 +310,13 @@ export default function FranchiseHero({ onOpenInquiry }) {
 
         {/* Hero CTA Action Buttons */}
         <div className="hero-action-row">
-          <button 
-            type="button" 
+          <Link 
+            to="/courses"
             className="hero-btn-primary"
-            onClick={onOpenInquiry}
           >
-            <span>Apply For Franchise Now</span>
+            <span>Explore Courses</span>
             <ArrowRight size={18} />
-          </button>
-          <a href="#how-to-start" className="hero-btn-secondary">
-            <span>Explore 6-Step Setup</span>
-          </a>
+          </Link>
           <a href="tel:+918058061222" className="hero-btn-outline">
             <PhoneCall size={16} />
             <span>+91 805 806 1222</span>
