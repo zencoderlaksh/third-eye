@@ -15,7 +15,8 @@ const connectDB = async () => {
   const uri = process.env.MONGODB_URI;
 
   if (!uri) {
-    console.log("ℹ️ [Database] MONGODB_URI not set. Using persistent local file storage (backend/data/courses.json).");
+    console.error("❌ [Database Error] MONGODB_URI is not set in backend/.env. MongoDB connection is required.");
+    isConnected = false;
     return false;
   }
 
@@ -25,8 +26,7 @@ const connectDB = async () => {
     console.log(`✅ [MongoDB] Connected: ${conn.connection.host}`);
     return true;
   } catch (error) {
-    console.error(`⚠️ [MongoDB] Connection error: ${error.message}`);
-    console.log("ℹ️ [Database] Falling back to persistent local file storage (backend/data/courses.json).");
+    console.error(`❌ [MongoDB] Connection error: ${error.message}`);
     isConnected = false;
     return false;
   }

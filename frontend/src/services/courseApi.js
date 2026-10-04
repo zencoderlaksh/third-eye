@@ -1,62 +1,48 @@
 /**
  * Course API Service
- * Communicates with the Express backend for Course CRUD operations and Cloudinary image uploads.
- * Includes local storage sync fallback so admin actions remain functional even before backend is started.
+ * Communicates with the Express backend for MongoDB Course CRUD operations and ImageKit image uploads.
+ * All course data is stored strictly in MongoDB Atlas.
  */
 
-const API_BASE = "/api/courses";
-const UPLOAD_API = "/api/upload";
-const LOCAL_STORAGE_KEY = "third_eye_dynamic_courses";
-
-// Helper to get local courses
-export function getLocalCourses() {
-  try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-// Helper to save local courses
-export function saveLocalCourses(courses) {
-  try {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(courses));
-  } catch (err) {
-    console.error("Failed to save courses to localStorage", err);
-  }
-}
+const BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+const API_BASE = `${BASE_URL}/api/courses`;
+const UPLOAD_API = `${BASE_URL}/api/upload`;
 
 /**
- * Fetch all dynamic courses
+ * Check backend health status
  */
-export async function getCourses() {
+export async function getHealthStatus() {
   try {
-    const res = await fetch(API_BASE);
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-    const data = await res.json();
-    const courses = Array.isArray(data) ? data : (data.courses || []);
-    // Cache to localStorage
-    saveLocalCourses(courses);
-    return courses;
-  } catch (err) {
-    console.warn("Backend not reachable, loading courses from local storage fallback:", err.message);
-    return getLocalCourses();
-  }
-}
-
-/**
- * Fetch single course by slug or ID
- */
-export async function getCourseBySlug(slug) {
-  try {
-    const res = await fetch(`${API_BASE}/${slug}`);
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+    const res = await fetch(`${BASE_URL}/api/health`);
+    if (!res.ok) return null;
     return await res.json();
   } catch {
-    const local = getLocalCourses();
-    return local.find((c) => c.slug === slug || c._id === slug || c.id === slug) || null;
+    return null;
   }
+}
+
+/**
+ * Fetch all courses directly from MongoDB
+ */
+export async function getCourses() {
+  const res = await fetch(API_BASE);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch courses from server (HTTP ${res.status})`);
+  }
+  const data = await res.json();
+  return Array.isArray(data) ? data : data.courses || [];
+}
+
+/**
+ * Fetch single course by slug or ID from MongoDB
+ */
+export async function getCourseBySlug(slug) {
+  const res = await fetch(`${API_BASE}/${slug}`);
+  if (res.status === 404) return null;
+  if (!res.ok) {
+    throw new Error(`Failed to fetch course details (HTTP ${res.status})`);
+  }
+  return await res.json();
 }
 
 /**
@@ -89,11 +75,11 @@ export async function uploadImageToImageKit(file) {
 export const uploadImageToCloudinary = uploadImageToImageKit;
 
 /**
- * Create a new course
+ * Create a new course in MongoDB
  */
 export async function createCourse(courseData, imageFile = null) {
   let imageUrl = courseData.image || "";
-  
+
   if (imageFile) {
     imageUrl = await uploadImageToImageKit(imageFile);
   }
@@ -104,34 +90,28 @@ export async function createCourse(courseData, imageFile = null) {
     createdAt: new Date().toISOString(),
   };
 
-  try {
-    const res = await fetch(API_BASE, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error(`Create course failed with status: ${res.status}`);
-    const created = await res.json();
-    
-    // Update local cache
-    const current = getLocalCourses();
-    saveLocalCourses([created, ...current]);
-    return created;
-  } catch (err) {
-    console.warn("Backend unavailable, saving course locally:", err.message);
-    const mockCreated = {
-      _id: "local_" + Date.now(),
-      id: "local_" + Date.now(),
-      ...payload,
-    };
-    const current = getLocalCourses();
-    saveLocalCourses([mockCreated, ...current]);
-    return mockCreated;
+  const res = await fetch(API_BASE, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    let errMsg = `Failed to create course in MongoDB (HTTP ${res.status})`;
+    try {
+      const errData = await res.json();
+      if (errData.error) errMsg = errData.error;
+    } catch {
+      // ignore
+    }
+    throw new Error(errMsg);
   }
+
+  return await res.json();
 }
 
 /**
- * Update an existing course
+ * Update an existing course in MongoDB
  */
 export async function updateCourse(id, courseData, imageFile = null) {
   let imageUrl = courseData.image;
@@ -146,44 +126,44 @@ export async function updateCourse(id, courseData, imageFile = null) {
     updatedAt: new Date().toISOString(),
   };
 
-  try {
-    const res = await fetch(`${API_BASE}/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) throw new Error(`Update course failed with status: ${res.status}`);
-    const updated = await res.json();
+  const res = await fetch(`${API_BASE}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 
-    const current = getLocalCourses().map((c) => (c._id === id || c.id === id ? updated : c));
-    saveLocalCourses(current);
-    return updated;
-  } catch (err) {
-    console.warn("Backend unavailable, updating course locally:", err.message);
-    const updated = { ...payload, _id: id, id };
-    const current = getLocalCourses().map((c) => (c._id === id || c.id === id ? updated : c));
-    saveLocalCourses(current);
-    return updated;
+  if (!res.ok) {
+    let errMsg = `Failed to update course in MongoDB (HTTP ${res.status})`;
+    try {
+      const errData = await res.json();
+      if (errData.error) errMsg = errData.error;
+    } catch {
+      // ignore
+    }
+    throw new Error(errMsg);
   }
+
+  return await res.json();
 }
 
 /**
- * Delete a course
+ * Delete a course from MongoDB
  */
 export async function deleteCourse(id) {
-  try {
-    const res = await fetch(`${API_BASE}/${id}`, {
-      method: "DELETE",
-    });
-    if (!res.ok) throw new Error(`Delete course failed with status: ${res.status}`);
-    
-    const current = getLocalCourses().filter((c) => c._id !== id && c.id !== id);
-    saveLocalCourses(current);
-    return true;
-  } catch (err) {
-    console.warn("Backend unavailable, deleting course locally:", err.message);
-    const current = getLocalCourses().filter((c) => c._id !== id && c.id !== id);
-    saveLocalCourses(current);
-    return true;
+  const res = await fetch(`${API_BASE}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    let errMsg = `Failed to delete course from MongoDB (HTTP ${res.status})`;
+    try {
+      const errData = await res.json();
+      if (errData.error) errMsg = errData.error;
+    } catch {
+      // ignore
+    }
+    throw new Error(errMsg);
   }
+
+  return true;
 }
