@@ -30,6 +30,9 @@ import OurTeam from "../pages/team/OurTeam";
 import AboutPage from "../pages/about/AboutPage";
 import OurCertificationPage from "../pages/certification/OurCertificationPage";
 import Franchise from "../pages/franchise/Franchise";
+import ContactPage from "../pages/contact/ContactPage";
+import JobsAndPlacement from "../pages/placements/JobsAndPlacement";
+import JobDetailPage from "../pages/placements/JobDetailPage";
 
 export default function AppRoutes() {
   return (
@@ -61,7 +64,11 @@ export default function AppRoutes() {
         />
         <Route
           path="contact-us"
-          element={<PlaceholderPage title="Contact Us" subtitle="Get in touch with our admissions desk, counselors, and campus directors." />}
+          element={<ContactPage />}
+        />
+        <Route
+          path="contact"
+          element={<ContactPage />}
         />
 
         {/* Certification Dropdown Routes */}
@@ -85,7 +92,23 @@ export default function AppRoutes() {
         />
         <Route
           path="jobs-and-placement"
-          element={<PlaceholderPage title="Jobs and Placement" subtitle="Discover our placement records, campus drives, and hiring partner networks." />}
+          element={<JobsAndPlacement />}
+        />
+        <Route
+          path="jobs"
+          element={<JobsAndPlacement />}
+        />
+        <Route
+          path="placements"
+          element={<JobsAndPlacement />}
+        />
+        <Route
+          path="jobs/:jobSlug"
+          element={<JobDetailPage />}
+        />
+        <Route
+          path="jobs-and-placement/:jobSlug"
+          element={<JobDetailPage />}
         />
         <Route
           path="our-team"

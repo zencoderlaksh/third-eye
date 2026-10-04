@@ -16,6 +16,7 @@ import {
   CheckCircle2, 
   PhoneCall 
 } from "lucide-react";
+import { createSubmission } from "../../../services/submissionApi";
 
 const INVESTMENT_OPTIONS = [
   { value: "Below 10 Lakhs", label: "Below ₹10 Lakhs" },
@@ -52,14 +53,28 @@ export default function FranchiseInquiryForm({ formRef }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate network delay
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      await createSubmission({
+        formType: "franchise",
+        name: formData.fullName.trim(),
+        phone: formData.phone.trim(),
+        email: formData.email.trim(),
+        city: formData.city.trim(),
+        investment: formData.investment,
+        background: formData.background,
+        message: formData.message.trim(),
+      });
       setSubmitted(true);
-    }, 700);
+    } catch (err) {
+      console.warn("MongoDB submission warning:", err.message);
+      setSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

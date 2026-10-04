@@ -2,8 +2,17 @@ import React from "react";
 import { AlertTriangle, X, Trash2 } from "lucide-react";
 import "./DeleteConfirmModal.css";
 
-export default function DeleteConfirmModal({ isOpen, course, onClose, onConfirm, isDeleting }) {
-  if (!isOpen || !course) return null;
+export default function DeleteConfirmModal({
+  isOpen,
+  course,
+  item,
+  itemType = "Course",
+  onClose,
+  onConfirm,
+  isDeleting,
+}) {
+  const target = item || course;
+  if (!isOpen || !target) return null;
 
   return (
     <div className="admin-modal-backdrop" onClick={onClose}>
@@ -25,11 +34,11 @@ export default function DeleteConfirmModal({ isOpen, course, onClose, onConfirm,
           <AlertTriangle size={32} className="delete-modal-warning-icon" />
         </div>
 
-        <h3 className="delete-modal-title">Delete Course</h3>
+        <h3 className="delete-modal-title">Delete {itemType}</h3>
         <p className="delete-modal-message">
           Are you sure you want to delete{" "}
-          <strong className="delete-highlight">{course.title}</strong>?
-          This action will immediately remove the course from the catalog.
+          <strong className="delete-highlight">{target.title}</strong>?
+          This action will immediately remove this {itemType.toLowerCase()} from MongoDB.
         </p>
 
         <div className="delete-modal-actions">
@@ -44,11 +53,11 @@ export default function DeleteConfirmModal({ isOpen, course, onClose, onConfirm,
           <button
             type="button"
             className="delete-btn-confirm"
-            onClick={() => onConfirm(course._id || course.id)}
+            onClick={() => onConfirm(target._id || target.id)}
             disabled={isDeleting}
           >
             <Trash2 size={16} />
-            <span>{isDeleting ? "Deleting..." : "Yes, Delete Course"}</span>
+            <span>{isDeleting ? "Deleting..." : `Yes, Delete ${itemType}`}</span>
           </button>
         </div>
       </div>

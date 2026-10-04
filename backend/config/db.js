@@ -32,7 +32,9 @@ const connectDB = async () => {
   }
 };
 
-const getDBStatus = () => isConnected;
+const getDBStatus = () => {
+  return isConnected || Boolean(mongoose.connection && mongoose.connection.readyState === 1);
+};
 
 module.exports = {
   connectDB,
