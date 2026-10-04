@@ -8,7 +8,6 @@ import FranchiseCourses from "./components/FranchiseCourses";
 import PartnerSupport from "./components/PartnerSupport";
 import NetworkCentres from "./components/NetworkCentres";
 import PartnerTestimonials from "./components/PartnerTestimonials";
-import LeadershipTeam from "./components/LeadershipTeam";
 import StepsToStart from "./components/StepsToStart";
 import FranchiseInquiryForm from "./components/FranchiseInquiryForm";
 import ScrollReveal from "./components/ScrollReveal";
@@ -61,10 +60,6 @@ export default function Franchise() {
         <PartnerTestimonials />
       </ScrollReveal>
 
-      {/* 9. Leadership Team Behind the Brand */}
-      <ScrollReveal direction="up" delay={40} duration={750}>
-        <LeadershipTeam onOpenInquiry={scrollToInquiry} />
-      </ScrollReveal>
 
       {/* 10. 6-Step Roadmap to Launch */}
       <ScrollReveal direction="up" delay={40} duration={750}>

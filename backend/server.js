@@ -5,6 +5,8 @@ const dotenv = require("dotenv");
 const { connectDB, getDBStatus } = require("./config/db");
 const { isImageKitConfigured } = require("./config/imagekit");
 const courseRoutes = require("./routes/courseRoutes");
+const jobRoutes = require("./routes/jobRoutes");
+const submissionRoutes = require("./routes/submissionRoutes");
 
 dotenv.config();
 
@@ -47,6 +49,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Mount API routes
 app.use("/api", courseRoutes);
+app.use("/api", jobRoutes);
+app.use("/api/submissions", submissionRoutes);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {
@@ -62,7 +66,8 @@ app.listen(PORT, () => {
   console.log(`\n🚀 [Third Eye Backend] Server running on port ${PORT}`);
   console.log(`📸 [ImageKit] Status: ${isImageKitConfigured() ? "Configured & Active" : "Missing credentials in backend/.env"}`);
   console.log(`🌐 [CORS] Allowed Origins: ${allowedOrigins.join(", ")}`);
-  console.log(`📚 [Courses API] Endpoint active at /api/courses\n`);
+  console.log(`📚 [Courses API] Endpoint active at /api/courses`);
+  console.log(`💼 [Jobs API] Endpoint active at /api/jobs\n`);
 });
 
 module.exports = app;

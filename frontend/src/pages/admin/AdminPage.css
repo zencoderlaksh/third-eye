@@ -522,3 +522,765 @@
   .admin-courses-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 540px) { .admin-metrics-grid { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   Section Tabs (Courses vs Jobs Switcher)
+   ========================================================================== */
+.admin-section-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  background: #0d1017;
+  padding: 6px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.admin-section-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-section-tab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.admin-section-tab-btn.active {
+  background: #f6d96b;
+  color: #0b0d13;
+  box-shadow: 0 4px 18px rgba(246, 217, 107, 0.25);
+  border-color: #f6d96b;
+}
+
+.section-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 11.5px;
+  font-weight: 850;
+  background: rgba(0, 0, 0, 0.2);
+  color: inherit;
+}
+
+.admin-section-tab-btn:not(.active) .section-count-badge {
+  background: rgba(255, 255, 255, 0.08);
+  color: #d1d5db;
+}
+
+/* ==========================================================================
+   Admin Jobs Grid & Job Cards (MongoDB)
+   ========================================================================== */
+.admin-jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 22px;
+}
+
+.admin-job-card {
+  background: #0b0e16;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-job-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f6d96b, transparent);
+  opacity: 0.6;
+}
+
+.admin-job-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(246, 217, 107, 0.35);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(246, 217, 107, 0.08);
+}
+
+.admin-job-card.inactive {
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.admin-job-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.job-tag-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.job-category-tag {
+  background: rgba(246, 217, 107, 0.12);
+  color: #f6d96b;
+  border: 1px solid rgba(246, 217, 107, 0.25);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.job-badge-pill {
+  background: rgba(56, 189, 248, 0.1);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.job-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 750;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.job-status-pill.status-live {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.job-status-pill.status-paused {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.admin-job-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-job-title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 850;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+
+.admin-job-company-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  color: #d1d5db;
+  font-weight: 650;
+  flex-wrap: wrap;
+}
+
+.company-name, .location-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.company-name svg { color: #f6d96b; }
+.location-name svg { color: #9ca3af; }
+.dot-sep { color: #4b5563; }
+
+.admin-job-slug-link {
+  display: inline-block;
+}
+
+.admin-job-slug-link code {
+  background: rgba(255, 255, 255, 0.05);
+  color: #9ca3af;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-family: monospace;
+}
+
+.admin-job-desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #9ca3af;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.admin-job-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.job-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: #d1d5db;
+  font-weight: 650;
+}
+
+.job-meta-pill.salary {
+  background: rgba(246, 217, 107, 0.08);
+  border-color: rgba(246, 217, 107, 0.25);
+  color: #f6d96b;
+  font-weight: 800;
+}
+
+.admin-job-recruiter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+.admin-job-recruiter-bar svg {
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+.admin-job-recruiter-bar strong {
+  color: #e5e7eb;
+}
+
+.admin-job-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 768px) {
+  .admin-section-tabs {
+    width: 100%;
+    flex-direction: column;
+  }
+  .admin-section-tab-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .admin-jobs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Admin Form Submissions & Leads Section Styles (MongoDB)
+   ========================================================================== */
+
+.badge-new-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f6d96b;
+  box-shadow: 0 0 8px #f6d96b;
+  display: inline-block;
+  margin-left: 4px;
+  animation: pulseDot 1.5s infinite;
+}
+
+@keyframes pulseDot {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.admin-add-btn.forms-refresh {
+  background: #111520;
+  color: #f6d96b;
+  border: 1.5px solid rgba(246, 217, 107, 0.4);
+}
+
+.admin-add-btn.forms-refresh:hover {
+  background: rgba(246, 217, 107, 0.15);
+  border-color: #f6d96b;
+}
+
+.forms-controls-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.forms-status-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.forms-status-filter-row .filter-label {
+  font-size: 12px;
+  font-weight: 750;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-status-pill-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 11.5px;
+  font-weight: 750;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.form-status-pill-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.form-status-pill-btn.active {
+  background: #f6d96b;
+  color: #0b0d13;
+  border-color: #f6d96b;
+  box-shadow: 0 2px 10px rgba(246, 217, 107, 0.25);
+}
+
+/* Submissions Grid */
+.admin-submissions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 22px;
+}
+
+@media (max-width: 600px) {
+  .admin-submissions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-submission-card {
+  background: #0b0e16;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-submission-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(246, 217, 107, 0.35);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(246, 217, 107, 0.08);
+}
+
+.submission-card-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.submission-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.submission-type-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.submission-type-tag.type-franchise {
+  background: rgba(246, 217, 107, 0.12);
+  color: #f6d96b;
+  border: 1px solid rgba(246, 217, 107, 0.3);
+}
+
+.submission-type-tag.type-job {
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.submission-type-tag.type-contact {
+  background: rgba(52, 211, 153, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.submission-time-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: #9ca3af;
+}
+
+/* Status Selector Dropdown */
+.submission-status-wrapper {
+  position: relative;
+}
+
+.submission-status-select {
+  appearance: none;
+  border-radius: 999px;
+  padding: 4px 26px 4px 12px;
+  font-size: 11.5px;
+  font-weight: 800;
+  cursor: pointer;
+  outline: none;
+  border: 1.5px solid transparent;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.submission-status-select.status-new {
+  background-color: rgba(246, 217, 107, 0.12);
+  border-color: rgba(246, 217, 107, 0.4);
+  color: #f6d96b;
+}
+
+.submission-status-select.status-in_review {
+  background-color: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.4);
+  color: #c084fc;
+}
+
+.submission-status-select.status-contacted {
+  background-color: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+.submission-status-select.status-resolved {
+  background-color: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #10b981;
+}
+
+.submission-status-select.status-archived {
+  background-color: rgba(156, 163, 175, 0.1);
+  border-color: rgba(156, 163, 175, 0.25);
+  color: #9ca3af;
+}
+
+.submission-status-select option {
+  background: #0f131c;
+  color: #ffffff;
+}
+
+/* Submitter Profile Row */
+.submission-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.submission-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(246, 217, 107, 0.2), rgba(246, 217, 107, 0.05));
+  border: 1.5px solid rgba(246, 217, 107, 0.35);
+  color: #f6d96b;
+  font-size: 18px;
+  font-weight: 850;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.submission-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.submission-name {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 850;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+}
+
+.submission-contact-items {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sub-contact-link, .sub-contact-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.sub-contact-link.phone {
+  color: #f6d96b;
+}
+
+.sub-contact-link.phone:hover {
+  text-decoration: underline;
+}
+
+.sub-contact-link.email {
+  color: #9ca3af;
+}
+
+.sub-contact-link.email:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.sub-contact-pill.city {
+  color: #60a5fa;
+}
+
+/* Custom Metadata Strip */
+.submission-meta-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.sub-meta-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta-cell-title {
+  font-size: 10.5px;
+  font-weight: 750;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.meta-cell-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e5e7eb;
+}
+
+.meta-cell-val.highlight {
+  color: #f6d96b;
+}
+
+.meta-cell-val.file-attached {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #38bdf8;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+/* Message Box */
+.submission-message-box {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.message-box-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 750;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.message-box-body {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #d1d5db;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Action Footer */
+.submission-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.submission-action-direct {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sub-btn-call, .sub-btn-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 750;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.sub-btn-call {
+  background: rgba(246, 217, 107, 0.12);
+  border: 1px solid rgba(246, 217, 107, 0.3);
+  color: #f6d96b;
+}
+
+.sub-btn-call:hover {
+  background: #f6d96b;
+  color: #0b0d13;
+}
+
+.sub-btn-email {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e5e7eb;
+}
+
+.sub-btn-email:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+/* Resume Button Styles in Admin Submissions */
+.resume-active-link {
+  color: #38bdf8 !important;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(56, 189, 248, 0.1);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.resume-active-link:hover {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: #38bdf8;
+  color: #ffffff !important;
+}
+
+.sub-btn-resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 750;
+  text-decoration: none;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+  transition: all 0.2s ease;
+}
+
+.sub-btn-resume:hover {
+  background: #38bdf8;
+  color: #0b0d13;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}

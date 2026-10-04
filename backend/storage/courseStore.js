@@ -67,7 +67,7 @@ const CourseStore = {
     if (data.title && !data.slug) {
       data.slug = generateSlug(data.title);
     }
-    return await Course.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+    return await Course.findByIdAndUpdate(id, data, { returnDocument: "after", runValidators: true });
   },
 
   // 5. Delete Course

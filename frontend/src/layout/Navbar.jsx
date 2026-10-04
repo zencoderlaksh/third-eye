@@ -504,7 +504,7 @@ export default function Navbar() {
                           </div>
                           <div>
                             <div className="text-sm font-semibold text-zinc-100 group-hover:text-[#f6d96b] transition-colors">
-                              Contact & Campuses
+                              Contact Us
                             </div>
                             <p className="text-xs text-zinc-400 line-clamp-1">
                               Speak with counselors or visit in-person
