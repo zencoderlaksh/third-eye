@@ -1,0 +1,237 @@
+/* Sweet Memories Page Styling - High Performance & GPU Accelerated */
+
+/* Section 1: Yellow Hero with Masked Typography */
+.sweet-memories-hero {
+  background-color: #ffd300;
+  position: relative;
+  overflow: hidden;
+  min-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 100px 24px 60px;
+}
+
+/* Subtle decorative patterns on yellow background */
+.sweet-memories-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+/* The Masked Heading */
+.sweet-memories-masked-text {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  background-size: cover;
+  background-position: center 35%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.28));
+  transition: transform 0.4s ease, filter 0.4s ease;
+  user-select: none;
+  display: inline-block;
+  will-change: transform;
+}
+
+.sweet-memories-masked-text:hover {
+  transform: scale(1.015);
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.38));
+}
+
+/* Floating badge in hero */
+.sweet-memories-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.88);
+  color: #ffd300;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  margin-bottom: 24px;
+}
+
+/* Sections with modern content-visibility rendering optimization */
+.sweet-memories-section {
+  position: relative;
+  background-color: #0b0c10;
+  padding: 100px 24px;
+  overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 700px;
+}
+
+.sweet-memories-section-alt {
+  position: relative;
+  background: linear-gradient(180deg, #0b0c10 0%, #11131b 50%, #0b0c10 100%);
+  padding: 100px 24px 120px;
+  overflow: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
+}
+
+/* Section Header Typography */
+.sweet-memories-section-title {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.sweet-memories-section-subtitle {
+  color: #9ca3af;
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  max-width: 680px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.sweet-memories-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 211, 0, 0.1);
+  color: #ffd300;
+  border: 1px solid rgba(255, 211, 0, 0.25);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* Interactive Card wrappers - GPU Composited */
+.flex-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1350px;
+  margin: 0 auto;
+  height: 580px;
+  border-radius: 28px;
+  background: radial-gradient(circle at 50% 20%, #1c1e2a 0%, #0d0e15 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  contain: paint layout;
+  transform: translateZ(0);
+}
+
+.infinite-spiral-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1350px;
+  margin: 0 auto;
+  height: 720px;
+  border-radius: 28px;
+  background: radial-gradient(circle at 50% 30%, #181a24 0%, #090a0f 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  contain: paint layout;
+  transform: translateZ(0);
+}
+
+/* Scroll indicator pill in Section 1 */
+.sweet-memories-scroll-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  background: #000000;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  margin-top: 28px;
+}
+
+.sweet-memories-scroll-btn:hover {
+  transform: translateY(-2px);
+  background: #18181b;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .sweet-memories-hero {
+    min-height: 75vh;
+    padding: 85px 16px 50px;
+  }
+  .flex-carousel-wrapper {
+    height: 480px;
+    border-radius: 20px;
+  }
+  .infinite-spiral-wrapper {
+    height: 580px;
+    border-radius: 20px;
+  }
+}
+
+/* ========================================================
+   SECTION 4: Stroke Text Showcase Section
+   ======================================================== */
+.stroke-text-section {
+  position: relative;
+  background: radial-gradient(circle at 50% 40%, #151824 0%, #090a0f 100%);
+  padding: 110px 24px 130px;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  text-align: center;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
+}
+
+.stroke-text-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  margin: 30px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  contain: paint layout;
+}
+
+.stroke-watermark-text {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 950;
+  font-size: clamp(2rem, 7vw, 5.5rem);
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 211, 0, 0.28);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  user-select: none;
+  transition: all 0.4s ease;
+  margin-top: 20px;
+}
+
+.stroke-watermark-text:hover {
+  -webkit-text-stroke: 1.5px rgba(255, 211, 0, 0.85);
+  filter: drop-shadow(0 0 30px rgba(255, 211, 0, 0.4));
+  transform: scale(1.02);
+}
