@@ -20,6 +20,7 @@ import {
   Code2,
 } from "lucide-react";
 import logo from "../assets/logo.webp";
+import SoundToggle from "../components/SoundToggle";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -536,6 +537,9 @@ export default function Navbar() {
             {/* RIGHT: Warm Golden CTA Button & Mobile Hamburger Toggle       */}
             {/* ============================================================ */}
             <div className="flex items-center gap-2 sm:gap-3">
+              {/* Sound Icon Toggle */}
+              <SoundToggle />
+
               {/* Visible on both Mobile & Desktop Header */}
               <Link
                 to="/pay-now"

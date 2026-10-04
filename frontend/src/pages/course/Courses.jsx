@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Search, ArrowUpRight, Sparkles, RefreshCw, PlusCircle } from "lucide-react";
+import ThirdEyeSpinner from "../../components/ThirdEyeSpinner";
 import { getCourses } from "../../services/courseApi";
 import "./Courses.css";
 
@@ -121,13 +122,11 @@ const Courses = () => {
 
         {/* Content Area */}
         {isLoading ? (
-          <div className="courses-loading-wrap" style={{ textAlign: "center", padding: "60px 0" }}>
-            <RefreshCw
-              size={32}
-              className="spin"
-              style={{ color: "#f6d96b", margin: "0 auto 16px" }}
-            />
-            <p style={{ color: "#9ca3af", fontSize: "15px" }}>Fetching latest courses...</p>
+          <div className="courses-loading-wrap flex flex-col items-center justify-center py-20 text-center">
+            <ThirdEyeSpinner size="lg" showGlow={true} />
+            <p className="mt-4 text-sm font-mono tracking-wider text-zinc-400">
+              Fetching dynamic studio courses...
+            </p>
           </div>
         ) : filteredCourses.length > 0 ? (
           <div className="courses-grid">
