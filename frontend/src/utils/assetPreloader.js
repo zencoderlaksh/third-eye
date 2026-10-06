@@ -25,10 +25,10 @@ import preetiSharma from "../assets/leadership/preeti_sharma.png";
 import eccouncilCodeRed from "../assets/certificates/eccouncil_codered.png";
 import redhatRhcsa from "../assets/certificates/redhat_rhcsa.png";
 import autodeskAutocad from "../assets/certificates/autodesk_autocad.webp";
-import userBackgroundMusic from "../assets/audio/ambient_tone.mp3";
+import userBackgroundMusic from "../assets/audio/ambient_music_theme.mp3";
 
-export const CACHE_NAME = "thirdeye-v1-static";
-const CACHE_STORAGE_KEY = "thirdeye_cached_assets_v1";
+export const CACHE_NAME = "thirdeye-v3-static";
+const CACHE_STORAGE_KEY = "thirdeye_cached_assets_v3";
 
 // List of all critical high-res visual assets and audio to pre-download
 export const CRITICAL_ASSETS = [
@@ -52,7 +52,7 @@ export const CRITICAL_ASSETS = [
   { id: "eccouncilCodeRed", src: eccouncilCodeRed, label: "EC-Council Credentials" },
   { id: "redhatRhcsa", src: redhatRhcsa, label: "RedHat Enterprise Cert" },
   { id: "autodeskAutocad", src: autodeskAutocad, label: "Autodesk Design Standard" },
-  { id: "ambientAudio", src: userBackgroundMusic, label: "Acoustic Guitar Track" },
+  { id: "ambientAudio", src: userBackgroundMusic, label: "Background Music Track" },
 ];
 
 /**

@@ -4,7 +4,7 @@
  * to provide near-instant page loads for returning visitors.
  */
 
-const CACHE_NAME = 'thirdeye-v1-static';
+const CACHE_NAME = 'thirdeye-v3-static';
 
 // Static file extensions to aggressively cache locally
 const CACHEABLE_EXTENSIONS = [
@@ -47,7 +47,30 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. Cache-First Strategy for Images, Audio, Fonts, and Static Chunks
+  // 2. Audio Network-First Strategy (ensures fresh sound updates immediately)
+  const isAudio =
+    url.pathname.endsWith('.mp3') ||
+    url.pathname.endsWith('.wav') ||
+    url.pathname.includes('/audio/');
+
+  if (isAudio && request.method === 'GET') {
+    event.respondWith(
+      fetch(request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  // 3. Cache-First Strategy for Images, Fonts, and Static Chunks
   const isCacheableAsset =
     CACHEABLE_EXTENSIONS.some((ext) => url.pathname.endsWith(ext)) ||
     url.hostname.includes('fonts.googleapis.com') ||

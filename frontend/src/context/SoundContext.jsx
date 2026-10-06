@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from "react";
-import userBackgroundMusic from "../assets/audio/ambient_tone.mp3";
+import userBackgroundMusic from "../assets/audio/ambient_music_theme.mp3";
 
 const SoundContext = createContext();
 
