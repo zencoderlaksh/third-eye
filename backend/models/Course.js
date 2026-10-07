@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const ToolSchema = new mongoose.Schema(
   {
     id: { type: String, default: "" },
-    name: { type: String, required: true },
+    name: { type: String, default: "", trim: true },
     iconType: { type: String, default: "code" },
     glowColor: { type: String, default: "rgba(246, 217, 107, 0.3)" },
   },
@@ -14,8 +14,8 @@ const ModuleSchema = new mongoose.Schema(
   {
     id: { type: String, default: "" },
     moduleNumber: { type: String, default: "MODULE 1" },
-    title: { type: String, required: true },
-    description: { type: String, default: "" },
+    title: { type: String, default: "", trim: true },
+    description: { type: String, default: "", trim: true },
   },
   { _id: false }
 );
@@ -51,10 +51,12 @@ const CourseSchema = new mongoose.Schema(
     badge: {
       type: String,
       default: "Job Oriented",
+      trim: true,
     },
     duration: {
       type: String,
       default: "6 Months",
+      trim: true,
     },
     prerequisites: {
       type: [String],
@@ -77,5 +79,24 @@ const CourseSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Pre-validate hook: sanitize empty tools, modules, and prerequisites
+CourseSchema.pre("validate", function () {
+  if (Array.isArray(this.tools)) {
+    this.tools = this.tools.filter(
+      (t) => t && typeof t.name === "string" && t.name.trim().length > 0
+    );
+  }
+  if (Array.isArray(this.modules)) {
+    this.modules = this.modules.filter(
+      (m) => m && typeof m.title === "string" && m.title.trim().length > 0
+    );
+  }
+  if (Array.isArray(this.prerequisites)) {
+    this.prerequisites = this.prerequisites.filter(
+      (p) => p && typeof p === "string" && p.trim().length > 0
+    );
+  }
+});
 
 module.exports = mongoose.model("Course", CourseSchema);
