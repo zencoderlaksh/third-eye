@@ -129,6 +129,9 @@ export default function CourseFormModal({ isOpen, course, onClose, onSave, isSav
       return;
     }
 
+    const validTools = tools.filter((t) => t && typeof t.name === "string" && t.name.trim().length > 0);
+    const validModules = modules.filter((m) => m && typeof m.title === "string" && m.title.trim().length > 0);
+
     const payload = {
       title: title.trim(),
       slug: (slug.trim() || slugify(title)),
@@ -137,9 +140,9 @@ export default function CourseFormModal({ isOpen, course, onClose, onSave, isSav
       badge: badge.trim(),
       description: description.trim(),
       image: imageUrl.trim(),
-      prerequisites: prerequisites.filter((p) => p.trim()),
-      tools,
-      modules,
+      prerequisites: prerequisites.filter((p) => p && typeof p === "string" && p.trim().length > 0),
+      tools: validTools,
+      modules: validModules,
     };
 
     onSave(payload, imageFile);
@@ -334,7 +337,6 @@ export default function CourseFormModal({ isOpen, course, onClose, onSave, isSav
                         value={tool.name}
                         onChange={(e) => handleToolChange(idx, "name", e.target.value)}
                         placeholder={`Tool Name (e.g. React)`}
-                        required
                       />
                     </div>
                   ))}
@@ -358,7 +360,6 @@ export default function CourseFormModal({ isOpen, course, onClose, onSave, isSav
                           value={mod.title}
                           onChange={(e) => handleModuleChange(idx, "title", e.target.value)}
                           placeholder="Module Title"
-                          required
                         />
                       </div>
                       <textarea

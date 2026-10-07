@@ -8,8 +8,13 @@ import { JOB_OPENINGS as FALLBACK_JOBS, getJobBySlug as fallbackGetBySlug } from
 
 const getCleanBaseUrl = () => {
   const envUrl = (import.meta.env.VITE_API_URL || "").trim().replace(/\/+$/, "");
-  if (!envUrl) return "";
-  return envUrl.endsWith("/api") ? envUrl.slice(0, -4) : envUrl;
+  if (envUrl) {
+    return envUrl.endsWith("/api") ? envUrl.slice(0, -4) : envUrl;
+  }
+  if (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
+    return "http://localhost:5000";
+  }
+  return "";
 };
 
 const BASE_URL = getCleanBaseUrl();
